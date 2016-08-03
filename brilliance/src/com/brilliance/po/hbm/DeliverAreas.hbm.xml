@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-3-19 23:23:50 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+    <class name="DeliverAreas" table="DELIVER_AREAS">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="expressCode" type="java.lang.String">
+            <column name="EXPRESSCODE" />
+        </property>
+        
+        <property name="provinceId" type="java.lang.String">
+            <column name="PROVINCEID" />
+        </property>
+        <property name="province" type="java.lang.String">
+            <column name="PROVINCE" />
+        </property>
+        <property name="cityId" type="java.lang.String">
+            <column name="CITYID" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="areaId" type="java.lang.String">
+            <column name="AREAID" />
+        </property>
+        <property name="area" type="java.lang.String">
+            <column name="AREA" />
+        </property>
+        <property name="townId" type="java.lang.String">
+            <column name="TOWNID" />
+        </property>
+        <property name="town" type="java.lang.String">
+            <column name="TOWN" />
+        </property>
+        <property name="officeNumber" type="java.lang.String">
+            <column name="OFFICENUMBER" />
+        </property>
+        <property name="subExpressName" type="java.lang.String">
+            <column name="SUBEXPRESSNAME" />
+        </property>
+        <property name="subExpressAddress" type="java.lang.String">
+            <column name="SUBEXPRESSADDRESS" />
+        </property>
+        <property name="mobile" type="java.lang.String">
+            <column name="MOBILE" />
+        </property>
+        <property name="deliverAreas" type="java.lang.String">
+            <column name="DELIVERAREAS" />
+        </property>
+        <property name="nonDeliverAreas" type="java.lang.String">
+            <column name="NONDELIVERAREAS" />
+        </property>
+        <property name="createTime" type="java.util.Date">
+            <column name="CREATETIME" />
+        </property>
+        <property name="lastUpdateTime" type="java.util.Date">
+            <column name="LASTUPDATETIME" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="STATUS" default="1"/>
+        </property>
+    </class>
+</hibernate-mapping>

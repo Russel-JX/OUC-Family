@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>用户注册</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../css/bootstrap.css">
+        <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/jquery.form-validator.min.js"></script>
+		<script type="text/javascript" src="../js/security.js"></script>
+		<script type="text/javascript" src="../js/territory.js"></script>
+    </head>
+<body>
+    <div class="container">
+    <form class="form-horizontal" role="form" id="register" action="/page/register">
+        <input type="text" id="dd"/>
+        <div class="form-group">
+        	<div class="col-md-1">
+        		
+        	</div>
+        	<div class="col-md-1">
+        		<button type="button" id="submit" class="btn btn-primary btn-lg" onclick="submitForm();">注册</button>
+        	</div>
+        	<div class="col-md-10">
+        		<button type="button" class="btn btn-primary btn-lg">返回</button>
+        	</div>
+        </div>
+        
+        <input type="hidden" id="address" name="address"/>
+    </form>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $().ready(function(){
+        $.validate({
+            modules: 'security'
+        });
+        //loadAddr();
+    });
+    
+    function loadAddr(){
+	    var names = new Array('province','city','area');
+	
+	    loadAreasDropDown($('#addressDiv'),names);
+    }
+    
+    function submitForm(){
+    	/*var province = $('#province').find("option:selected").text();
+    	var city = $('#city').find("option:selected").text();
+    	var area = $('#area').find("option:selected").text();
+    	
+    	$("#address").val(province+" "+city+" "+area);*/
+    	$('#register').submit();
+    }
+</script>

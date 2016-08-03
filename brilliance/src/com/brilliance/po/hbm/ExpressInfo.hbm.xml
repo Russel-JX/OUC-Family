@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 12, 2014 5:29:53 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+    <class name="ExpressInfo" table="EXPRESS_INFO">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="expressCode" type="java.lang.String">
+            <column name="EXPRESSCODE" />
+        </property>
+        <property name="postId" type="java.lang.String">
+            <column name="POSTID" />
+        </property>
+        <property name="logoUrl" type="java.lang.String">
+            <column name="LOGOURL" />
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="TELEPHONE" />
+        </property>
+        <property name="mobile" type="java.lang.String">
+            <column name="MOBILE" />
+        </property>
+        <property name="serviceLine" type="java.lang.String">
+            <column name="SERVICELINE" />
+        </property>
+        <property name="evaluation" type="java.math.BigDecimal">
+            <column name="EVALUATION" />
+        </property>
+        <property name="createTime" type="java.util.Date">
+            <column name="CREATETIME" />
+        </property>
+        <property name="lasetUpdateTime" type="java.util.Date">
+            <column name="LASTUPDATETIME" />
+        </property>
+        <property name="updateBy" type="java.lang.Integer">
+            <column name="UPDATEBY" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="STATUS" default="1"/>
+        </property>
+    </class>
+</hibernate-mapping>

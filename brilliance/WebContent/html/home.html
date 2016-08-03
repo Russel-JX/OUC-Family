@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>首页</title>
+<link rel="stylesheet" href="../css/main.css"/>
+<link rel="stylesheet" href="../css/bootstrap.css"/>
+<link rel="stylesheet" href="../css/jquery.dataTables.css"/>
+</head>
+<SCRIPT src="../js/jquery-1.11.0.min.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="../js/territory.js" type="text/javascript"></SCRIPT>
+<SCRIPT type="text/javascript">
+$(document).ready(function() {
+	//loadProviceDropdown();
+	//buildDataTable();
+	
+	var names = new Array();
+	names[0]="province";
+	names[1]="city";
+	names[2]="area";
+	loadProvinces(names);
+});
+
+function loadProviceDropdown(){
+		$.ajax({
+		type: "POST",
+		url: "../restful/brilliance/getProvinces",
+		dataType: "json",
+		success: function(jsonData){
+			//console.log(jsonData);
+			if(jsonData.success){
+				//console.log("get provinces success");
+				$("#province").empty();
+				var provinces = jsonData.data.provinces;
+				var html = '<option value="">请选择....</option>';
+				$.each(provinces,function(index,item){
+					html += '<option value="'+item.id+'">'+item.province+'</option>';
+				});
+				$("#province").append(html);
+				}
+			}
+		});
+}
+
+function buildDataTable(){
+	
+	$.ajax({
+		type: "POST",
+		url: "../restful/brilliance/getProvinces",
+		dataType: "json",
+		success: function(jsonData){
+			//console.log(jsonData);
+			if(jsonData.success){
+				//console.log("get provinces success");
+				var provinces = jsonData.data.provinces;
+				$('#table_id').dataTable( {
+			        "bProcessing": true,
+			        "bPaginate":true,
+			        "aaData":provinces
+			    });
+				
+				}
+			}
+		});
+}
+
+
+
+
+
+
+</SCRIPT>
+<body>
+<div class="top">
+  <div class="top_bar">
+    <div class="logo"></div>
+    <div class="at1">手机访问WAP.INBAI.COM</div>
+    <div class="clear"></div>
+  </div>
+  <div class="nav">
+    <ul>
+      <li><a href="call.html">用户管理</a></li>
+      <li><a href="tongxun.html">元数据管理</a></li>
+      <li><a href="dongtai2.html">订单管理</a></li>
+      <li><a href="dongtai2.html">评价管理</a></li>
+      <li><a href="dongtai2.html">积分管理</a></li>
+      <li><a href="dongtai2.html">快递进度查询</a></li>
+    </ul>
+  </div>
+</div>
+<div class="content">
+	<div id="addDiv">
+		222
+	</div>
+	<br />
+<div id="expressinfo" >
+  <table id="table_id" border="1">
+    <thead>
+        <tr>
+            <th>快递公司名称</th>
+            <th>价格</th>
+            <th>送达天数</th>
+        </tr>
+    </thead>
+    
+</table>
+</div>
+<input type="submit" value="submit"  action="search"/>
+</div>
+
+
+<div class="foot">
+  <div class="foot_nav"><a href="">帮助中心</a>|<a href="#">隐私条款</a>|<a href="#">关于我们</a></div>
+  <div class="foot_bar"><img src="../images/logo2.jpg"  width="114" height="42" align="left"/>&copy;2009.INBAI Technology Co.Ltd<br />
+    粤ICP备09104593</div>
+  <div class="clear"></div>
+</div>
+</body>
+</html>

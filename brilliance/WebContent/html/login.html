@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+    <title>登陆</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+        <!-- CSS code from Bootply.com editor -->
+        
+        <style type="text/css">
+            .modal-footer {   border-top: 0px; }
+            
+           
+        </style>
+    </head>
+    
+    <!-- HTML code from Bootply.com editor -->
+    
+<body>
+
+<div class="containner">
+			<!--login modal-->
+			<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog">
+			  <div class="modal-content">
+			      <div class="modal-header">
+			          <h1 class="text-center">登录</h1>
+			      </div>
+			      <div class="modal-body">
+			          <form class="form col-md-12 center-block">
+			            <div class="form-group">
+			              <input type="text" class="form-control input-lg" placeholder="手机号码">
+			            </div>
+			            <div class="form-group">
+			              <input type="password" class="form-control input-lg" placeholder="密码">
+			            </div>
+			            <div class="form-group">
+			              <button class="btn btn-primary btn-lg btn-block">登录</button>
+			              <span class="pull-right"><a href="forwardToRegister" >注册</a></span><span><a href="#">帮助?</a></span>
+			            </div>
+			          </form>
+			      </div>
+			      <div class="modal-footer">
+			      </div>
+			  </div>
+			  </div>
+			</div>
+</div>
+<script type='text/javascript' src="../js/jquery-1.11.0.min.js"></script>
+<script type='text/javascript' src="../js/bootstrap.min.js"></script>
+<script type='text/javascript' src="../js/territory.js"></script>
+<!-- JavaScript jQuery code from Bootply.com editor -->
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+
+});
+
+function doRegiste(){
+	//$('#loginModal').toggleClass("modal fade");
+	//$('#myModal').toggleClass("modal show");
+	$('#loginModal').attr("class","modal fade");
+	$('#myModal').attr("class","modal show");
+}
+
+function loadAddr(){
+	var contents = new Array($('#provinceDiv'),$('#cityDiv'),$('#areaDiv'));
+	var names = new Array('province','city','area');
+	
+	loadProvinces(contents,names);
+}
+</script>
+        
+</body>
+</html>

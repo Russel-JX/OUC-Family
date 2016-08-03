@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-3-12 22:43:26 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+    <class name="ExpressEvalution" table="EXPRESS_EVALUATION">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="addressId" type="java.lang.String">
+            <column name="ADDRESSID" />
+        </property>
+        <property name="imageUrl" type="java.lang.String">
+            <column name="IMAGEURL" />
+        </property>
+        <property name="expressCode" type="java.lang.String">
+            <column name="EXPRESSCODE" />
+        </property>
+        <property name="userId" type="java.lang.String">
+            <column name="USERID" />
+        </property>
+        <property name="orderCode" type="java.lang.String">
+            <column name="ORDERCODE" />
+        </property>
+        <property name="score" type="java.lang.Integer">
+            <column name="SCORE" />
+        </property>
+        <property name="extraInfo" type="java.lang.String">
+            <column name="EXTRAINFO" />
+        </property>
+        <property name="createTime" type="java.util.Date">
+            <column name="CREATETIME" />
+        </property>
+    </class>
+</hibernate-mapping>

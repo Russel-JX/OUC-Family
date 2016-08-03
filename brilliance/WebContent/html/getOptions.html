@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+<title>get OPtion values</title>
+</head>
+<body>
+<select>	
+<option value="130102">长安区</option>
+<option value="130103">桥东区</option>
+<option value="130104">桥西区</option>
+<option value="130105">新华区</option>
+<option value="130107">井陉矿区</option>
+<option value="130108">裕华区</option>
+<option value="130121">井陉县</option>
+<option value="130123">正定县</option>
+<option value="130124">栾城县</option>
+<option value="130125">行唐县</option>
+<option value="130126">灵寿县</option>
+<option value="130127">高邑县</option>
+<option value="130128">深泽县</option>
+<option value="130129">赞皇县</option>
+<option value="130130">无极县</option>
+<option value="130131">平山县</option>
+<option value="130132">元氏县</option>
+<option value="130133">赵县</option>
+<option value="130181">辛集市</option>
+<option value="130182">藁城市</option>
+<option value="130183">晋州市</option>
+<option value="130184">新乐市</option>
+<option value="130185">鹿泉市</option>
+</select>
+		
+<button id="but">执行</button>
+</body>
+</html>
+<script>
+	$().ready(function(){
+		$("#but").on("click",function(){
+			var options = $("option");
+			$.each(options,function(index,item){
+				var value = $(item).val()
+				var text = $(item).text();
+				//console.log(":::value:::"+value+" ,"+":::text:::"+text);
+				console.log("insert into areas_info(areaid,area,cityid) values('"+value+"','"+text+"','130100');");
+			});
+		});
+	});
+	
+</script>

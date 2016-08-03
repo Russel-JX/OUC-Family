@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 12, 2014 12:39:58 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+	<class name="PostAddressInfo" table="POST_ADDRESS_INFO">
+		<id name="id" type="java.lang.Integer">
+			<column name="ID" />
+			<generator class="native" />
+		</id>
+		<property name="expressCode" type="java.lang.String">
+			<column name="EXPRESSCODE" />
+		</property>
+		<property name="userId" type="java.lang.String">
+			<column name="USERID" />
+		</property>
+		<property name="postName" type="java.lang.String">
+			<column name="POSTNAME" />
+		</property>
+		<property name="companyName" type="java.lang.String">
+			<column name="COMPANYNAME" />
+		</property>
+		<property name="province" type="java.lang.String">
+			<column name="PROVINCE" />
+		</property>
+		<property name="city" type="java.lang.String">
+			<column name="CITY" />
+		</property>
+		<property name="area" type="java.lang.String">
+			<column name="AREA" />
+		</property>
+		<property name="streetName" type="java.lang.String">
+			<column name="STREETNAME" />
+		</property>
+		<property name="mobile" type="java.lang.String">
+			<column name="MOBILE" />
+		</property>
+		<property name="tailAddress" type="java.lang.String">
+			<column name="TAILADDRESS" />
+		</property>
+		<property name="addressDetail" type="java.lang.String">
+			<column name="ADDRESSDETAIL" />
+		</property>
+		<property name="createTime" type="java.util.Date">
+			<column name="CREATETIME" />
+		</property>
+		<property name="lastUpdateTime" type="java.util.Date">
+			<column name="LASTUPDATETIME" />
+		</property>
+		<property name="Status" type="java.lang.Integer">
+			<column name="STATUS" default="1" />
+		</property>
+	</class>
+</hibernate-mapping>
