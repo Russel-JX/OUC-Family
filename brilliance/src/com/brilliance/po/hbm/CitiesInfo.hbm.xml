@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 13, 2014 4:35:53 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+    <class name="CitiesInfo" table="CITIES_INFO">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="cityId" type="java.lang.String">
+            <column name="CITYID" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="provinceId" type="java.lang.String">
+            <column name="PROVINCEID" />
+        </property>
+    </class>
+</hibernate-mapping>

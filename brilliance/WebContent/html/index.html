@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>import excel</title>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="../css/bootstrap.css">
+        <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/jquery.form-validator.min.js"></script>
+		<script type="text/javascript" src="../js/file.dev.js"></script>	
+        <script>
+            $().ready(function(){
+            
+                $("form").each(function(index, item){
+                    $(item).validate({
+                        modules: 'file',
+                        debug: true
+                    })
+                });
+            });
+        </script>
+    </head>
+    <body>
+       
+        <form action="../uploadServlet" method="post" enctype="multipart/form-data">
+        <div>
+        <div>
+        上传者:<input type="text" name="name" />
+        </div>
+        <div>
+        上传文件:<input type="file" name="excel" />
+        </div>
+        <div>
+        <input type="submit" value="上传" />
+        </div>
+        </div>
+        </form>
+		
+        <br />
+        <form  id="uploadForm" role="form" class="form-horizontal" action="../uploadServlet" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="Uploader" class="col-sm-2 control-label">
+                    上传者
+                </label>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" id="Uploader" placeholder="上传者" data-validation="required" data-validation-error-msg="输入上传者名字">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputFile" class="col-sm-2 control-label">
+                    文件上传
+                </label>
+                <div class="col-xs-3">
+                    <input type="file" id="inputFile" data-validation="required">
+                    <p class="help-block">
+                        请选择.xls或者.xlsx文件.
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-2">
+                    <button type="submit" value="上传" onsumbit="return $('#uploadForm').valid();" />
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
+<!--
+<script>
+	$().ready(function(){
+		$.validate({
+			 modules : 'file'
+		});
+	});
+</script>
+
+
+
+form onsubmit="return $(this).valid();"或者input type="submit" onclick="return $('form').valid();"或者input type="button" onclick="test();"test()里判断，如果有valid()为false,则不提交，否则手动js提交表单
+-->

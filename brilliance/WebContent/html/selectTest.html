@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>省、市、区(县)</title>
+ <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+	</div>
+    	<div align="center">
+    		<p>请选择城市</p>
+    	</div>
+        <div align="center">
+            <select id="province" name="province">
+                <option value="">请选择....</option>
+            </select>
+            <select id="city" name="city">
+                <option value="">请选择.....</option>
+            </select>
+			 <select id="area" name="area">
+                <option value="">请选择.....</option>
+            </select>
+        </div>	
+
+</body>
+<script>
+    $().ready(function(){
+		//加载省份
+        $.ajax({
+            type: "POST",
+            url: "../restful/getProvinces",
+            dataType: "json",
+            success: function(jsonData){
+                if (jsonData.success) {
+                    //console.log("get provinces success");
+                    $("#province").empty();
+                    var provinces = jsonData.data.provinces;
+                    var html = '<option value="">请选择....</option>';
+                    $.each(provinces, function(index, item){
+                        html += '<option value="' + item.provinceId + '">' + item.province + '</option>';
+                    });
+                    $("#province").append(html);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                //console.log(textStatus +" "+errorThrown);
+                alert(textStatus + " " + errorThrown);
+            }
+        });
+        
+        //加载城市
+        $("#province").on("change", function(){
+            //console.log("change event");
+            console.log(":::provinceId:::" + $("#province").val());
+            $.ajax({
+                type: "POST",
+                url: "../restful/getCities",
+                dataType: "json",
+                data: {
+                    provinceId: $("#province").val()
+                },
+                success: function(jsonData){
+                    if (jsonData.success) {
+                        //console.log("get cities success");
+                        $("#city").empty();
+                        var cities = jsonData.data.cities;
+                        var html = '<option value="">请选择....</option>';
+                        $.each(cities, function(index, item){
+                            html += '<option value="' + item.cityId + '">' + item.city + '</option>';
+                        });
+                        $("#city").append(html);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown){
+                    //console.log(textStatus +" "+errorThrown);
+                    alert(textStatus + " " + errorThrown);
+                }
+            });
+        });
+        //加载区(县)
+        $("#city").on("change", function(){
+            //console.log("change event");
+            console.log(":::cityId:::" + $("#city").val());
+            $.ajax({
+                type: "POST",
+                url: "../restful/getAreas",
+                dataType: "json",
+                data: {
+                    cityId: $("#city").val()
+                },
+                success: function(jsonData){
+                    if (jsonData.success) {
+                        //console.log("get cities success");
+                        $("#area").empty();
+                        var areas = jsonData.data.areas;
+                        var html = '<option value="">请选择....</option>';
+                        $.each(areas, function(index, item){
+                            html += '<option value="' + item.areaId + '">' + item.area + '</option>';
+                        });
+                        $("#area").append(html);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown){
+                    //console.log(textStatus +" "+errorThrown);
+                    alert(textStatus + " " + errorThrown);
+                }
+            });
+        });
+    });
+</script>
+</html>

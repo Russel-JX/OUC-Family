@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 12, 2014 4:46:13 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+	<class name="OrderInfo" table="ORDER_INFO">
+		<id name="id" type="java.lang.Integer">
+			<column name="ID" />
+			<generator class="native" />
+		</id>
+		<property name="userId" type="java.lang.String">
+			<column name="USERID" />
+		</property>
+		<property name="orderCode" type="java.lang.String">
+			<column name="ORDERCODE" />
+		</property>
+		<property name="expressCode" type="java.lang.String" index="true">
+			<column name="EXPRESSCODE" />
+		</property>
+		
+		<property name="operatorId" type="java.lang.String">
+			<column name="OPERATORID" />
+		</property>
+		<property name="expressSerialNO" type="java.lang.String">
+			<column name="EXPRESSSERIALNO" />
+		</property>
+		<property name="amount" type="float">
+			<column name="AMOUNT" />
+		</property>
+		<property name="source" type="java.lang.Integer">
+			<column name="SOURCE" />
+		</property>
+		<property name="createTime" type="java.util.Date">
+			<column name="CREATETIME" />
+		</property>
+		<property name="status" type="java.lang.Integer">
+			<column name="STATUS" default="1"/>
+		</property>
+		
+		<!-- <many-to-one name="expressInfo" unique="true" not-null="true" class="com.brilliance.po.ExpressInfo"  foreign-key="FK_EXPRESSCODE" insert="false" update="false" cascade="all"></many-to-one> -->
+		 <one-to-one name="expressInfo" class="com.brilliance.po.ExpressInfo"  property-ref="expressCode">
+		     <formula>expressCode</formula>
+		 </one-to-one>
+		<property name="f_contact" type="java.lang.String">
+			<column name="F_CONTACT" />
+		</property>
+		<property name="from_addr" type="java.lang.String">
+			<column name="FROM_ADDR" />
+		</property>
+		<property name="f_streetName" type="java.lang.String">
+			<column name="F_STREETNAME" />
+		</property>
+		<property name="f_companyName" type="java.lang.String">
+			<column name="F_COMPANYNAME" />
+		</property>
+		<property name="f_provinceId" type="java.lang.String">
+			<column name="F_PROVINCEID" />
+		</property>
+		<property name="f_cityId" type="java.lang.String">
+			<column name="F_CITYID" />
+		</property>
+		<property name="f_areaId" type="java.lang.String">
+			<column name="F_AREAID" />
+		</property>
+		<property name="f_houseNo" type="java.lang.String">
+			<column name="F_HOUSENO" />
+		</property>
+		<property name="f_mobileNo" type="java.lang.String">
+			<column name="F_MOBILENO" />
+		</property>
+		<property name="f_subexpress" type="java.lang.String">
+			<column name="F_SUBEXPRESS" />
+		</property>
+		<property name="t_companyName" type="java.lang.String">
+			<column name="T_COMPANYNAME" />
+		</property>
+		<property name="t_contact" type="java.lang.String">
+			<column name="T_CONTACT" />
+		</property>
+		
+		<property name="t_provinceId" type="java.lang.String">
+			<column name="T_PROVINCEID" />
+		</property>
+		<property name="t_cityId" type="java.lang.String">
+			<column name="T_CITYID" />
+		</property>
+		<property name="t_areaId" type="java.lang.String">
+			<column name="T_AREAID" />
+		</property>
+		<property name="to_addr" type="java.lang.String">
+			<column name="TO_ADDR" />
+		</property>
+		<property name="t_mobileNo" type="java.lang.String">
+			<column name="T_MOBILENO" />
+		</property>
+		<property name="t_officeNo" type="java.lang.String">
+			<column name="T_OFFICENO" />
+		</property>
+		<property name="t_streetName" type="java.lang.String">
+			<column name="T_STREETNAME" />
+		</property>
+		
+		<property name="t_houseNo" type="java.lang.String">
+			<column name="T_HOUSENO" />
+		</property>
+		
+		<property name="cargoName" type="java.lang.String">
+			<column name="CARGONAME" />
+		</property>
+		<property name="comment" type="java.lang.String">
+			<column name="COMMENT" />
+		</property>
+		<property name="deliverDays" type="java.lang.Integer">
+			<column name="DELIVERDAYS" />
+		</property>
+	</class>
+</hibernate-mapping>

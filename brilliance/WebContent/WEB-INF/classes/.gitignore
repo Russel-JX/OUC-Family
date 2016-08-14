@@ -1,0 +1,16 @@
+/clalendar/
+/com/
+/exception/
+/hibernate.cfg.xml
+/image/
+/jdbc.properties
+/junit/
+/log4j.properties
+/message.properties
+/message_en_US.properties
+/message_zh_CN.properties
+/message_zh_TW.properties
+/poi/
+/queue/
+/springMVC.xml
+/thisInClass/

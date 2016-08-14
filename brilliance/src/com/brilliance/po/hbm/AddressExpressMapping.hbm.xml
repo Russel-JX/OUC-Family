@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-3-12 22:22:28 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+    <class name="AddressExpressMapping" table="ADDRESS_EXPRESS_MAPPING">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="expressCode" type="java.lang.String">
+            <column name="EXPRESSCODE" />
+        </property>
+        <property name="addressId" type="java.lang.String">
+            <column name="ADDRESSID" />
+        </property>
+        <property name="subExpressAddress" type="java.lang.String">
+            <column name="SUBEXPRESSADDRESS" />
+        </property>
+        <property name="subExpressMobile" type="java.lang.String">
+            <column name="SUBEXPRESSMOBILE" />
+        </property>
+        <property name="rangeDetail" type="java.lang.String">
+            <column name="RANGEDETAIL" />
+        </property>
+        <property name="createTime" type="java.util.Date">
+            <column name="CREATETIME" />
+        </property>
+        <property name="lastDateTime" type="java.util.Date">
+            <column name="LASTDATETIME" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="STATUS" default="1"/>
+        </property>
+    </class>
+</hibernate-mapping>

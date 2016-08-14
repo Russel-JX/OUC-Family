@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-3-19 23:53:01 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.brilliance.po">
+    <class name="ExpressDeliverDetail" table="EXPRESS_DELIVER_DETAIL">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="deliverCode" type="java.lang.String">
+            <column name="DELIVERCODE" />
+        </property>
+        <property name="expressCode" type="java.lang.String">
+            <column name="EXPRESSCODE" />
+        </property>
+        <property name="charge" type="java.lang.String">
+            <column name="CHARGE" />
+        </property>
+        <property name="deliverDays" type="java.lang.Integer">
+            <column name="DELIVERDAYS" />
+        </property>
+        <property name="desc" type="java.lang.String">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="createTime" type="java.util.Date">
+            <column name="CREATETIME" />
+        </property>
+        <property name="lastUpdateTime" type="java.util.Date">
+            <column name="LASTUPDATETIME" />
+        </property>
+    </class>
+</hibernate-mapping>

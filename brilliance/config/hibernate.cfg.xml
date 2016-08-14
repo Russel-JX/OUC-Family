@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+  <!-- 1:Database connection settings -->
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+  <!--2:other configure -->
+  <property name="hibernate.show_sql">true</property>
+  <property name="hibernate.hbm2ddl.auto">none</property>
+  <!-- 3：mapping files -->
+  <mapping resource="com/brilliance/po/hbm/ProvincePO.hbm.xml"/>
+    
+  <!-- mapping resource="com/brilliance/po/hbm/AddressExpressMapping.hbm.xml"/-->
+  <!-- mapping resource="com/brilliance/po/hbm/AdminInfo.hbm.xml"/ -->
+  <mapping resource="com/brilliance/po/hbm/AreasInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/CitiesInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/DeliverAreas.hbm.xml"/> 
+  <mapping resource="com/brilliance/po/hbm/ExpressDeliverDetail.hbm.xml"/> 
+  <mapping resource="com/brilliance/po/hbm/ExpressDeliverInfo.hbm.xml"/>  
+  <!-- mapping resource="com/brilliance/po/hbm/ExpressEvalution.hbm.xml"/> -->
+  <mapping resource="com/brilliance/po/hbm/ExpressInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/OrderInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/ProvincesInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/UserAddressInfo.hbm.xml"/> 
+  <mapping resource="com/brilliance/po/hbm/UserInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/ZipCodeInfo.hbm.xml"/>
+  <mapping resource="com/brilliance/po/hbm/PostAddressInfo.hbm.xml"/>
+  <mapping class="com.brilliance.po.FavouriteAddress"/>
+  <mapping class="com.brilliance.po.CustomizationAddressInfo"/>
+  <mapping resource="com/brilliance/po/hbm/DeliverAddressInfo.hbm.xml"/>
+  <mapping class="com.brilliance.po.RecommendInfo"/>
+  <mapping class="com.brilliance.po.URLInfo"/>
+  <mapping class="com.brilliance.po.OrderProgress"/>
+  <mapping class="com.brilliance.po.CustomizationTempAddressInfo"/>
+  <mapping class="com.brilliance.po.AdminInfo"/>
+  <mapping class="com.brilliance.po.ExpressEvalution"/>
+  <mapping class="com.brilliance.po.AddressSuggInfo"/>
+  <mapping class="com.brilliance.po.AddressReviewInfo"/>
+  <mapping class="com.brilliance.po.RewardScore"/>
+  <mapping class="com.brilliance.po.DiaryInfo"/>
+ </session-factory>
+</hibernate-configuration>

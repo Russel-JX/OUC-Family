@@ -1,0 +1,22 @@
+.add-address:hover{
+	cursor:pointer;
+}
+.view-address:hover{
+	cursor:pointer;
+}
+.hide{
+	display:none;
+}
+.address_hide{
+	display:none;
+}
+.summary-modal-body{
+	background:#80BFFF;
+	margin:6px;
+}
+.list-group{
+	margin-bottom:0px;
+}
+.list-group-item{
+	padding:1px 15px;
+}
