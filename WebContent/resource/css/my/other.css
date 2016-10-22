@@ -1,0 +1,260 @@
+.body {
+	width: 85%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 70px;
+}
+
+.bs-header {
+	color: #CDBFE3;
+	text-align: center;
+	margin-top: -10px;
+	margin-bottom: 10px;
+	padding-top: 0px;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 5.15);
+	padding-top: 0px;
+}
+
+.navbar-text1 {
+	font-size: 20px;
+}
+
+#closeBtn {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	cursor: pointer;
+}
+
+#greybackground {
+	background: #B8C4CE;
+	display: block;
+	z-index: 200;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#auth-wrapper {
+	position: absolute;
+	display: none;
+	width: 500px;
+	height: 500px;
+	z-index: 201;
+	margin: 170px 10px;
+}
+
+#auth {
+	position: relative;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	transform: translateY(-50%);
+	padding: 20px;
+	background: grey;
+	border-radius: 3px;
+	max-width: 328px;
+	margin: 0 auto;
+}
+
+.myFont {
+	font-family: times new roman;
+	color: black;
+	font-size: 40pt;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+
+
+.footmenu {
+	font-size: 13px;
+	margin-top: 20px;
+}
+
+.copyright {
+	font-size: 13px;
+	margin-top: 10px;
+}
+
+.accountmenu {
+	background-color: #FDFFC9;
+	font-size: 12px;
+}
+
+.accountsetting {
+	background-image: url('/iZone/resource/img/home.png');
+	background-repeat: no-repeat;
+	background-position: -330px -144px;
+	color: gray;
+}
+
+.inputSearch {
+	vertical-align: middle;
+	padding: 8px 8px;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1;
+	color: #555555;
+	text-align: center;
+	background-color: #eeeeee;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.bodyMsg {
+	border: 1px solid #cccccc;
+	padding-left: 20px;
+	padding-top: 20px;
+	padding-right: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height:700px;
+}
+
+.bodyMsg .left {
+	float: left;
+	border: 1px solid #aaaaaa;
+	height: 400px;
+	width: 370px;
+}
+
+.bodyMsg .middle {
+	display: inline;
+	border: 1px solid blue;
+	float: left;
+	margin: 0 0 0 10px;
+	width: 370px;
+	height: 400px;
+}
+
+.bodyMsg .right {
+	float: right;
+	border: 1px solid red;
+	height: 400px;
+	width: 300px;
+}
+
+marquee a {
+	margin-left: 20px;
+}
+
+#scrollUp {
+	background: url("/iZone/resource/img/top.png") no-repeat scroll
+		0 0 rgba(0, 0, 0, 0);
+	bottom: 20px;
+	height: 38px;
+	right: 20px;
+	width: 38px;
+}
+
+.msgList {
+	margin-top: 15px;
+}
+
+.msgList ul {
+	padding-left: 8px;
+	list-style: none outside none;
+}
+
+.msgList li {
+	line-height: 20px;
+	height: 20px;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.msgList .msgTitle a {
+	display: inline-block;
+	line-height: 16px;
+	width: 130px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: black;
+}
+
+.msgList .author {
+	color: #8E8E8E;
+	float: right;
+	font-size: 14px;
+	margin-right: 10px;
+	display: inline-block;
+	line-height: 16px;
+	width: 90px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.msgList .time {
+	float: none;
+	font-size: 12px;
+	color: #8E8E8E;
+}
+
+.msgList .importance1 {
+	color: red;
+}
+
+.msgList .importance2 {
+	color: orange;
+}
+
+div.dataTables_paginate {
+	float: right;
+	margin-top:10px;
+	font-size:15px;
+}
+
+.table th{
+	background-color:gray;
+	font-size:17px;
+}
+
+table.dataTable tr.odd.trselected td{
+	background-color:#9FAFD1;
+}
+
+table.dataTable tr.even.trselected td{
+	background-color:#B0BED9;
+}
+
+table.dataTable tr.odd.trselected td.sorting_1 {
+    background-color: #9FAFD1;
+}
+table.dataTable tr.odd.trselected td.sorting_2 {
+    background-color: #9FAFD1;
+}
+table.dataTable tr.odd.trselected td.sorting_3 {
+    background-color: #9FAFD1;
+}
+
+table.dataTable tr.even.trselected td.sorting_1 {
+    background-color: #B0BED9;
+}
+table.dataTable tr.even.trselected td.sorting_2 {
+    background-color: #B0BED9;
+}
+table.dataTable tr.even.trselected td.sorting_3 {
+    background-color: #B0BED9;
+}
+
+.btn-margin{
+	margin-left:20px;
+}
+
+li a{
+	transition:all 1s linear;
+}
+
+.bodyMsg li a:hover{
+	transform:scale(3.0);
+}

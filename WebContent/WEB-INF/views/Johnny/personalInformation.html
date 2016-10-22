@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<script type="text/javascript" src="/iZone/resource/js/util/jQuery-1.10.2.js"></script>
+<script type="text/javascript" src="/iZone/resource/js/util/bootstrap.js"></script>
+<script type="text/javascript" src="/iZone/resource/js/util/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/iZone/resource/js/util/bootstrap-datetimepicker.fr.js"></script>
+<script type="text/javascript" src="/iZone/resource/js/my/personelFile.js"></script>
+
+<link rel="stylesheet" href="/iZone/resource/css/util/bootstrap-theme.css">
+<link rel="stylesheet" href="/iZone/resource/css/util/bootstrap.css">
+<link rel="stylesheet" href="/iZone/resource/css/util/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/iZone/resource/css/my/PersonelInfo.css">
+<title>Employee Information</title>
+
+
+</head>
+<body>
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Personel File</h3>
+				</div>
+				<div class="panel-body">
+					<div class="border content left">
+						<div class="border icon">
+							<a href="javascript:;" onclick="popupEditor();return false;"><img src="/iZone/resource/img/head.jpg"></a>
+						</div>
+						<div class="mod">
+							<a href="javascript:;" onclick="popupEditor();return false;">Modify Icon</a>
+						</div>
+					</div>
+					<!-- ----------------------------navigation tabs----------------------------------- -->
+					<div id="nav" class="border content right" style="display: block;">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#personel" data-toggle="tab">Personal Information</a></li>
+							<li><a href="#employee" data-toggle="tab">Employee Information</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="personel">
+								<div class="menu basic">
+									Basic Information
+									<button id="per_btn" class="btn btn-info btn-sm mod_basic" data-toggle="modal" data-target="#myModal">Modify</button>
+								</div>
+								<div class="menu border show_info"></div>
+							</div>
+							<div class="tab-pane" id="employee">
+								<div class="menu basic">
+									Employee Information
+									<button id="emp_btn" class="btn btn-info btn-sm mod_basic" data-toggle="moda2" data-target="#myModa2">Modify</button>
+								</div>
+								<div class="menu border show_info"></div>
+							</div>
+						</div>
+					</div>
+					<!-- -----------------------------Personel Information Modify------------------------------ -->
+					<div class="border content right" id="per_modify" style="display: none;">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Personel Information Modify</h3>
+							</div>
+							<div class="panel-body">
+								<form class="form-horizontal center" role="form">
+									<div class="form-group">
+										<label for="inputBirthday3" class="col-sm-2 control-label">Birthday</label>
+										<div class="col-sm-10">
+											<div class="input-group date form_date col-md-7" data-date="01 01 1900" data-date-format="dd MM yyyy"
+												data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+												<input class="form-control" size="16" type="text" value="" readonly=""> <span class="input-group-addon"><span
+													class="glyphicon glyphicon-remove"></span></span> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+											</div>
+										</div>
+
+
+									</div>
+									<div class="form-group">
+										<label for="inputBirthday3" class="col-sm-2 control-label">Constellation</label>
+										<div class="col-sm-6">
+											<select class="form-control">
+												<option>♈ Aries</option>
+												<option>♉ Taurus</option>
+												<option>♊ Gemini</option>
+												<option>♋ Cancer</option>
+												<option>♌ Leo</option>
+												<option>♍ Virgo</option>
+												<option>♎ Libra</option>
+												<option>♏ Scorpio</option>
+												<option>♐ Sagittarius</option>
+												<option>♑ Capricorn</option>
+												<option>♒ Aquarius</option>
+												<option>♓ Pisces</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="inputBirthday3" class="col-sm-2 control-label">Blood type</label>
+										<div class="col-sm-6">
+											<select class="form-control">
+												<option>A</option>
+												<option>B</option>
+												<option>AB</option>
+												<option>O</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">Hobby</label>
+										<div class="col-sm-10">
+											<label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox1" value="option1"> <span
+												class="label label-primary">Basketball</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox2" value="option2"> <span
+												class="label label-success">Game</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+										<div class="col-sm-6">
+											<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+										<div class="col-sm-6">
+											<input type="email" class="form-control" id="inputEmail3" placeholder="Phone">
+										</div>
+									</div>
+									<!--<div class="form-group">
+						    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+						    <div class="col-sm-10">
+						      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <div class="checkbox">
+						        <label>
+						          <input type="checkbox"> Remember me
+						        </label>
+						      </div>
+						    </div>
+						  </div>
+						  -->
+									<div class="form-group center">
+										<div class="col-sm-offset-2 col-sm-10">
+											<button type="submit" class="btn btn-success">Save</button>
+											<button type="submit" class="btn btn-default">Cancel</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!-- -------------------------------------Employee Infomation----------------------------------------- -->
+					<div class="border content right" id="emp_modify" style="display: none;">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Personel Information Modify</h3>
+							</div>
+							<div class="panel-body">
+								<form class="form-horizontal center" role="form">
+									<div class="form-group">
+										<label for="inputBirthday3" class="col-sm-2 control-label">Birthday</label>
+										<div class="col-sm-6">
+											<input type="email" class="form-control" id="inputBirthday3" placeholder="Birthday">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputBirthday3" class="col-sm-2 control-label">Constellation</label>
+										<div class="col-sm-6">
+											<select class="form-control">
+												<option>♈ Aries</option>
+												<option>♉ Taurus</option>
+												<option>♊ Gemini</option>
+												<option>♋ Cancer</option>
+												<option>♌ Leo</option>
+												<option>♍ Virgo</option>
+												<option>♎ Libra</option>
+												<option>♏ Scorpio</option>
+												<option>♐ Sagittarius</option>
+												<option>♑ Capricorn</option>
+												<option>♒ Aquarius</option>
+												<option>♓ Pisces</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="inputBirthday3" class="col-sm-2 control-label">Blood type</label>
+										<div class="col-sm-6">
+											<select class="form-control">
+												<option>A</option>
+												<option>B</option>
+												<option>AB</option>
+												<option>O</option>
+												<option>X</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">Hobby</label>
+										<div class="col-sm-10">
+											<label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox1" value="option1"> <span
+												class="label label-primary">Basketball</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox2" value="option2"> <span
+												class="label label-success">Game</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label> <label class="checkbox-inline"> <input type="checkbox" id="inlineCheckbox3" value="option3"> <span
+												class="label label-info">Surf the Internet</span>
+											</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+										<div class="col-sm-6">
+											<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+										<div class="col-sm-6">
+											<input type="email" class="form-control" id="inputEmail3" placeholder="Phone">
+										</div>
+									</div>
+									<!--<div class="form-group">
+						    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+						    <div class="col-sm-10">
+						      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <div class="checkbox">
+						        <label>
+						          <input type="checkbox"> Remember me
+						        </label>
+						      </div>
+						    </div>
+						  </div>
+						  -->
+									<div class="form-group center">
+										<div class="col-sm-offset-2 col-sm-10">
+											<button type="submit" class="btn btn-success">Save</button>
+											<button type="submit" class="btn btn-default">Cancel</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

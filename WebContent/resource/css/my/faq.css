@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+body {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;/* #5ba0d0 */
+}
+#faq_type_nav{
+	margin-bottom:30px;
+}
+.askQuestion{
+	background-color:#1c2e3f;
+	margin-top:30px;
+	padding-left:20px;
+	padding-right:20px;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.question-info{
+	color:#ffffff;
+}
+.reply-info{
+	color:#ffffff;
+}
+.anonymous{
+	float:left; 
+	/* margin-bottom:100px; */
+}
+.questionDescription{
+	margin-top:10px;
+}
+/* redefine bootstrap css begin*/
+.popover{
+	background-color:#d9534f;
+}
+.popover-content{
+	color:#ffffff;
+}
+/* redefine bootstrap css end*/
+#loading{
+	display:none;
+}
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 10px;
+}
