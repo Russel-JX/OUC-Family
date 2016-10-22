@@ -1,6 +1,10 @@
 package thisInClass;
 
 public class Employee {
+	
+	static{
+		System.out.println("静态语句块...");
+	}
 
 	private String name;
 	private int age;
@@ -25,6 +29,18 @@ public class Employee {
 		this.height = height;
 	}
 	
+	public Employee() {
+		super();
+		System.out.println("初始化无参构造函数...");
+	}
+	
+	public Employee(String name, int age, double height) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.height = height;
+		System.out.println("初始化有参构造函数...");
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
