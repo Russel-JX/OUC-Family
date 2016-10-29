@@ -163,7 +163,7 @@ public class DiaryInfoController extends BaseController{
 			log.error("\n######修改日记出错："+e.getMessage()+"######");
 			//返回错误消息到前台
 			returns = Tools.getErrorsRetrunsMsg("40001");
-			//使用spring事物时，必须要在catch里抛出抛出运行时异常或子类异常（或者直接不用try、catch语句，系统会自动抛出运行时异常，spring会捕捉运行时异常并回滚），否则事物不回滚！
+			//使用spring事物时，必须要在catch里抛出运行时异常或子类异常（或者直接不用try、catch语句，系统会自动抛出运行时异常，spring会捕捉运行时异常并回滚），否则事物不回滚！
 			//异步请求主流程不抛出异常，返回前台json相应错误结果
 			////throw new ServiceException("修改日记抛出错误...",e);
 		}

@@ -1,10 +1,21 @@
-/com/
+/brilliance.3.grn
 /clalendar/
+/com/
 /exception/
 /image/
+/jihe/
 /junit/
+/log4j.properties
+/message.properties
+/message_en_US.properties
+/message_zh_CN.properties
+/message_zh_TW.properties
 /poi/
 /queue/
-/staticandconstructor/
+/springMVC.xml
+/structual diagram.mgc
 /thisInClass/
 /thousand/
+/type/
+/duotai/
+/init/
