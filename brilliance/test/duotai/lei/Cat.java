@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- *  多态知识测试类三
+ *  多态知识测试类  三
 * @ClassName: Cat
 * @Package duotai.lei
 * @Description: 
