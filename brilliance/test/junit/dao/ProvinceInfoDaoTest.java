@@ -17,11 +17,12 @@ public class ProvinceInfoDaoTest {
 		cxt = new ClassPathXmlApplicationContext("springMVC.xml");
 		provincesInfoDaoImpl = (ProvincesInfoDaoImpl) cxt.getBean("provincesInfoDaoImpl");
 	}
-
+	
+	
 	@Test
 	public void testGetAll() {
-//		for(ProvincesInfo info :provincesInfoDaoImpl.getAll()){
-//			System.out.println(info.getProvince());
-//		};
+		for(ProvincesInfo info :provincesInfoDaoImpl.getAll(ProvincesInfo.class)){
+			System.out.println(info.getProvince());
+		};
 	}
 }
