@@ -111,8 +111,7 @@ public class SpringJunitTest {
 		logger.info("junitTimeoutTest...");
 	}
 	
-	
-	@Test
+//	@Test
 	public void testGetAll() {
 		for(ProvincesInfo info :provincesInfoDaoImpl.getAll(ProvincesInfo.class)){
 			System.out.println(info.getProvince());
