@@ -96,10 +96,11 @@ public class DiaryInfoController extends BaseController{
 	/**
 	 * 新增日记
 	 * 不在catch中抛出运行时异常时，在非try,catch中发生的异常spring事物注解默认也会捕获，并回滚
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/DiaryInfo/saveDiary",method=RequestMethod.POST, produces = "text/html;charset=utf-8")
-	@Transactional(rollbackFor=Exception.class)//发生任何异常都回滚
-	public @ResponseBody String saveDiary(HttpServletRequest request){
+//	@Transactional(rollbackFor=Exception.class)//发生任何异常都回滚
+	public @ResponseBody String saveDiary(HttpServletRequest request) throws Exception{
 		log.info("\n------新增日记 开始-----");
 		AdminInfo adminInfo = CacheUtils.getAdmInfo(request);
 		DiaryInfo diaryInfo = new DiaryInfo();
@@ -115,7 +116,6 @@ public class DiaryInfoController extends BaseController{
 		diaryInfo.setSource(source);
 		diaryInfo.setAuthor(author);
 		try {
-//			int ii =9/0;
 			diaryInfo.setDiaryDate(Tools.parseToDate(diaryDate, Constants.DATE_PATTEN));
 			diaryInfo.setContent(content);
 			diaryInfo.setCreatedBy(adminInfo.getAccountId());
@@ -123,10 +123,14 @@ public class DiaryInfoController extends BaseController{
 			diaryInfo.setDeleteFlag(Constants.UNDELETED);
 			
 			returns = diaryInfoService.addDiaryInfo(diaryInfo,CacheUtils.getAppImgPath(request));
+//			int ii =9/0;
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 			log.error("\n######新增日记出错："+e.getMessage()+"######");
 			returns = Tools.getErrorsRetrunsMsg("40000");
+			throw new Exception();
+			
 		}
 		log.info("\n------新增日记 结束-----");
 		return returns.generateJsonData();
