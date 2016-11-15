@@ -29,7 +29,8 @@
     <url-pattern>/page/*</url-pattern><!-- 给PC端使用 -->
   </servlet-mapping>
 
-	<filter>
+	<!-- 本地测试，先注释掉 -->
+	<!-- <filter>
 		<filter-name>login</filter-name>
 		<filter-class>com.brilliance.filters.LoginFilter</filter-class>
 	</filter>
@@ -37,7 +38,7 @@
 	<filter-mapping>
 		<filter-name>login</filter-name>
 		<url-pattern>/page/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 
 	<filter>
 		<filter-name>encoding</filter-name>

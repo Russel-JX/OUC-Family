@@ -8,7 +8,7 @@ import com.brilliance.po.DiaryInfo;
 
 public interface DiaryInfoService {
 	
-	public ServiceReturns addDiaryInfo(DiaryInfo diaryInfo,String appURL);
+	public ServiceReturns addDiaryInfo(DiaryInfo diaryInfo,String appURL) throws Exception;
 	
 	//获取当天的日记 - 一个
 	public ServiceReturns getDiaryInfoByDate(DiaryInfo diaryInfo,String appImgURL) throws BriException;

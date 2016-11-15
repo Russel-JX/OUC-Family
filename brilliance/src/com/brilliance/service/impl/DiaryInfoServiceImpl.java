@@ -38,7 +38,7 @@ import com.brilliance.utils.Constants;
 import sun.misc.BASE64Decoder;
 
 @Repository
-@Transactional(propagation=Propagation.REQUIRES_NEW)//无论何时，此类中的方法都在新的事物中。防止和别的事物为同一个时，一个要回滚，一个要提交，导致异常。
+@Transactional(rollbackFor=Exception.class)//propagation=Propagation.REQUIRES_NEW无论何时，此类中的方法都在新的事物中。防止和别的事物为同一个时，一个要回滚，一个要提交，导致异常。
 public class DiaryInfoServiceImpl extends BaseService<DiaryInfo> implements
 		DiaryInfoService {
 
@@ -46,17 +46,23 @@ public class DiaryInfoServiceImpl extends BaseService<DiaryInfo> implements
 	@Resource
 	private DiaryInfoDao diaryInfoDao;
 
-	public ServiceReturns addDiaryInfo(DiaryInfo diaryInfo,String appURL) {
+	public ServiceReturns addDiaryInfo(DiaryInfo diaryInfo,String appURL) throws Exception {
 		serviceReturns = new ServiceReturns();
+//		try{
+			StringBuilder content = covertHTMLContent(new StringBuilder(diaryInfo.getContent()),Constants.IMG_VIRTUAL_PATH,appURL);
+			if(!StringUtils.isEmpty(content)){
+				diaryInfo.setContent(content.toString());
+			}
+			diaryInfoDao.addDiaryInfo(diaryInfo);
+			serviceReturns.putData("newDiaryInfo", diaryInfo);
+			
+			int a = 9/0;
+//		}catch(Exception e){
+//			throw new Exception();
+//			
+//		}
 		
-		StringBuilder content = covertHTMLContent(new StringBuilder(diaryInfo.getContent()),Constants.IMG_VIRTUAL_PATH,appURL);
-		if(!StringUtils.isEmpty(content)){
-			diaryInfo.setContent(content.toString());
-		}
 		
-		diaryInfoDao.addDiaryInfo(diaryInfo);
-
-		serviceReturns.putData("newDiaryInfo", diaryInfo);
 		return serviceReturns;
 	}
 
