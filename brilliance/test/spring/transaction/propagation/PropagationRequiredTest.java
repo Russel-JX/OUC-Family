@@ -1,29 +1,14 @@
 package spring.transaction.propagation;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.annotation.Repeat;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.brilliance.dao.DiaryInfoDao;
-import com.brilliance.dao.impl.ProvincesInfoDaoImpl;
-import com.brilliance.po.DiaryInfo;
-import com.brilliance.po.ProvincesInfo;
 import com.brilliance.service.impl.TestServiceImpl;
 
 /**

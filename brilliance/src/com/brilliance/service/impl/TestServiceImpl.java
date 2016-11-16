@@ -191,6 +191,49 @@ public class TestServiceImpl extends BaseService<DiaryInfo> {
 		diaryInfoDao.addDiaryInfo(diaryInfo2);
 	}
 	
+	//#PropagationNeverTest	txNever
+	@Transactional
+	public void P() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("P1","P1Author","P1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("P2","P2Author","P2Content",new Date(),new Date(),new Date());
+		//新增日志P1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		Q();
+		//新增日志P2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
+	@Transactional(propagation=Propagation.NEVER)
+	public void Q() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("Q1","Q1Author","Q1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("Q2","Q2Author","Q2Content",new Date(),new Date(),new Date());
+		//新增日志Q1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+//		int a = 9/0;
+		//新增日志Q2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
+		
+	//#PropagationNeverTest	noneNever
+	public void R() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("R1","R1Author","R1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("R2","R2Author","R2Content",new Date(),new Date(),new Date());
+		//新增日志R1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		S();
+		//新增日志R2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
+	@Transactional(propagation=Propagation.NEVER)
+	public void S() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("S1","S1Author","S1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("S2","S2Author","S2Content",new Date(),new Date(),new Date());
+		//新增日志S1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		int a = 9/0;
+		//新增日志S2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
+	
 	
 	
 }

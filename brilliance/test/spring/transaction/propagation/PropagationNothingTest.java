@@ -1,7 +1,5 @@
 package spring.transaction.propagation;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
@@ -12,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.brilliance.po.DiaryInfo;
 import com.brilliance.service.impl.TestServiceImpl;
 
 /**
