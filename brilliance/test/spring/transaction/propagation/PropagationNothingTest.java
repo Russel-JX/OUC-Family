@@ -16,7 +16,7 @@ import com.brilliance.po.DiaryInfo;
 import com.brilliance.service.impl.TestServiceImpl;
 
 /**
-* @ClassName: MyController
+* @ClassName: PropagationNothingTest
 * @Package spring.transaction.propagation
 * @Description: Spring事务的传播特性
 * @author Russell Xun Jiang

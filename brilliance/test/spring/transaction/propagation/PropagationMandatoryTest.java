@@ -27,53 +27,54 @@ import com.brilliance.po.ProvincesInfo;
 import com.brilliance.service.impl.TestServiceImpl;
 
 /**
-* @ClassName: PropagationSupportsTest
+* @ClassName: PropagationMandatoryTest
 * @Package spring.transaction.propagation
-* @Description: Spring事务的传播特性——Propagation.SUPPORTS 如果存在一个事务则支持当前事务，没有非事务执行。
+* @Description: Spring事务的传播特性——Propagation.MANDATORY 如果已经存在事务，则在此事务中执行；否则抛出异常。
 * @author Russell Xun Jiang
-* @date 2016年11月14日 上午10:31:47
+* @date 2016年11月16日 上午10:54:23
 */
 @TransactionConfiguration(transactionManager="txManager",defaultRollback=false)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:springMVC.xml")
-public class PropagationSupportsTest {
+public class PropagationMandatoryTest {
 	
-	private Log logger = LogFactory.getLog(PropagationSupportsTest.class);
+	private Log logger = LogFactory.getLog(PropagationMandatoryTest.class);
 	
 	@Resource
 	private TestServiceImpl testServiceImpl;
 	
 	/** 
-	* @Title: txSupports 
-	* @Description: 情景一：前者有事务，后者为SUPPORTS事务。
+	* @Title: txMandatory 
+	* @Description: 情景一：前者有事务，后者为MANDATORY事务。
 	* @param @throws 
 	* @return void    
 	* @throws 
-	* H->I。前者H有事务，则I合并到H事务中。
+	* L->M。前者L有事务，则M合并到L事务中。
 	* 任何异常，一起回滚。
 	*/ 
 //	@Test
-	public void txSupports() throws Exception{
+	public void txMandatory() throws Exception{
 		logger.info("txSupports方法开始执行........");
 		//insert
-		testServiceImpl.H();
+		testServiceImpl.L();
 		logger.info("txSupports方法结束执行........");
 	}
 	
 	/** 
-	* @Title: noneSupports 
-	* @Description: 情景二：前者没有事务，后者为SUPPORTS事务。
+	* @Title: noneMandatory
+	* @Description: 情景二：前者没有事务，后者为MANDATORY事务。（有异议）
 	* @param @throws 
 	* @return void    
 	* @throws 
-	* J->K。前者J没有事务，K方法也是非事务运行。
-	* 整个过程，没有任何事务。所以，异常之前的sql都会提交不回滚，异常之后的代码不运行。
+	* N->O。前者N没有事务，抛出异常。
+	* O为强制的，发现调用者N没事务，应该抛出异常，但实际测试没有异常发生，成功提交。
+	* 手动异常时，也不回滚。相当用于没有任何事务机制。
 	*/ 
 	@Test
-	public void noneSupports() throws Exception{
+	public void noneMandatory() throws Exception{
 		logger.info("txSupports方法开始执行........");
 		//insert
-		testServiceImpl.J();
+		testServiceImpl.N();
 		logger.info("txSupports方法结束执行........");
 	}
 	
