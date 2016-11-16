@@ -29,7 +29,7 @@ import com.brilliance.service.impl.TestServiceImpl;
 /**
 * @ClassName: MyController
 * @Package spring.transaction.propagation
-* @Description: Spring事务的传播特性——Propagation.SUPPORTS 如果存在一个事务则支持当前事务，没有则开启一个事务。
+* @Description: Spring事务的传播特性——Propagation.SUPPORTS 如果存在一个事务则支持当前事务，没有非事务执行。
 * @author Russell Xun Jiang
 * @date 2016年11月14日 上午10:31:47
 */
