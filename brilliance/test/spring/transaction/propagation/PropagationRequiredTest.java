@@ -52,7 +52,7 @@ Spring针对这种情况提供7中事务传播特性。
 @ContextConfiguration(locations="classpath:springMVC.xml")
 public class PropagationRequiredTest {
 	
-private Log logger = LogFactory.getLog(PropagationRequiredTest.class);
+	private Log logger = LogFactory.getLog(PropagationRequiredTest.class);
 	
 	@Resource
 	private TestServiceImpl testServiceImpl;
