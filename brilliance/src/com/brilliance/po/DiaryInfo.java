@@ -46,6 +46,16 @@ public class DiaryInfo implements Serializable {
 	
 	public DiaryInfo() {
 	}
+	public DiaryInfo(
+			String diaryTitle, String author, String content,Date diaryDate,
+			Date createTime,Date lastUpdateTime) {
+		this.diaryTitle = diaryTitle;
+		this.author = author;
+		this.diaryDate = diaryDate;
+		this.content = content;
+		this.createTime = createTime;
+		this.lastUpdateTime = lastUpdateTime;
+	}
 	
 	public DiaryInfo(Integer id, String diaryType, String deleteFlag,
 			String diaryTitle, String source, String author,Date diaryDate, String content,String love,String dislove,

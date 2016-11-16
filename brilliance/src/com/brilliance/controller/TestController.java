@@ -23,7 +23,6 @@ public class TestController extends BaseController{
 	private TestServiceImpl testServiceImpl;
 	
 	@RequestMapping(value = "/test/saveDiary",method=RequestMethod.GET, produces = "text/html;charset=utf-8")
-//	@Transactional
 	public void saveDiary(HttpServletRequest request) throws Exception{
 		log.info("\n------新增日记 开始-----");
 		testServiceImpl.A();

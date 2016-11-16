@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import com.brilliance.po.DiaryInfo;
-import com.brilliance.service.DiaryInfoServiceTest;
+import com.brilliance.service.impl.TestServiceImpl;
 
 /**
 * @ClassName: MyController
@@ -32,6 +32,10 @@ Spring针对这种情况提供7中事务传播特性。
 6. PROPAGATION_NEVER: 总是非事务地执行，如果存在一个活动事务，则抛出异常
 7. PROPAGATION_NESTED：如果一个活动的事务存在，则运行在一个嵌套的事务中. 如果没有活动事务, 
       则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行
+        
+	在JUnit的@Test注解上加上的Spring事务@Transactional注解没有Spring的事务回滚的效果，
+		还是Junit或者@Rollback或者@@TransactionConfiguration中的defaultRollback属性管理是否回滚。
+		Junit或者Spring-test的回滚机制会覆盖@Transactional事务回滚。。所以，此方法上不加@Transactional，也不用junit的回滚，而在被调用的方法里加@Transactional来规避测试的回滚机制。
 */
 @TransactionConfiguration(transactionManager="txManager",defaultRollback=false)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,57 +45,24 @@ public class PropagationNothingTest {
 	private Log logger = LogFactory.getLog(PropagationNothingTest.class);
 	
 	@Resource
-	private DiaryInfoServiceTest diaryInfoServiceTestImpl;
-	
-//	private static ApplicationContext cxt;
-//	private static DiaryInfoServiceTestImpl diaryInfoServiceTestImpl;
-//	
-//	@BeforeClass
-//	public static void setUpBeforeClass() throws Exception {
-//		cxt = new ClassPathXmlApplicationContext("springMVC.xml");
-//		diaryInfoServiceTestImpl = (DiaryInfoServiceTestImpl) cxt.getBean("diaryInfoServiceTestImpl");
-//	}
-	
+	private TestServiceImpl testServiceImpl;
 	
 	/** 
-	* 在JUnit的@Test注解上加上的Spring事务@Transactional注解没有Spring的事务回滚的效果，
-		还是Junit或者@Rollback或者@@TransactionConfiguration中的defaultRollback属性管理是否回滚。
-		Junit或者Spring-test的回滚机制会覆盖@Transactional事务回滚。。所以，此方法上不加@Transactional，也不用junit的回滚，而在被调用的方法里加@Transactional来规避测试的回滚机制。
+	* @Title: requiredNone 
+	* @Description: 前者有事务,后者几个方法无事务申明。 
+	* @param @throws 
+	* @return void    
+	* @throws 
+	* E->F->G->...。E调用F,F调用G...。E有事务，FG无事务。
+	* FG还是在E的大事务中，所以无论E或F或G任何一个方法异常时，整体都会一起回滚。
+	* 结论：Spring的事务，包含了这个事务方法调用的所有嵌套方法，都在一个事务中。
 	*/ 
 	@Test
-	public void A() throws Exception{
-		logger.info("测试JUnit的A方法开始执行........");
-		DiaryInfo diary = new DiaryInfo();
-		Date now = new Date();
-		diary.setAuthor("A作者");
-		diary.setContent("A日记");
-		diary.setCreatedBy("A");
-		diary.setCreateTime(now);
-		diary.setLastUpdateTime(now);
+	public void TransactionalNone() throws Exception{
+		logger.info("requiredNone方法开始执行........");
 		//insert
-		diaryInfoServiceTestImpl.A(diary);
-		logger.info("测试JUnit的A方法结束执行........");
+		testServiceImpl.E();
+		logger.info("requiredNone方法结束执行........");
 	}
 	
-	
-	
-	//我没有事务。
-	public void B() throws Exception{
-		logger.info("事务B开始执行........");
-		DiaryInfo diary = new DiaryInfo();
-		Date now = new Date();
-		diary.setAuthor("B作者");
-		diary.setContent("B日记");
-		diary.setCreatedBy("B");
-		diary.setCreateTime(now);
-		diary.setLastUpdateTime(now);
-		diaryInfoServiceTestImpl.A(diary);
-		
-		int a = 9/0;
-		
-		logger.info("事务B结束执行........");
-	}
-	
-	
-
 }
