@@ -89,12 +89,14 @@ public class FullPermutation {
 		String lastString = s.substring(1, s.length());//上一次字符串
 		String[] lastRes = getArrange(lastString);//上一次字符串的排列结果
 		String[] thisRes = new String[s.length()*lastRes.length];//本次排列结果
+		int index = 0;
 		for(int i=0;i<lastRes.length;i++){
 			String item = lastRes[i];//上次排列结果中的一个元素
 			//向上一个排列结果的每一个元素中的每个字符前后插入新字符。
 			for(int k=0;k<(item.length()+1);k++){
-				thisRes[i+k] = String.valueOf((ArrayUtils.add(item.toCharArray(),k,newChar)));
+				thisRes[index] = String.valueOf((ArrayUtils.add(item.toCharArray(),k,newChar)));//thisRes[index]之前下表重复被覆盖了。
 				System.out.println("thisRes["+i+"+"+k+"]="+thisRes[i+k]);
+				index++;
 			}
 		}
 		return thisRes;
