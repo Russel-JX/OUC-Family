@@ -234,6 +234,48 @@ public class TestServiceImpl extends BaseService<DiaryInfo> {
 		diaryInfoDao.addDiaryInfo(diaryInfo2);
 	}
 	
+	//PropagationNotSupportedTest	txNotSupported
+	@Transactional
+	public void T() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("T1","T1Author","T1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("T2","T2Author","T2Content",new Date(),new Date(),new Date());
+		//新增日志T1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		U();
+		//新增日志T2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+		int a = 9/0;
+	}
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	public void U() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("U1","U1Author","U1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("U2","U2Author","U2Content",new Date(),new Date(),new Date());
+		//新增日志U1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		//新增日志U2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
+	
+	//PropagationNotSupportedTest	noneNotSupported
+	public void V() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("V1","V1Author","V1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("V2","V2Author","V2Content",new Date(),new Date(),new Date());
+		//新增日志V1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		W();
+		//新增日志V2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	public void W() throws Exception {
+		DiaryInfo diaryInfo1 = new DiaryInfo("W1","W1Author","W1Content",new Date(),new Date(),new Date());
+		DiaryInfo diaryInfo2 = new DiaryInfo("W2","W2Author","W2Content",new Date(),new Date(),new Date());
+		//新增日志W1
+		diaryInfoDao.addDiaryInfo(diaryInfo1);
+		int a = 9/0;
+		//新增日志W2
+		diaryInfoDao.addDiaryInfo(diaryInfo2);
+	}
 	
 	
 }
