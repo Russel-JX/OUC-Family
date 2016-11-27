@@ -14,7 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 * @date 2016年11月25日 下午5:36:25
 * 把大问题分解成一个个逐渐推进的类似小问题。然后以此确定代码的，***入参、返回值、方法、结束条件。***
 * 诀窍：
-* 	1.分析相邻元素的关系。因为递归是所有元素都有类似的逻辑，所以可以分析相邻元素有哪些关系，这样根据相邻的关系，逐渐关联到问题中左右元素的关系。
+* 	1.分析相邻元素的关系。因为递归是所有元素都有类似的逻辑，所以可以分析相邻元素有哪些关系，这样根据每每相邻的关系，逐渐关联到问题中所有左右元素的关系。
 * 		有的从一个元素开始，分析第一个元素，和第二个元素的关系，以及第二个元素和第三个元素的关系，以此类推。
 * 		有的从最后一个元素开始，分析和倒数第二个元素的关系，一次类推。
 * 	2.将相邻元素的关系具体化。**这个具体关系是递归方法的核心，就是代码要实现的东西**
@@ -53,7 +53,7 @@ public class FullPermutation {
 //		
 //		//递归全排列
 //		String[] result = getArrange("abc");
-//		System.out.println(ArrayUtils.toString(result));//ArrayUtils.toString打印数组
+//		System.out.println(ArrayUtils.toString(result));//ArrayUtils.toString(Object)把任意数组转成String
 		
 		//递归算阶乘
 //		System.out.println(getFactorial(3));
