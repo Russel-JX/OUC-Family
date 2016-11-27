@@ -12,7 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 * @Description: 递归算法——实现全排列
 * @author Russell Xun Jiang
 * @date 2016年11月25日 下午5:36:25
-* 把大问题分解成一个个逐渐推进的类似小问题。
+* 把大问题分解成一个个逐渐推进的类似小问题。然后以此确定代码的，***入参、返回值、方法、结束条件。***
 * 诀窍：
 * 	1.分析相邻元素的关系。因为递归是所有元素都有类似的逻辑，所以可以分析相邻元素有哪些关系，这样根据相邻的关系，逐渐关联到问题中左右元素的关系。
 * 		有的从一个元素开始，分析第一个元素，和第二个元素的关系，以及第二个元素和第三个元素的关系，以此类推。
@@ -44,13 +44,68 @@ public class FullPermutation {
 //			System.out.println(z[i]);
 //		}
 		
+//		String[] xx = {"avvv","bsss","c"};
+//		System.out.println(ArrayUtils.toString(xx));//ArrayUtils.toString(
 		
-		String[] result = getArrange("abc");
-		for(int i=0;i<result.length;i++){
-			System.out.println("result[i]="+result[i]);
-		}
+		//递归算手机数字按键的字母排列
+		String aa = ArrayUtils.toString(getPosibility("123"));
+		System.out.println(aa);
+//		
+//		//递归全排列
+//		String[] result = getArrange("abc");
+//		System.out.println(ArrayUtils.toString(result));//ArrayUtils.toString打印数组
 		
+		//递归算阶乘
 //		System.out.println(getFactorial(3));
+	}
+	
+	
+	/** 
+	* @Title: getPosibility 
+	* @Description: 手机数字按键代表的字母的所有组合。
+	* @param @param numbers
+	* @param @return    设定文件 
+	* @return String[]    返回类型 
+	* @throws 
+	* 问题：根据按的手机数字，输出数字代表的字母的所组合。
+	* 数字1没有字母，2:表示abc,3:def,4:ghi,...,9:wxyz。
+	* 如：1232表示abc,def,abc的所有组合，
+	* 	即ada,adb,adc;aea,aeb,aec;afa,afb,afc;  
+	* 	 bda,bdb,bdc;bea,beb,bec;bfa,bfb,bfc;  
+	* 	 cda,cdb,cdc;cea,ceb,cec;cfa,cfb,cfc;
+	* 思路：
+	* 1.把大问题逐渐分解成有以此关系的小问题。
+	* 	按键		结果
+	* 	3		d,e,f
+	* 	23		ad,ae,af; bd,be,bf; cd,ce,cf;=a(d,e,f)
+	* 	423		g(ad,ae,af; bd,be,bf; cd,ce,cf;); h(ad,ae,af; bd,be,bf; cd,ce,cf;); i(ad,ae,af; bd,be,bf; cd,ce,cf;);
+	* 总结，每增加一个数字的可能输出结果：都是之前结果的基础上，分别和此数字代表的每一个字符的组合结果。
+	* 入参：一串数字
+	* 返回值：新增一个数字后的排列结果
+	* 递归方法：本次调用方法的结果，是此新数字代表的每一个字符，分别和之前一串数字的结果的重新拼接。
+	* 		这里要把当前这串数字，间接算出前一次数字的排列结果，多了一步转换；
+	* 结束条件：当之前的一串数字只有一个时，只返回这一个数字代表的几个字符。
+	*/ 
+	public static String[] getPosibility(String numbers){
+		String[][] numberString = {{""},{""},{"a","b","c"},{"d","e","f"},{"g","h","i"},
+				{"j","k","l"},{"m","n","o"},{"p","q","r","s"},{"t","u","v"},{"w","z","y","z"}};//数字0和1不代表任何内容
+		if(numbers.length()==1){//只有一个数字时，返回数字代表的字符。
+			return numberString[Integer.valueOf(numbers)];
+		}
+		char thisNumber = numbers.charAt(0);//当前新数字
+		String[] thisString = numberString[Integer.valueOf(String.valueOf(thisNumber))];//当前新数字代表的字符串
+		String lastNumbers = numbers.substring(1,numbers.length());//上次的数字串
+		String[] lastRes = getPosibility(lastNumbers);//上次的结果
+		String[] thisRes = new String[thisString.length*lastRes.length];//本次的结果
+		int index = 0;
+		for(int i=0;i<thisString.length;i++){
+			for(int k=0;k<lastRes.length;k++){
+				thisRes[index] = thisString[i]+lastRes[k];
+				System.out.println("thisRes["+index+"]="+thisRes[index]);
+				index++;
+			}
+		}
+		return thisRes;
 	}
 	
 	/** 
@@ -94,7 +149,7 @@ public class FullPermutation {
 			String item = lastRes[i];//上次排列结果中的一个元素
 			//向上一个排列结果的每一个元素中的每个字符前后插入新字符。
 			for(int k=0;k<(item.length()+1);k++){
-				thisRes[index] = String.valueOf((ArrayUtils.add(item.toCharArray(),k,newChar)));//thisRes[index]之前下表重复被覆盖了。
+				thisRes[index] = String.valueOf((ArrayUtils.add(item.toCharArray(),k,newChar)));//thisRes[index]之前下表重复被覆盖了。String.valueOf(char[])，将字符数组转字符串
 				System.out.println("thisRes["+i+"+"+k+"]="+thisRes[i+k]);
 				index++;
 			}
