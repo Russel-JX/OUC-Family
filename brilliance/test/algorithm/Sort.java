@@ -12,15 +12,27 @@ import org.apache.commons.lang3.ArrayUtils;
 * @Description: 各种排序
 * @author Russell Xun Jiang
 * @date 2016年12月2日 下午8:29:35
+* 1.直接插入排序		T
+* 2.希尔排序
+* 3.直接选择排序
+* 4.堆排序
+* 5.冒泡排序			T
+* 6.快速排序
+* 7.归并排序
+* 8.基数排序
+* 
 */
 public class Sort {
 
 	public static void main(String[] args) {
-		//java排序。任何数字序列都可以直接使用java工具类直接排序
-		javaSort(new double[]{76,45,74,26,38,63});
+//		//java排序。任何数字序列都可以直接使用java工具类直接排序
+//		javaSort(new double[]{76,45,74,26,38,63});
+//		
+//		//直接插入排序。
+//		directInsertSort(new double[]{76,45,74,26,38,63});
 		
-		//直接插入排序。
-		directInsertSort(new double[]{76,45,74,26,38,63});
+		//冒泡排序
+		bubleSort(new double[]{76.45,74,26,38,63});
 	}
 	
 	/** 
@@ -129,12 +141,17 @@ public class Sort {
 	* 每次排序只排前面没有筛选出最大值剩下的序列。
 	*/ 
 	public static double[]  bubleSort(double[] sourceNumber){
-		
-		for(int i=0;i<sourceNumber.length;i++){
-			
+		for(int i=0;i<sourceNumber.length-1;i++){
+			for(int k=0;k<sourceNumber.length-i-1;k++){
+				if(sourceNumber[k]>sourceNumber[k+1]){
+					double temp = sourceNumber[k+1];
+					sourceNumber = ArrayUtils.remove(sourceNumber, k+1);
+					sourceNumber = ArrayUtils.add(sourceNumber, k,temp);
+				}
+			}
 		}
-		
-		return null;
+		System.out.println("冒泡排序："+Arrays.toString(sourceNumber));
+		return sourceNumber;
 	}
 	
 
