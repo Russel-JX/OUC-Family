@@ -35,7 +35,9 @@ public class HuffmanTree {
 
 	public static void main(String[] args) {
 		//哈夫曼树
-		Map<String,String> huffmanNodes = HuffmanEncode(null);
+		String[] names = {"A","B","C","D","E","F","G"};
+		double[] weights = {5,24,7,17,34,5,13};
+		Map<String,String> huffmanNodes = HuffmanEncode(names,weights);
 		Iterator<Map.Entry<String,String>> ite = huffmanNodes.entrySet().iterator();
 		while(ite.hasNext()){
 			Map.Entry<String,String> item = ite.next();
@@ -46,8 +48,9 @@ public class HuffmanTree {
 	/** 
 	* @Title: HuffmanEncode 
 	* @Description: TODO(这里用一句话描述这个方法的作用) 
-	* @param @param sourceElements
-	* 					Map初始原数据	key 元素，value	次数/概率/权重
+	* @param @param names	原名称
+	* @param @param weight	权重
+	* 					
 	* @param @return    设定文件 
 	* @return Map<String,String>    返回类型 
 	* 					key元素名称，value是Huffman编码
@@ -56,9 +59,7 @@ public class HuffmanTree {
 	* 	1.将初始元素，按照Huffman规则，生成Huffman树。
 	* 	2.遍历树的每个叶子节点。拿到叶子的路径即为每个元素的编码。（从左分支来的取0，右分支来的取1）
 	*/ 
-	public static Map<String,String> HuffmanEncode(Map<TreeNode,Double> sourceElements){
-		String[] names = {"A","B","C","D","E","F","G"};
-		double[] weights = {5,24,7,17,34,5,13};
+	public static Map<String,String> HuffmanEncode(String[] names,double[] weights){
 		//init 
 		List<TreeNode> list = new LinkedList<TreeNode>();
 		for(int i=0;i<names.length;i++){
@@ -98,7 +99,6 @@ public class HuffmanTree {
 				map.put(nodes.get(i).getEleName(), nodes.get(i).getHuffmanCode());
 			}
 		}
-		int nn = 0;
 		return map;
 	}
 	
