@@ -1,7 +1,8 @@
 package algorithm.tree;
 
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +31,16 @@ import java.util.Map;
 假设一个文本文件TFile中只包含7个字符{A，B，C，D，E，F，G}，这7个字符在文本中出现的次数为{5，24，7，17，34，5，13}
 利用哈夫曼树可以为文件TFile构造出符合前缀编码要求的不等长编码。
 */
-
 public class HuffmanTree {
 
 	public static void main(String[] args) {
-		
-		HuffmanEncode(null);
+		//哈夫曼树
+		Map<String,String> huffmanNodes = HuffmanEncode(null);
+		Iterator<Map.Entry<String,String>> ite = huffmanNodes.entrySet().iterator();
+		while(ite.hasNext()){
+			Map.Entry<String,String> item = ite.next();
+			System.out.println(item+"。key="+item.getKey()+",value="+item.getValue());
+		}
 	}
 	
 	/** 
@@ -44,14 +49,14 @@ public class HuffmanTree {
 	* @param @param sourceElements
 	* 					Map初始原数据	key 元素，value	次数/概率/权重
 	* @param @return    设定文件 
-	* @return Map<TreeNode,String>    返回类型 
-	* 					Map返回最终Huffman编码	key 初始元素，value	元素编码
+	* @return Map<String,String>    返回类型 
+	* 					key元素名称，value是Huffman编码
 	* @throws 
 	* 分析：
 	* 	1.将初始元素，按照Huffman规则，生成Huffman树。
 	* 	2.遍历树的每个叶子节点。拿到叶子的路径即为每个元素的编码。（从左分支来的取0，右分支来的取1）
 	*/ 
-	public static Map<TreeNode,String> HuffmanEncode(Map<TreeNode,Double> sourceElements){
+	public static Map<String,String> HuffmanEncode(Map<TreeNode,Double> sourceElements){
 		String[] names = {"A","B","C","D","E","F","G"};
 		double[] weights = {5,24,7,17,34,5,13};
 		//init 
@@ -82,19 +87,24 @@ public class HuffmanTree {
 		}
 		TreeNode xx = list.get(0);
 		//traverse each tree leaf nodes to get encoded string for each element
-		List<TreeNode> nodes = traverseTreeNodes(list.get(0),new LinkedList<TreeNode>());
+		List<TreeNode> nodes = traverseTreeNodes(list.get(0),new LinkedList<TreeNode>());//whole tree
+		Map<String,String> map = new HashMap<String,String>();//Huffman nodes
 		for(int i=0;i<nodes.size();i++){
 			System.out.println("遍历树,名称："+nodes.get(i).getEleName()+",值："+nodes.get(i).getEleValue()+
 					"，左孩子："+(nodes.get(i).left!=null?nodes.get(i).left.getEleName():null)+
 					"，右孩子："+(nodes.get(i).right!=null?nodes.get(i).right.getEleName():null)+
-					",节点类型："+nodes.get(i).getEleType());
+					",节点类型："+nodes.get(i).getEleType()+",Huffman编码："+nodes.get(i).getHuffmanCode());
+			if(TreeNode.ELE_TYPE_SOURCE==nodes.get(i).getEleType()){
+				map.put(nodes.get(i).getEleName(), nodes.get(i).getHuffmanCode());
+			}
 		}
-		return null;
+		int nn = 0;
+		return map;
 	}
 	
 	/** 
 	* @Title: getTreeNodes 
-	* @Description: 遍历树
+	* @Description: 遍历树——递归算法
 	* @param @param node
 	* 				树的某个节点
 	* @param @return     
@@ -109,12 +119,22 @@ public class HuffmanTree {
 		}
 		TreeNode leftNode = node.left;
 		TreeNode rightNode = node.right;
-//		List<TreeNode> nodes = new LinkedList<TreeNode>();
-		if(node.left!=null||node.right!=null){
+//		if(node.left!=null||node.right!=null){
+//			nodes.add(node);
+//			traverseTreeNodes(leftNode,nodes);
+//			traverseTreeNodes(rightNode,nodes);
+//		}
+		if(node.left!=null){
 			nodes.add(node);
+			leftNode.setHuffmanCode(node.getHuffmanCode()+"0");
 			traverseTreeNodes(leftNode,nodes);
+		}
+		if(node.right!=null){
+			nodes.add(node);
+			rightNode.setHuffmanCode(node.getHuffmanCode()+"1");
 			traverseTreeNodes(rightNode,nodes);
 		}
+
 		return nodes;
 	}
 	
@@ -131,6 +151,7 @@ public class HuffmanTree {
 		private TreeNode left;//左孩子
 		private TreeNode right;//右孩子
 		private int eleType;//节点类型（0：初始元素节点；1：后生成的元素节点）
+		private String huffmanCode = "";//哈夫曼编码
 		
 		private static final int ELE_TYPE_SOURCE= 0;//初始元素节点类型
 		private static final int ELE_TYPE_DERIVED= 1;//后生成的元素节点类型
@@ -209,7 +230,12 @@ public class HuffmanTree {
 		public void setEleType(int eleType) {
 			this.eleType = eleType;
 		}
-		
+		public String getHuffmanCode() {
+			return huffmanCode;
+		}
+		public void setHuffmanCode(String huffmanCode) {
+			this.huffmanCode = huffmanCode;
+		}
 	}
 
 }
