@@ -54,26 +54,68 @@ public class HuffmanTree {
 	public static Map<TreeNode,String> HuffmanEncode(Map<TreeNode,Double> sourceElements){
 		String[] names = {"A","B","C","D","E","F","G"};
 		double[] weights = {5,24,7,17,34,5,13};
-		
 		//init 
 		List<TreeNode> list = new LinkedList<TreeNode>();
 		for(int i=0;i<names.length;i++){
-			TreeNode node = new TreeNode(names[i],weights[i]);
+			TreeNode node = new TreeNode(names[i],weights[i],TreeNode.ELE_TYPE_SOURCE);
 			list.add(node);
 		}
-		
-		//sort to get minimum
-		Collections.sort(list);
-		System.out.println("排序后："+list.toArray().toString());
-		
-		
-		
-		
-		
-		
-		
-		
+		int count = 0;
+		//build tree
+		while(list.size()!=1){
+			count++;
+			//sort to get minimum
+			Collections.sort(list);
+			for(int i=0;i<list.size();i++){
+				System.out.println("第"+count+"轮排序后："+list.get(i).getEleValue());
+			}
+			TreeNode minimumNode1 = list.get(0);
+			TreeNode minimumNode2 = list.get(1);
+			TreeNode tempNode = new TreeNode(minimumNode1.getEleName()+minimumNode2.getEleName(),
+					minimumNode1.getEleValue()+minimumNode2.getEleValue(),minimumNode1,minimumNode2,TreeNode.ELE_TYPE_DERIVED);
+			System.out.println("第"+count+"轮排序后：临时节点信息，名称："+tempNode.getEleName()+",值："+tempNode.getEleValue()+
+					"，左孩子："+tempNode.left.getEleName()+"，右孩子："+tempNode.right.getEleName()+
+					",节点类型："+tempNode.getEleType());
+			list.remove(0);//删除最小的元素集合升序。第一个最小的。
+			list.remove(0);//删除第一个后。再删除第二个最小的。
+			list.add(tempNode);
+		}
+		TreeNode xx = list.get(0);
+		//traverse each tree leaf nodes to get encoded string for each element
+		List<TreeNode> nodes = traverseTreeNodes(list.get(0),new LinkedList<TreeNode>());
+		for(int i=0;i<nodes.size();i++){
+			System.out.println("遍历树,名称："+nodes.get(i).getEleName()+",值："+nodes.get(i).getEleValue()+
+					"，左孩子："+(nodes.get(i).left!=null?nodes.get(i).left.getEleName():null)+
+					"，右孩子："+(nodes.get(i).right!=null?nodes.get(i).right.getEleName():null)+
+					",节点类型："+nodes.get(i).getEleType());
+		}
 		return null;
+	}
+	
+	/** 
+	* @Title: getTreeNodes 
+	* @Description: 遍历树
+	* @param @param node
+	* 				树的某个节点
+	* @param @return     
+	* @return List<TreeNode>    
+	* 				返回所有节点信息 
+	* @throws 
+	*/ 
+	public static List<TreeNode> traverseTreeNodes(TreeNode node,List<TreeNode> nodes){
+		if(node.left==null&&node.right==null){
+			nodes.add(node);
+			return null;
+		}
+		TreeNode leftNode = node.left;
+		TreeNode rightNode = node.right;
+//		List<TreeNode> nodes = new LinkedList<TreeNode>();
+		if(node.left!=null||node.right!=null){
+			nodes.add(node);
+			traverseTreeNodes(leftNode,nodes);
+			traverseTreeNodes(rightNode,nodes);
+		}
+		return nodes;
 	}
 	
 	/**
@@ -88,6 +130,10 @@ public class HuffmanTree {
 		private double eleValue;//节点值
 		private TreeNode left;//左孩子
 		private TreeNode right;//右孩子
+		private int eleType;//节点类型（0：初始元素节点；1：后生成的元素节点）
+		
+		private static final int ELE_TYPE_SOURCE= 0;//初始元素节点类型
+		private static final int ELE_TYPE_DERIVED= 1;//后生成的元素节点类型
 		
 		@Override
 		public int compareTo(Object o) {
@@ -112,12 +158,26 @@ public class HuffmanTree {
 			this.eleName = eleName;
 			this.eleValue = eleValue;
 		}
+		public TreeNode(String eleName,double eleValue,int eleType){
+			super();
+			this.eleName = eleName;
+			this.eleValue = eleValue;
+			this.eleType = eleType;
+		}
 		public TreeNode(String eleName,double eleValue, TreeNode left, TreeNode right){
 			super();
 			this.eleName = eleName;
 			this.eleValue = eleValue;
 			this.left = left;
 			this.right = right;
+		}
+		public TreeNode(String eleName,double eleValue, TreeNode left, TreeNode right,int eleType){
+			super();
+			this.eleName = eleName;
+			this.eleValue = eleValue;
+			this.left = left;
+			this.right = right;
+			this.eleType = eleType;
 		}
 		public String getEleName() {
 			return eleName;
@@ -143,6 +203,13 @@ public class HuffmanTree {
 		public void setRight(TreeNode right) {
 			this.right = right;
 		}
+		public int getEleType() {
+			return eleType;
+		}
+		public void setEleType(int eleType) {
+			this.eleType = eleType;
+		}
+		
 	}
 
 }
