@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
 * @ClassName: HuffmanTree
@@ -35,15 +38,24 @@ import java.util.Map;
 public class HuffmanTree {
 
 	public static void main(String[] args) {
-		//哈夫曼树
-		String[] names = {"A","B","C","D","E","F","G"};
-		double[] weights = {5,24,7,17,34,5,13};
-		Map<String,String> huffmanNodes = HuffmanEncode(names,weights);
-		Iterator<Map.Entry<String,String>> ite = huffmanNodes.entrySet().iterator();
-		while(ite.hasNext()){
-			Map.Entry<String,String> item = ite.next();
-			System.out.println(item+"。key="+item.getKey()+",value="+item.getValue());
-		}
+		//先序递归创建树
+		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
+		TreeNode node = createTreeFirstRecursive(sourceNames);
+		System.out.println("创建树....");
+		
+		
+//		TreeNode node2 = createTreeFirstRecursive2(new Scanner(System.in));
+//		System.out.println("创建树2....");
+		
+//		//哈夫曼树
+//		String[] names = {"A","B","C","D","E","F","G"};
+//		double[] weights = {5,24,7,17,34,5,13};
+//		Map<String,String> huffmanNodes = HuffmanEncode(names,weights);
+//		Iterator<Map.Entry<String,String>> ite = huffmanNodes.entrySet().iterator();
+//		while(ite.hasNext()){
+//			Map.Entry<String,String> item = ite.next();
+//			System.out.println(item+"。key="+item.getKey()+",value="+item.getValue());
+//		}
 	}
 	
 	/** 
@@ -112,6 +124,10 @@ public class HuffmanTree {
 	* @return List<TreeNode>    
 	* 				返回所有节点信息 
 	* @throws 
+	* 入参：一个节点（包含子节点信息）
+	* 返回值：这个节点的左右孩子节点
+	* 递归方法：获取节点的左右孩子节点
+	* 结束条件：节点没有左右孩子
 	*/ 
 	public static List<TreeNode> traverseTreeNodes(TreeNode node,List<TreeNode> nodes){
 		if(node.left==null&&node.right==null){
@@ -138,6 +154,103 @@ public class HuffmanTree {
 
 		return nodes;
 	}
+	
+	/** 
+	* @Title: createTree 
+	* @Description: 创建二叉树——先序递归创建（未完成）
+	* @param @param sourceNames
+	* @param @return    设定文件 
+	* @return TreeNode	根节点（包含树的所有节点信息） 
+	* @throws
+	* 需求：根据图形(test/algorithm/tree/tree.png)，用代码此创建二叉树。先中后序，用任意一种方式创建。
+		步骤：（这里先序递归创建）
+		1.将图形转换成初始数据。此二叉树先序可表示成：abd#e##fg###c##。简洁表达：abdefgc。#表示空节点。
+		2.根据初始数据建树。 
+	建树递归算法：
+		分析：
+		当前节点为空（#）时，不会为当前节点创建左右子树（孩子，左右子树其实也是节点）；当前节点不为空时，先创建此节点的左右子树，再把左右子树分别挂在此节点上。
+			第几个节点		结果
+		a	1			a(a的左孩子,a的右孩子)		此时a的左右孩子还在递归中，未出结果
+		b	2			a(b,a的右孩子)				a的右孩子还在递归中。
+		d	3			a(b(d,b的右孩子),a的右孩子)	a的右孩子，b的右孩子还在递归中。
+		#	4			空节点，不创建空节点的左右孩子，原结果不变
+		结论：每个节点都创建本节点的左右子树，并把左右节点放到此节点的左右孩子上。如果本节点是空节点，则不创建。
+		左子树根节点是剩下节点中的第一个节点，右子树根节点是左边创建完了之后，剩下节点的第一个节点????
+	入参：一个一个新节点。
+		这里给的初始条件是所有节点，所以要转化一下，每次只取剩余节点的底一个节点作为当前节点。
+	返回值：此节点的左右子树/孩子/节点。
+	递归方法：创建此节点的左右子树。
+	结束条件：此节点为空节点
+	
+	问题点：
+		初始树节点是依次输入渐渐生成；还是一次性输入生成。
+	*/ 
+	public static TreeNode createTreeFirstRecursive(String[] sourceNames){
+//		List<TreeNode> list = new LinkedList<TreeNode>();
+//		for(int i=0;i<sourceNames.length;i++){
+//			TreeNode node = new TreeNode(sourceNames[i],0);
+//			list.add(node);
+//		}
+		TreeNode node;
+		String thisNodeName = sourceNames[0];//当前节点
+		sourceNames = ArrayUtils.remove(sourceNames, 0);//剩余节点
+		if("#".equals(thisNodeName)){
+			return null;
+		}else{
+			//this node
+			node = new TreeNode(thisNodeName,0);
+			//创建左子树，并将左子树挂在当前节点的左边
+			node.setLeft(createTreeFirstRecursive(sourceNames));//用当前节点，创建左孩子
+			//创建右子树，并将左子树挂在当前节点的右边???(这一句有问题，未完成，右子树的创建应该是左子树建好之后剩下的sourceNames。实际右子树不是最后左子树建好之后剩余的sourceNames)
+			node.setRight(createTreeFirstRecursive(sourceNames));//用当前节点，创建右孩子
+		}
+		
+		
+		
+		
+		return node;
+	} 
+	
+	public static TreeNode createTreeFirstRecursive2(Scanner sourceName){
+//		List<TreeNode> list = new LinkedList<TreeNode>();
+//		for(int i=0;i<sourceNames.length;i++){
+//			TreeNode node = new TreeNode(sourceNames[i],0);
+//			list.add(node);
+//		}
+		TreeNode node;
+		String thisNodeName = sourceName.toString();
+		if("#".equals(thisNodeName)){
+			return null;
+		}else{
+			//this node
+			node = new TreeNode(thisNodeName,0);
+			//创建左子树，并将左子树挂在当前节点的左边
+			node.setLeft(createTreeFirstRecursive2(sourceName));//用当前节点，创建左孩子
+			//创建右子树，并将左子树挂在当前节点的右边
+			node.setRight(createTreeFirstRecursive2(sourceName));//用当前节点，创建右孩子
+		}
+		
+		
+		
+		
+		return node;
+	} 
+	
+	/** 
+	* @Title: createTreeLevel 
+	* @Description: 层次创建树
+	* @param @param sourceNames2
+	* @param @return    设定文件 
+	* @return List<TreeNode>    返回类型 
+	* @throws
+	* 需求：
+	* 	abcdefg 
+	*/ 
+	public static List<TreeNode> createTreeLevel(String[] sourceNames2){
+		return null;
+	}
+	
+	
 	
 	/**
 	* @ClassName: TreeNode
