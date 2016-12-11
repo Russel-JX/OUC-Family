@@ -7,7 +7,7 @@ package exception;
 * @author Russell Xun Jiang
 * @date 2016年12月10日 下午4:47:26
 * 0.有try，没有catch时，发生异常也会被捕捉，程序将默认抛出真正发生的异常。
-* 1.try或者catch中直接返回时，先返回给调用方，再执行finally中语句，所以finally中逻辑不影响调用方获取的结果，finally之后的代码不执行。
+* 1.try或者catch中直接返回时，先返回给调用方，再执行finally中语句，然后再执行调用方的其他语句。所以finally中逻辑不影响调用方获取的结果，finally之后的代码不执行。
 * 2.finally中返回时（程序正常无异常抛出），按正常顺序执行。
 */
 public class TryCatchOrder {
@@ -21,14 +21,14 @@ public class TryCatchOrder {
 		 * try-catch-finally执行顺序
 		 */
 		//try中返回
-		int a1 = tryReturn();
-		System.out.println("a1="+a1);
+		int a1 = tryReturn();//(0.1)
+		System.out.println("a1="+a1);//(0.2)
 		//catch中返回
-		int a2 = catchReturn();
-		System.out.println("a2="+a2);
+		int a2 = catchReturn();//(0.1)
+		System.out.println("a2="+a2);//(0.2)
 		//finally中返回
-		int a3 = finallyReturn();
-		System.out.println("a3="+a3);
+		int a3 = finallyReturn();//(0.1)
+		System.out.println("a3="+a3);//(0.2)
 		
 
 	}
@@ -57,9 +57,9 @@ public class TryCatchOrder {
 	* @param @return    设定文件 
 	* @return int    返回类型 
 	* @throws 
-	* 在try中返回时，先结果返回给调用方，再执行finally中的代码，所以finally中的逻辑不会影响调用方获取的结果。
+	* 在try中返回时，先结果返回给调用方，再执行finally中的代码，然后再执行调用方的其他语句。所以finally中的逻辑不会影响调用方获取的结果。
 	* 执行顺序：
-	* 	(1)->(2)返回给调用方，被调用方->(4)
+	* 	(0.1)->(1)->(2)返回给调用方->(0.1)，被调用方->(4)->(0.2)
 	*/ 
 	public static int tryReturn(){
 		System.out.println("tryReturn begin............");
@@ -82,9 +82,9 @@ public class TryCatchOrder {
 	* @param @return    设定文件 
 	* @return int    返回类型 
 	* @throws 
-	* 在catch中返回时，和try中返回一样，先将catch结果返回给调用方，再执行finally中的代码，所以finally中的逻辑不会影响调用方获取的结果。
+	* 在catch中返回时，和try中返回一样，先将catch结果返回给调用方，再执行finally中的代码，然后再执行调用方的其他语句。所以finally中的逻辑不会影响调用方获取的结果。
 	* 执行顺序：
-	* 	(1)->(2)->(3)->(4)返回给调用方，被调用方->(5)
+	* 	(0.1)->(1)->(2)->(3)->(4)返回给调用方->(0.1)，被调用方->(5)->(0.2)
 	*/ 
 	public static int catchReturn(){
 		System.out.println("catchReturn begin............");
@@ -111,7 +111,7 @@ public class TryCatchOrder {
 	* @throws 
 	* finally中返回，则严格按照顺序依次执行。
 	* 执行顺序：
-	* 	(1)->(3)->(4)返回给调用方
+	* 	(0.1)->(1)->(3)->(4)返回给调用方->(0.1)->(0.2)
 	*/ 
 	@SuppressWarnings("finally")
 	public static int finallyReturn(){
