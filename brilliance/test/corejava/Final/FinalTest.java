@@ -77,6 +77,9 @@ public class FinalTest {//final
 //		gender = true;//并且只能初始化一次
 		System.out.println("gender"+gender);
 		
+		String friend  = "friend";
+		friend = "enemy";
+		
 		//final修饰局部变量。引用类型不可变，引用的对象的属性可变。
 		final Student student = new Student("Goody-Goody",18,150);
 		student.setName("Norm");
