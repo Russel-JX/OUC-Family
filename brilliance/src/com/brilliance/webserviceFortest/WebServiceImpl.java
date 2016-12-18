@@ -10,7 +10,7 @@ import javax.jws.WebService;
 * @Description:纯jdk的webservice服务端
 * @author Russell Xun Jiang
 * @date 2016年12月18日 上午11:02:06
-* 定义服务端服务
+* 定义服务端服务。为了简便，这里直接写实现类，没有定义interface
 */
 @WebService
 public class WebServiceImpl {
@@ -19,7 +19,6 @@ public class WebServiceImpl {
 	public int getAge(int birthYear){
 		System.out.println("访问WebService服务，getAge()......");
 		return Calendar.getInstance().get(Calendar.YEAR)-birthYear;
-		
 	}
 	//根据姓名，返回欢迎信息
 	public String getWelcome(String name){
