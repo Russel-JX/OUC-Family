@@ -22,8 +22,14 @@ public class StringTest {
 //		//intern方法
 //		stringIntern();
 		
-		//测试intern节省内存
-		stringInternUse();
+//		//不同JDK对intern的影响
+//		stringInternDiffJDK();
+		
+		//不同JDK对intern的影响2
+		stringInternDiffJDK2();
+		
+//		//测试intern节省内存
+//		stringInternUse();
 	}
 	
 	/** 
@@ -81,8 +87,13 @@ public class StringTest {
 	* 1.纯字面值的字符串拼接，因为在编译期就已经知道字面值"abc"+"def"的值是"abcdef"，所以编译器优化后的结果直接就是"abcdef"（用jd-gui反编译class文件可见）
 	* 所以这个结果就会在运行时放在常量池中。
 	* 2.包含字符串引用（非字面值）的拼接，因为在编译期不知道引用的值在内存中是多少，即引用的值会变不可控，编译期无法优化，只能在运行时动态的给拼接结果新的内存空间。
-	* 	反编译之后，会调用StringBuilder的append方法，将说有字符串拼接，并调用StringBuilder.toString()返回给最终结果。而这个toString方法内部会new方式创建新的字符串，
+	* 	javap -c 类名反编译之后，涉及到引用的拼接的时候会调用StringBuilder的append方法，将说有字符串拼接，并调用StringBuilder.toString()返回给最终结果。而这个toString方法内部会new方式创建新的字符串，
 	* 	显然是新的地址了。
+	* String a = "a";String b = "b";String c = "c";String d = "a"+"b"+"c";
+		String e = a+b+c;
+		//d的编译时，等效于d = "abc";
+		//e的编译时，等效于e = new StringBuilder().append("a").append("b").append("c").toString();
+		 //StringBuilder的toString()方法
 	* 	 public String toString() {
 	        // Create a copy, don't share the array
 			return new String(value, 0, count);
@@ -134,10 +145,11 @@ public class StringTest {
 	*/ 
 	public static void stringIntern(){
 		String s1 = new String("hello");
-		s1=s1.intern();//s1指向常量池中的字符串。堆中的hello对象会在GC计数器达到指定数额时GC掉。节省内存空间。
+		s1=s1.intern();//让s1指向常量池中的字符串。堆中的hello对象会在GC计数器达到指定数额时GC掉。节省内存空间。
 		String s2 = "hello";//s2的hello正好在常量池中
 		
 		String s3 = new String("1")+new String("1");
+		System.out.println("s3==s3.intern?"+(s3==s3.intern()));//false.s3指向堆，s3.intern指向池
 		s3=s3.intern();//同理。s3的内容是“11”。此时s3指向常量池的11.
 		String s4 = "11";
 		
@@ -147,22 +159,68 @@ public class StringTest {
 	
 	/** 
 	* @Title: stringInternDiffJDK 
-	* @Description: 不同JDK对intern的影响 （未完成）
+	* @Description: 不同JDK对intern的影响 
 	* @param     设定文件 
 	* @return void    返回类型 
 	* @throws 
-	* http://blog.csdn.net/baidu_31657889/article/details/52315902
-	* JDK1.6及以下
-	* JDK1.7及以上
+	* http://blog.csdn.net/seu_calvin/article/details/52291082
+	* 切换JDK版本为1.6和1.7测试
+	* 
+	* JDK1.6及以下false false
+	* 	(1)在常量池和堆中创建hello，s1指向堆中地址。
+	* 	(2)调用intern方法，返回常量池中引用，这里虽然返回，但没有赋值给任何对象。无意义。唯一的意义是，当池中没有hello时，会在池创建hello。
+	* 	(3)检查池中，已经有hello了，返回池中的引用给s2.
+	* 	所以，s1指向堆，s2指向池。s1==s2?false
+	* 	(4)池和堆中创建“1”(堆中2个“1”,池中1个“1”)，StringBuilder.append拼接成"11",StringBuilder.toString()。在池中创建“11”，再在堆中创建“11”。（未完成，
+	* 	这个过程要看，字节码指令具体是怎么写的才能确定）。
+	* 	(5)调用intern方法，检查池中是否“11”，有了则返回池中引用，这里没有赋值，所以无意义。
+	* 	(6)检查池中有“11”，s4指向池中的地址。
+	* 	所以，s3指向堆，s4指向池。s4==s4?false
+	* 
+	* JDK1.7及以上false true
+	* 	(1)(2)(3)同JDK1.6
+	*	(4)池和堆中创建“1”(堆中2个“1”,池中1个“1”)，StringBuilder.append拼接成"11",StringBuilder.toString()。不在池中创建“11”，再在堆中创建“11”。（未完成，
+	* 	这个过程要看，字节码指令具体是怎么写的才能确定）。
+	* 	(5)调用intern方法，直接把堆中“11”的引用放在池中，而不是池中创建字符串。这是JDK1.7和JDK1.6intern方法的区别。在1.7中调用intern时，如果池中没有则把堆中的地址/引用放在池中，返回此引用；有的话直接返回池中的引用。
+	* 	(6)检查池中有“11”的引用，s4指向s3，即指向堆。
+	* 	所以，s3指向堆，s4指堆。s4==s4?true
 	*/ 
 	public static void stringInternDiffJDK(){
-		String s1 = new String("hello");
-		s1.intern();
-		String s2 = "hello";
+		String s1 = new String("hello");//(1)
+		s1.intern();//(2)
+		String s2 = "hello";//(3)
 		
-		String s3 = new String("1")+new String("1");
-		s3.intern();
-		String s4 = "11";
+		String s3 = new String("1")+new String("1");//(4)
+		s3.intern();//(5)
+		String s4 = "11";//(6)
+		
+		System.out.println("s1==s2?"+(s1==s2));
+		System.out.println("s3==s4?"+(s3==s4));
+	}
+	
+	/** 
+	* @Title: stringInternDiffJDK2 
+	* @Description: 不同JDK对intern的影响2 
+	* @param     设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* 调换了intern的位置。
+	* JDK1.6 fasle false同上
+	* JDK1.7
+	* 	(123)同上
+	* 	(4)同上。堆中有“11”，池中没有。s3指向堆
+	* 	(5)在池中创建“11”，s4指向池
+	* 	(6)检查池中是否有“11”，有了直接返回池中地址，没有赋值，无意义。
+	* 	总结，s3指向堆，s4指向池。s3==s4?false
+	*/ 
+	public static void stringInternDiffJDK2(){
+		String s1 = new String("hello");//(1)
+		String s2 = "hello";//(2)
+		s1.intern();//(3)
+		
+		String s3 = new String("1")+new String("1");//(4)
+		String s4 = "11";//(5)
+		s3.intern();//(6)
 		
 		System.out.println("s1==s2?"+(s1==s2));
 		System.out.println("s3==s4?"+(s3==s4));
@@ -175,7 +233,7 @@ public class StringTest {
 	* @return void    返回类型 
 	* @throws 
 	* 使用MAT测试堆内存使用情况：
-	* http://blog.csdn.net/baidu_31657889/article/details/52315902
+	* http://blog.csdn.net/seu_calvin/article/details/52291082
 	* 步骤
 	* 1.设置测java类的运行参数：run as->run configurations->arguments->VM arguments:-agentlib:hprof=heap=dump,format=b
 	* 	(1)不使用intern方法：

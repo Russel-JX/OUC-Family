@@ -26,7 +26,7 @@
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
-
+		
 	<!-- 导入外部的properties文件 -->
 	<context:property-placeholder location="classpath:jdbc.properties" />
 
