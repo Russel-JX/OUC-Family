@@ -61,23 +61,29 @@ public class MapTest {
 	* @param     设定文件 
 	* @return void    返回类型 
 	* @throws 
-	* 要在源码的transfer方法内部断点，不能断点，未测试
 	* http://www.importnew.com/20386.html	线程安全性
+	* 测试步骤：
+	* 	1.断点在HashMap源码的transfer方法的Entry[] src = table;处执行完此句
+	* 	2.第一次put5数组只有一个元素<阈值1.5不扩容
+	* 	3.先执行t2,数组元素个数为2>1.5，数组扩容成4；数组元素为[null,5,null,{7->next为3}]
+	* 	4.再执行t1，最终map中没有元素。
 	*/ 
 	public static void multiThreadResize(){
-		map.put(3, "a");
+		map.put(5, "a");
 		new Thread("thread1"){
 			public void run(){
 				map.put(7, "b");
 				logger.info("thread1.map="+map);
+				map.get(11);
 			}
 		}.start();
 		new Thread("thread2"){
 			public void run(){
-				map.put(5, "b");
+				map.put(3, "b");
 				logger.info("thread2.map="+map);
 			}
 		}.start();
+		
 		logger.info(map);
 	}
 
