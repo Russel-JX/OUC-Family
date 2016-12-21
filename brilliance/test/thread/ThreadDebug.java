@@ -11,7 +11,13 @@ import jihe.map.MapTest;
 * @Description: 线程调试debug
 * @author Russell Xun Jiang
 * @date 2016年11月30日 下午3:49:53
-* 
+* 1.将断点打在run方法里。每个线程都会运行run方法。
+	这样所有的线程执行到run方法的某个断点处都会暂停。
+  2.开启debug。
+  3.进入debug视图。
+	所有执行此方法的线程都暂停在断点处，见Thread[Thread-0],Thread[Thread-1]..
+	鼠标选中某个线程，F6或F8，则此线程先执行。
+      注：Thread.currentThread().getName()用于打印当前线程名，即定位哪个线程在运行。
 */
 public class ThreadDebug {
 	private static Log logger = LogFactory.getLog(MapTest.class);

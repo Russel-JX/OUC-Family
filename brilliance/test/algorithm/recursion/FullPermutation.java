@@ -25,6 +25,7 @@ import org.apache.commons.lang3.ArrayUtils;
 * 	3.确定递归的结束条件，一般在第一个元素或最后一个元素的关系中，即第一或最后元素不再满足2的关系了。否则无限递归，不是死循环。栈溢出。
 */
 public class FullPermutation {
+	
 
 	public static void main(String[] args) {
 //		String a = "abc";
@@ -57,7 +58,39 @@ public class FullPermutation {
 		
 		//递归算阶乘
 //		System.out.println(getFactorial(3));
+		
+		
+		//每年投入与回报
+		for(int i=1;i<YEAR+1;i++){
+			double a = getFuli(i,BENJIN,RATE);
+			if(i%5==0){
+				System.out.println(i+"年,每年投"+BENJIN+"，利率"+RATE+"(本金+利润)="+a+"，利润="+(a-i*BENJIN));
+			}
+			
+		}
+		
 	}
+	
+	private static final int YEAR = 5; //投资年限
+	private static final double BENJIN = 5; //每次投入万元
+	private static final double RATE = 1.05; //利息
+	/** 
+	* @Title: getFuli 
+	* @Description: 每年投入与回报 
+	* @param @param n  投入几年
+	* @param @param benjin	每年投入的固定本金
+	* @param @param rate	利息
+	* @param @return    设定文件 
+	* @return double    返回类型 
+	* @throws 
+	*/ 
+	public static double getFuli(int n,double benjin,double rate){
+		if(n==1){
+			return benjin*rate;
+		}
+		return (getFuli(n-1,benjin,rate)+benjin)*rate;
+	}
+	
 	
 	
 	/** 
@@ -183,5 +216,7 @@ public class FullPermutation {
 		System.out.println(n+"*"+(n-1));
 		return n*getFactorial(n-1);
 	} 
+	
+	
 
 }
