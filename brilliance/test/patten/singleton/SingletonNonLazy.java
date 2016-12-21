@@ -20,10 +20,35 @@ import thread.ThreadCreation;
 public class SingletonNonLazy {
 	private static Log logger = LogFactory.getLog(SingletonNonLazy.class);
 	
+	private String name;
+	private int age;
+	
 	private static final SingletonNonLazy entity = new SingletonNonLazy();
+	
 	public static SingletonNonLazy getInstance(){
 		return entity;
 	}
+	
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public int getAge() {
+		return age;
+	}
+
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 
 	public static void main(String[] args) {
 		SingletonNonLazy e1 = SingletonNonLazy.getInstance();
