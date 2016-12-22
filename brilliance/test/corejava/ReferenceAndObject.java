@@ -29,7 +29,7 @@ public class ReferenceAndObject {
 		updateString(b);
 		System.out.println("b="+b);//aaa
 		
-		//通过引用传参——传递集合的引用。即常说的传递对象
+		//通过引用传参——传递集合的引用。
 		List<String> list = new ArrayList<String>();
 		list.add("1");
 		list.add("2");

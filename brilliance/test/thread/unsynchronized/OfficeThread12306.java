@@ -1,5 +1,8 @@
 package thread.unsynchronized;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 * @ClassName: OfficeThread12306
 * @Package thread.unsynchronized
@@ -31,28 +34,19 @@ public class OfficeThread12306 extends Thread{
 		sellTicket();
 	}
 	
-	public static void mx(int z){
-		z = 10;
-	}
-	
-	public static void my(String z){
-		z = "bbb";
-	}
-
 	public static void main(String[] args) {
 		int balance = 100;
 		Thread t1 = new OfficeThread12306(balance);
 		Thread t2 = new OfficeThread12306(balance);
 		
-		//正常启动线程。继承自Thread累的线程无法共享资源
-		normalStart(t1,t2);//输出结果：线程t1,t2交替执行。但都是从100递减到0。没有共享票源。
+//		//正常启动线程。继承自Thread累的线程无法共享资源
+//		normalStart(t1,t2);//输出结果：线程t1,t2交替执行。但都是从100递减到0。没有共享票源。
 		
 //		//直接运行run方法
 //		directRun(t1,t2);
 		
 //		//重复调用start方法 
 //		restart(t1);
-		
 	}
 	
 	/** 
