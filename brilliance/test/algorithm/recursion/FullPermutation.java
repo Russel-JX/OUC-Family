@@ -60,19 +60,19 @@ public class FullPermutation {
 //		System.out.println(getFactorial(3));
 		
 		
-		//每年投入与回报
+		//复利计算——每年投入与回报
 		for(int i=1;i<YEAR+1;i++){
 			double a = getFuli(i,BENJIN,RATE);
 			if(i%5==0){
-				System.out.println(i+"年,每年投"+BENJIN+"，利率"+RATE+"(本金+利润)="+a+"，利润="+(a-i*BENJIN));
+				System.out.println("投"+i+"年,每年投"+BENJIN+"，利率"+(Math.round(100*(RATE-1)))+"%。本金+利润="+a+"，利润="+Math.round(a-i*BENJIN));
 			}
 			
 		}
 		
 	}
 	
-	private static final int YEAR = 5; //投资年限
-	private static final double BENJIN = 5; //每次投入万元
+	private static final int YEAR = 41; //投资年限
+	private static final double BENJIN = 1; //每次投入万元
 	private static final double RATE = 1.05; //利息
 	/** 
 	* @Title: getFuli 
