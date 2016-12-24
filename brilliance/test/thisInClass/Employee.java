@@ -1,7 +1,7 @@
 package thisInClass;
 
 public class Employee {
-	
+
 	static{
 		System.out.println("静态语句块...");
 	}
