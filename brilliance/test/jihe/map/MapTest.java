@@ -33,6 +33,7 @@ public class MapTest {
 		logger.info("第一次put新key，返回的值是null："+map.put("a", "123"));//null
 		logger.info("put放入重复的key之后，返回的值原来的value："+map.put("a", "456"));//123
 		logger.info("put放入重复的key之后，get的值是覆盖后的value："+map.get("a"));//456
+		map.toString();
 	}
 	
 	
@@ -47,7 +48,7 @@ public class MapTest {
 	public static void singleThreadResize(){
 		//设置HashMap的数组初始容量为2，负载因子为0.75.所以放入第二个对象后，就就会扩容。
 		Map<Integer,String> map = new HashMap<Integer,String>(2,0.75f);
-		map.put(3, "a");
+		map.put(3, "a"); 
 		map.put(5, "b");
 		map.put(7, "c");
 		logger.info(map);

@@ -1,7 +1,5 @@
 package jvm.yichang;
 
-import java.util.Vector;
-
 /**
 * @ClassName: MemoryLeak
 * @Package jvm.yichang
