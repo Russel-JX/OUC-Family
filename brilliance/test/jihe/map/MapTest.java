@@ -33,12 +33,13 @@ public class MapTest {
 		logger.info("第一次put新key，返回的值是null："+map.put("a", "123"));//null
 		logger.info("put放入重复的key之后，返回的值原来的value："+map.put("a", "456"));//123
 		logger.info("put放入重复的key之后，get的值是覆盖后的value："+map.get("a"));//456
+		map.keySet();
 		map.toString();
 	}
 	
 	
 	/** 
-	* @Title: singleThreadResize 
+	* @Title: singleThreadResize ·
 	* @Description: 单线程resize扩容 
 	* @param     设定文件 
 	* @return void    返回类型 
