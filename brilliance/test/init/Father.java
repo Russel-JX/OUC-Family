@@ -47,8 +47,8 @@ public class Father {
 		
 		/**
 		 * 输出
+		 * [init.Father] 父类静态代码块中,使用静态变量父类静态变量/属性
 		 * [init.Father] 父类静态代码块
-		   [init.Father] 父类静态代码块中,使用静态变量父类静态变量/属性
 		   [init.Father] 父类自由代码块,使用静态变量父类静态变量/属性,普通变量field父类变量/属性
 		   [init.Father] 父类构造方法
 		 */
