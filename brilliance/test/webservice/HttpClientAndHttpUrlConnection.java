@@ -61,7 +61,7 @@ public class HttpClientAndHttpUrlConnection{
 	@Test
 	public void getWeatherByHttpClient() throws UnsupportedEncodingException{
 		String cityName = URLEncoder.encode("苏州市","UTF-8");//HttpClient请求参数包含中文要转码
-		String urlStr = "http://v.juhe.cn/weather/index?cityname="+cityName+"&key="+KEY;
+		String urlStr = "http://v.juhe.cn/weather/index?cityname="+cityName+"&key="+KEY;//api来自“聚合数据”  jx_russell
 		HttpClient httpClient = new HttpClient();
 		GetMethod  method = new GetMethod(urlStr);
 		method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3,false));//请求设置参数
