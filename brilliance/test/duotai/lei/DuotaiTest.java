@@ -29,10 +29,11 @@ public class DuotaiTest {
 	public static Log logger = LogFactory.getLog(DuotaiTest.class);
 
 	public static void main(String[] args) {
-		m1();
-		m2();
-		m3();
-		m4();
+//		m1();
+//		m2();
+//		m3();
+//		m4();
+		m5();
 	}
 	
 	/** 
@@ -88,6 +89,22 @@ public class DuotaiTest {
 		//想下转型，注意引用类型是否可以转，否则抛出ClassCastException类型转换异常。
 		Dog d = (Dog) a;
 		d.goujiao();//输出[duotai.lei.Dog] 子类狗的犬吠...
+	}
+	
+	/** 
+	* @Title: m5 
+	* @Description: 父类的引用如果之前已经指向之类的实例，就可以向下强制转型，而不会报运行时异常。 
+	* 因为父类引用其实指向的就是子类的地址
+	* @param     设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/ 
+	public static void m5(){
+		Animal ani = new Animal();
+		Dog dog = new Dog("阿黄xx",5,true);
+		ani = dog;//去掉这一句将抛出类型转换异常：Animal cannot be cast to duotai.lei.Dog
+		Dog d2 = null;
+		d2 = (Dog)ani;
 	}
 
 }

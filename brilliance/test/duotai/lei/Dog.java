@@ -31,7 +31,7 @@ public class Dog extends Animal{
 	
 	//子类狗的休息方法
 	public void rest(){
-		logger.info("子类狗的进食方法是狼吞虎咽（覆盖）...");
+		logger.info("子类狗的休息是趴着睡觉（覆盖）...");
 	}
 	
 	//子类狗的叫唤方法
