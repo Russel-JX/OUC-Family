@@ -1,7 +1,6 @@
 package algorithm.recursion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -49,25 +48,34 @@ public class FullPermutation {
 //		System.out.println(ArrayUtils.toString(xx));//ArrayUtils.toString(
 		
 		//递归算手机数字按键的字母排列
-		String aa = ArrayUtils.toString(getPosibility("123"));
-		System.out.println(aa);
+//		String aa = ArrayUtils.toString(getPosibility("123"));
+//		System.out.println(aa);
 //		
-//		//递归全排列
+////		//递归全排列
 //		String[] result = getArrange("abc");
 //		System.out.println(ArrayUtils.toString(result));//ArrayUtils.toString(Object)把任意数组转成String
+		
+		//n个数中选m个，全排列（排列又组合）
+		String[] inti = {"0","1","2","3","4","5","6","7","8","9"};
+		String[] res = getPermutationCombination(inti);
+		System.out.println(ArrayUtils.toString(res));	
+		System.out.println(res.length);	
+		Object[] objs = getRepeatDigital(res);
+		System.out.println(ArrayUtils.toString(objs));
+		System.out.println(objs.length);
 		
 		//递归算阶乘
 //		System.out.println(getFactorial(3));
 		
 		
-		//复利计算——每年投入与回报
-		for(int i=1;i<YEAR+1;i++){
-			double a = getFuli(i,BENJIN,RATE);
-			if(i%5==0){
-				System.out.println("投"+i+"年,每年投"+BENJIN+"，利率"+(Math.round(100*(RATE-1)))+"%。本金+利润="+a+"，利润="+Math.round(a-i*BENJIN));
-			}
-			
-		}
+//		//复利计算——每年投入与回报
+//		for(int i=1;i<YEAR+1;i++){
+//			double a = getFuli(i,BENJIN,RATE);
+//			if(i%5==0){
+//				System.out.println("投"+i+"年,每年投"+BENJIN+"，利率"+(Math.round(100*(RATE-1)))+"%。本金+利润="+a+"，利润="+Math.round(a-i*BENJIN));
+//			}
+//			
+//		}
 		
 	}
 	
@@ -143,7 +151,7 @@ public class FullPermutation {
 	
 	/** 
 	* @Title: getArrange 
-	* @Description: 全排列组合 
+	* @Description: 全组合 
 	* @param @param s
 	* @param @return    设定文件 
 	* @return String    返回类型 
@@ -188,6 +196,79 @@ public class FullPermutation {
 			}
 		}
 		return thisRes;
+	}
+	
+	/** 
+	* @Title: getPermutationCombination 
+	* @Description: n个数中选m个，全排列  
+	* @param @param lastResult
+	* @param @return    设定文件 
+	* @return String[]    返回类型 
+	* @throws 
+	*/ 
+	public static String[] getPermutationCombination(String[] lastResult){
+		String[] base = {"0","1","2","3","4","5","6","7","8","9"};
+		//如果结果中每个元素长度达到5个则停止。
+		if(lastResult[0].length()==5){
+			return lastResult;
+		}
+		
+		//一直根据上一次结果，往下递归求下一次结果。
+//		String[] thisResult = new String[lastResult.length*(base.length-lastResult[0].length())];
+		String[] thisResult = new String[lastResult.length*base.length];
+		int count = 0;
+		for(int i=0;i<lastResult.length;i++){
+			for(int k=0;k<base.length;k++){
+//				//每个元素在排列中只出现一次
+//				if(lastResult[i].indexOf(base[k])<0){
+//					thisResult[count] = lastResult[i] + base[k];
+//					count++;
+//				}
+				thisResult[count] = lastResult[i] + base[k];
+				count++;
+			}
+		}
+		return getPermutationCombination(thisResult);
+	} 
+	
+	
+	//每个元素的总位数
+	public static final int DIGITAL_LENGTH = 5;
+	//每个元素的个位数之和.2个一样，其他不一样。即每个元素中的数字出现除数是22111的，如10134,00123
+	//即相加等于7的。3个一样相加之和为11。4个一样相加17。5个一样之和为25。
+	//2个和3个一样的之和为14，如22288。2对一样，1个不一样各位之和位9，如11223
+	public static final int DIGITAL_SUM = 9;
+	/** 
+	* @Title: getRepeatDigital 
+	* @Description: 从全排列中，筛选结果 
+	* @param @param result
+	* @param @return    设定文件 
+	* @return Object[]    返回类型 
+	* @throws 
+	*/ 
+	public static Object[] getRepeatDigital(String[] result){
+		List<String> newArray = new LinkedList<String>();
+		for(int i=0;i<result.length;i++){
+			char[] array = result[i].toCharArray();
+			int[] countArray = new int[DIGITAL_LENGTH];
+			for(int j=0;j<array.length;j++){
+				int count = 0;
+				for(int k=0;k<array.length;k++){
+					if(array[j]==array[k]){
+						count++;
+					}
+				}
+				countArray[j] = count;
+			}
+			int sum = 0;
+			for(int p=0;p<countArray.length;p++){
+				sum +=  countArray[p];
+			}
+			if(sum==DIGITAL_SUM){
+				newArray.add(result[i]);
+			}
+		}
+		return newArray.toArray();
 	}
 	
 	/** 
