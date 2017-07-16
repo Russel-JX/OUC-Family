@@ -1,5 +1,7 @@
 package algorithm.tree;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,35 +38,41 @@ import org.apache.commons.lang3.ArrayUtils;
 */
 public class HuffmanTree {
 
-	public static void main(String[] args) {
-		//先序递归创建树
-//		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
-//		TreeNode node = createTreeFirstRecursive(sourceNames);
-//		System.out.println("创建树....");
+	public static void main(String[] args) throws FileNotFoundException {
 		
-		//递归遍历树。即/brilliance/test/algorithm/tree/tree.png
-		TreeNode a = new TreeNode("a",1);
-		TreeNode b = new TreeNode("b",1);
-		TreeNode c = new TreeNode("c",1);
-		TreeNode d = new TreeNode("d",1);
-		TreeNode e = new TreeNode("e",1);
-		TreeNode f = new TreeNode("f",1);
-		TreeNode g = new TreeNode("g",1);
-		a.setLeft(b);
-		a.setRight(c);
-		b.setLeft(d);
-		b.setRight(f);
-		c.setLeft(null);
-		c.setRight(null);
-		d.setLeft(null);
-		d.setRight(e);
-		e.setLeft(null);
-		e.setRight(null);
-		f.setLeft(g);
-		f.setRight(null);
-		g.setLeft(null);
-		g.setRight(null);
-		traverseTreeNodes(a,new LinkedList<TreeNode>());
+		//先序递归创建树 - 直接输入字符串方式
+		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
+		TreeNode node1 = createTreeFirstRecursive(null,sourceNames);
+		traverseTreeNodes(node1,new LinkedList<TreeNode>());
+//		//打印结果 - 读取文件方式
+//		TreeNode node2 = createTreeFirstRecursive2(null,new Scanner(new File("test/algorithm/tree/tree_input.txt")));
+//		traverseTreeNodes(node2,new LinkedList<TreeNode>());
+		
+		
+		
+//		//递归遍历树。即/brilliance/test/algorithm/tree/tree.png
+//		TreeNode a = new TreeNode("a",1);
+//		TreeNode b = new TreeNode("b",1);
+//		TreeNode c = new TreeNode("c",1);
+//		TreeNode d = new TreeNode("d",1);
+//		TreeNode e = new TreeNode("e",1);
+//		TreeNode f = new TreeNode("f",1);
+//		TreeNode g = new TreeNode("g",1);
+//		a.setLeft(b);
+//		a.setRight(c);
+//		b.setLeft(d);
+//		b.setRight(f);
+//		c.setLeft(null);
+//		c.setRight(null);
+//		d.setLeft(null);
+//		d.setRight(e);
+//		e.setLeft(null);
+//		e.setRight(null);
+//		f.setLeft(g);
+//		f.setRight(null);
+//		g.setLeft(null);
+//		g.setRight(null);
+//		traverseTreeNodes(a,new LinkedList<TreeNode>());
 		
 		
 		
@@ -180,7 +188,7 @@ public class HuffmanTree {
 	
 	/** 
 	* @Title: createTree 
-	* @Description: 创建二叉树——先序递归创建（未完成）
+	* @Description: 创建二叉树——先序递归创建（代码未完成）
 	* @param @param sourceNames
 	* @param @return    设定文件 
 	* @return TreeNode	根节点（包含树的所有节点信息） 
@@ -204,59 +212,63 @@ public class HuffmanTree {
 	返回值：此节点的左右子树/孩子/节点。
 	递归方法：创建此节点的左右子树。
 	结束条件：此节点为空节点
+	创建成功期望：把每个元素/节点设置其eleName、左节点是谁、右节点是谁，即创建完成。
+	具体过程：（未完成）依次读取字符串中的每个字符，如果此字符/节点不为空，
+							则此节点作为当前节点的左孩子；
+							否则，当前节点的左孩子为空（没有左孩子），继续读取下一个字符/节点，直到不为空为止。
+							返回当前节点（当前节点中就包含了当前节点和）
+	注：节点的左右孩子信息一定在剩下的字符里。所以可以用上述操作，依次读取字符，让剩下的字符越来越少。
 	
 	问题点：
 		初始树节点是依次输入渐渐生成；还是一次性输入生成。
 	*/ 
-	public static TreeNode createTreeFirstRecursive(String[] sourceNames){
-//		List<TreeNode> list = new LinkedList<TreeNode>();
-//		for(int i=0;i<sourceNames.length;i++){
-//			TreeNode node = new TreeNode(sourceNames[i],0);
-//			list.add(node);
-//		}
-		TreeNode node;
+	public static TreeNode createTreeFirstRecursive(TreeNode node,String[] sourceNames){
 		String thisNodeName = sourceNames[0];//当前节点
-		sourceNames = ArrayUtils.remove(sourceNames, 0);//剩余节点
+		System.out.println("当前读取的字符： "+thisNodeName);
+		if(sourceNames.length > 1){
+			sourceNames = ArrayUtils.remove(sourceNames, 0);//剩余节点
+		}
+		
+		System.out.println("剩余节点："+ArrayUtils.toString(sourceNames));
 		if("#".equals(thisNodeName)){
 			return null;
 		}else{
 			//this node
 			node = new TreeNode(thisNodeName,0);
 			//创建左子树，并将左子树挂在当前节点的左边
-			node.setLeft(createTreeFirstRecursive(sourceNames));//用当前节点，创建左孩子
+			node.setLeft(createTreeFirstRecursive(node.getLeft(),sourceNames));//用当前节点，创建左孩子
 			//创建右子树，并将左子树挂在当前节点的右边???(这一句有问题，未完成，右子树的创建应该是左子树建好之后剩下的sourceNames。实际右子树不是最后左子树建好之后剩余的sourceNames)
-			node.setRight(createTreeFirstRecursive(sourceNames));//用当前节点，创建右孩子
+			node.setRight(createTreeFirstRecursive(node.getRight(),sourceNames));//用当前节点，创建右孩子
+			return node;
 		}
-		
-		
-		
-		
-		return node;
 	} 
 	
-	public static TreeNode createTreeFirstRecursive2(Scanner sourceName){
-//		List<TreeNode> list = new LinkedList<TreeNode>();
-//		for(int i=0;i<sourceNames.length;i++){
-//			TreeNode node = new TreeNode(sourceNames[i],0);
-//			list.add(node);
-//		}
-		TreeNode node;
-		String thisNodeName = sourceName.toString();
+	/** 
+	* @Title: createTreeFirstRecursive2  (代码完成，未完全理解Scanner的地方) 
+	* @Description: 
+	* @param @param node
+	* @param @param nodeName
+	* @param @return    设定文件 
+	* @return TreeNode    返回类型 
+	* @throws 
+	* 每次从文件里读取一行，作为一个节点，操作结束后，返回这个节点。
+	* 	如果为空节点，则返回空。
+	* 	如果不是空节点，则给此节点设置左孩子和右孩子，左孩子是此节点的左孩子作为参数去创建它的子树的结果，有孩子是此节点的有右孩子作为参数去创建它的右子树的结果。
+	*/ 
+	public static TreeNode createTreeFirstRecursive2(TreeNode node,Scanner nodeName){
+		String thisNodeName = nodeName.next();
+//		System.out.println("当前读取的字符： "+thisNodeName);
 		if("#".equals(thisNodeName)){
 			return null;
 		}else{
 			//this node
 			node = new TreeNode(thisNodeName,0);
 			//创建左子树，并将左子树挂在当前节点的左边
-			node.setLeft(createTreeFirstRecursive2(sourceName));//用当前节点，创建左孩子
+			node.setLeft(createTreeFirstRecursive2(node.getLeft(),nodeName));//用当前节点，创建左孩子
 			//创建右子树，并将左子树挂在当前节点的右边
-			node.setRight(createTreeFirstRecursive2(sourceName));//用当前节点，创建右孩子
+			node.setRight(createTreeFirstRecursive2(node.getRight(),nodeName));//用当前节点，创建右孩子
+			return node;
 		}
-		
-		
-		
-		
-		return node;
 	} 
 	
 	/** 
