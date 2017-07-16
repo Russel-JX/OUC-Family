@@ -55,14 +55,14 @@ public class FullPermutation {
 //		String[] result = getArrange("abc");
 //		System.out.println(ArrayUtils.toString(result));//ArrayUtils.toString(Object)把任意数组转成String
 		
-		//n个数中选m个，全排列（排列又组合）
-		String[] inti = {"0","1","2","3","4","5","6","7","8","9"};
-		String[] res = getPermutationCombination(inti);
-		System.out.println(ArrayUtils.toString(res));	
-		System.out.println(res.length);	
-		Object[] objs = getRepeatDigital(res);
-		System.out.println(ArrayUtils.toString(objs));
-		System.out.println(objs.length);
+//		//n个数中选m个，全排列（排列又组合）
+//		String[] inti = {"0","1","2","3","4","5","6","7","8","9"};
+//		String[] res = getPermutationCombination(inti);
+//		System.out.println(ArrayUtils.toString(res));	
+//		System.out.println(res.length);	
+//		Object[] objs = getRepeatDigital(res);
+//		System.out.println(ArrayUtils.toString(objs));
+//		System.out.println(objs.length);
 		
 		//递归算阶乘
 //		System.out.println(getFactorial(3));
@@ -76,6 +76,9 @@ public class FullPermutation {
 //			}
 //			
 //		}
+		
+		//汉诺塔。将n个盘子从A盘，借助B盘，移动到C盘
+		hanoiTower(3,"A","B","C");
 		
 	}
 	
@@ -297,6 +300,34 @@ public class FullPermutation {
 		System.out.println(n+"*"+(n-1));
 		return n*getFactorial(n-1);
 	} 
+	
+	/** 
+	* @Title: hanoiTower 
+	* @Description: 汉诺塔 
+	* @param @param n	第几个盘子
+	* @param @param from	最初放有盘子的塔
+	* @param @param with	中间塔
+	* @param @param to      目的塔
+	* @return void    返回类型 
+	* @throws 
+	* 
+	* 思路：假设有塔 A，B，C。A上之下而上放置由大到小的盘子，要把A上的盘子借助B塔，移动到C塔，且C塔上放置和A塔一样。
+	* 第一步： 把A塔上的其他盘子都放到B塔，只留最后一个；把剩下的放到C塔
+	* 第二步： 把B塔上的其他盘子都放到C塔，只留最后一个；把剩下的的放到C塔
+	* ...
+	* 把当前塔下的前多少个放到中间塔，再将自己塔上剩下的一个放到C塔。
+	* 当自己塔上只有一个时，则不必利用其他中间塔，而直接把他放到C塔。
+	*/ 
+	public static void hanoiTower(int n, String from, String with, String to){
+		if(n==1){
+			System.out.println("将"+n+",从"+from+"盘,"+"直接移动到"+to+"上");
+		}else{
+			hanoiTower(n-1,from,to,with);
+			System.out.println("将"+n+",从"+from+"盘,"+"移动到"+to+"上");
+			hanoiTower(n-1,with,from,to);
+		}
+		
+	}
 	
 	
 
