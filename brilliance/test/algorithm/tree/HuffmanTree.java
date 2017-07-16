@@ -2,7 +2,6 @@ package algorithm.tree;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +38,34 @@ public class HuffmanTree {
 
 	public static void main(String[] args) {
 		//先序递归创建树
-		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
-		TreeNode node = createTreeFirstRecursive(sourceNames);
-		System.out.println("创建树....");
+//		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
+//		TreeNode node = createTreeFirstRecursive(sourceNames);
+//		System.out.println("创建树....");
+		
+		//递归遍历树。即/brilliance/test/algorithm/tree/tree.png
+		TreeNode a = new TreeNode("a",1);
+		TreeNode b = new TreeNode("b",1);
+		TreeNode c = new TreeNode("c",1);
+		TreeNode d = new TreeNode("d",1);
+		TreeNode e = new TreeNode("e",1);
+		TreeNode f = new TreeNode("f",1);
+		TreeNode g = new TreeNode("g",1);
+		a.setLeft(b);
+		a.setRight(c);
+		b.setLeft(d);
+		b.setRight(f);
+		c.setLeft(null);
+		c.setRight(null);
+		d.setLeft(null);
+		d.setRight(e);
+		e.setLeft(null);
+		e.setRight(null);
+		f.setLeft(g);
+		f.setRight(null);
+		g.setLeft(null);
+		g.setRight(null);
+		traverseTreeNodes(a,new LinkedList<TreeNode>());
+		
 		
 		
 //		TreeNode node2 = createTreeFirstRecursive2(new Scanner(System.in));
@@ -132,15 +156,14 @@ public class HuffmanTree {
 	public static List<TreeNode> traverseTreeNodes(TreeNode node,List<TreeNode> nodes){
 		if(node.left==null&&node.right==null){
 			nodes.add(node);
+			System.out.println("当前节点： "+node.getEleName()+", 节点类型： 叶子");
 			return null;
 		}
 		TreeNode leftNode = node.left;
 		TreeNode rightNode = node.right;
-//		if(node.left!=null||node.right!=null){
-//			nodes.add(node);
-//			traverseTreeNodes(leftNode,nodes);
-//			traverseTreeNodes(rightNode,nodes);
-//		}
+		System.out.println("当前节点： "+node.getEleName()+", 节点类型： 中。"+
+				"左孩子："+((node.getLeft()==null)?null:node.getLeft().getEleName())+
+				"右孩子："+((node.getRight()==null)?null:node.getRight().getEleName()));
 		if(node.left!=null){
 			nodes.add(node);
 			leftNode.setHuffmanCode(node.getHuffmanCode()+"0");
@@ -177,7 +200,7 @@ public class HuffmanTree {
 		结论：每个节点都创建本节点的左右子树，并把左右节点放到此节点的左右孩子上。如果本节点是空节点，则不创建。
 		左子树根节点是剩下节点中的第一个节点，右子树根节点是左边创建完了之后，剩下节点的第一个节点????
 	入参：一个一个新节点。
-		这里给的初始条件是所有节点，所以要转化一下，每次只取剩余节点的底一个节点作为当前节点。
+		这里给的初始条件是所有节点，所以要转化一下，每次只取剩余节点的第一个节点作为当前节点。
 	返回值：此节点的左右子树/孩子/节点。
 	递归方法：创建此节点的左右子树。
 	结束条件：此节点为空节点
