@@ -40,39 +40,46 @@ public class HuffmanTree {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		//先序递归创建树 - 直接输入字符串方式
-		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
-		TreeNode node1 = createTreeFirstRecursive(null,sourceNames);
-		traverseTreeNodes(node1,new LinkedList<TreeNode>());
+//		//先序递归创建树 - 直接输入字符串方式
+//		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
+//		TreeNode node1 = createTreeFirstRecursive(null,sourceNames);
+//		traverseTreeNodesPreorder(node1,new LinkedList<TreeNode>());
 //		//打印结果 - 读取文件方式
 //		TreeNode node2 = createTreeFirstRecursive2(null,new Scanner(new File("test/algorithm/tree/tree_input.txt")));
 //		traverseTreeNodes(node2,new LinkedList<TreeNode>());
 		
 		
 		
-//		//递归遍历树。即/brilliance/test/algorithm/tree/tree.png
-//		TreeNode a = new TreeNode("a",1);
-//		TreeNode b = new TreeNode("b",1);
-//		TreeNode c = new TreeNode("c",1);
-//		TreeNode d = new TreeNode("d",1);
-//		TreeNode e = new TreeNode("e",1);
-//		TreeNode f = new TreeNode("f",1);
-//		TreeNode g = new TreeNode("g",1);
-//		a.setLeft(b);
-//		a.setRight(c);
-//		b.setLeft(d);
-//		b.setRight(f);
-//		c.setLeft(null);
-//		c.setRight(null);
-//		d.setLeft(null);
-//		d.setRight(e);
-//		e.setLeft(null);
-//		e.setRight(null);
-//		f.setLeft(g);
-//		f.setRight(null);
-//		g.setLeft(null);
-//		g.setRight(null);
-//		traverseTreeNodes(a,new LinkedList<TreeNode>());
+		//递归遍历树。即/brilliance/test/algorithm/tree/tree.png
+		TreeNode a = new TreeNode("a",1);
+		TreeNode b = new TreeNode("b",1);
+		TreeNode c = new TreeNode("c",1);
+		TreeNode d = new TreeNode("d",1);
+		TreeNode e = new TreeNode("e",1);
+		TreeNode f = new TreeNode("f",1);
+		TreeNode g = new TreeNode("g",1);
+		a.setLeft(b);
+		a.setRight(c);
+		b.setLeft(d);
+		b.setRight(f);
+		c.setLeft(null);
+		c.setRight(null);
+		d.setLeft(null);
+		d.setRight(e);
+		e.setLeft(null);
+		e.setRight(null);
+		f.setLeft(g);
+		f.setRight(null);
+		g.setLeft(null);
+		g.setRight(null);
+		//先序遍历
+//		traverseTreeNodesPreorder(a,new LinkedList<TreeNode>());
+		//中序遍历1
+		traverseTreeNodesInorder1(a);
+		//中序遍历2
+		traverseTreeNodesInorder2(a);
+		//后序遍历
+		traverseTreeNodesPostorder(a);
 		
 		
 		
@@ -133,7 +140,7 @@ public class HuffmanTree {
 		}
 		TreeNode xx = list.get(0);
 		//traverse each tree leaf nodes to get encoded string for each element
-		List<TreeNode> nodes = traverseTreeNodes(list.get(0),new LinkedList<TreeNode>());//whole tree
+		List<TreeNode> nodes = traverseTreeNodesPreorder(list.get(0),new LinkedList<TreeNode>());//whole tree
 		Map<String,String> map = new HashMap<String,String>();//Huffman nodes
 		for(int i=0;i<nodes.size();i++){
 			System.out.println("遍历树,名称："+nodes.get(i).getEleName()+",值："+nodes.get(i).getEleValue()+
@@ -149,9 +156,9 @@ public class HuffmanTree {
 	
 	/** 
 	* @Title: getTreeNodes 
-	* @Description: 遍历树——递归算法
+	* @Description: 遍历树——先序递归算法
 	* @param @param node
-	* 				树的某个节点
+	* 				树的根节点
 	* @param @return     
 	* @return List<TreeNode>    
 	* 				返回所有节点信息 
@@ -169,7 +176,7 @@ public class HuffmanTree {
 	* 递归方法：遍历当前节点（一般打印此节点等操作）、获取节点的左右孩子节点
 	* 结束条件：节点没有左右孩子
 	*/ 
-	public static List<TreeNode> traverseTreeNodes(TreeNode node,List<TreeNode> nodes){
+	public static List<TreeNode> traverseTreeNodesPreorder(TreeNode node,List<TreeNode> nodes){
 		if(node.left==null&&node.right==null){
 			nodes.add(node);
 			System.out.println("当前节点： "+node.getEleName()+", 节点类型： 叶子");
@@ -177,21 +184,60 @@ public class HuffmanTree {
 		}
 		TreeNode leftNode = node.left;
 		TreeNode rightNode = node.right;
-		System.out.println("当前节点： "+node.getEleName()+", 节点类型： 中。"+
+		System.out.println("先序当前节点： "+node.getEleName()+", 节点类型： 中。"+
 				"左孩子："+((node.getLeft()==null)?null:node.getLeft().getEleName())+
 				"右孩子："+((node.getRight()==null)?null:node.getRight().getEleName()));
 		if(node.left!=null){
 			nodes.add(node);
 			leftNode.setHuffmanCode(node.getHuffmanCode()+"0");
-			traverseTreeNodes(leftNode,nodes);
+			traverseTreeNodesPreorder(leftNode,nodes);
 		}
 		if(node.right!=null){
 			nodes.add(node);
 			rightNode.setHuffmanCode(node.getHuffmanCode()+"1");
-			traverseTreeNodes(rightNode,nodes);
+			traverseTreeNodesPreorder(rightNode,nodes);
 		}
-
 		return nodes;
+	}
+	
+	/** 
+	* @Title: traverseTreeNodeInorder 
+	* @Description: 递归 - 中序遍历 
+	* @param @param node    根节点 
+	* @return void    返回类型 
+	* @throws 
+	*/ 
+	public static void traverseTreeNodesInorder1(TreeNode node) {
+		if(node != null){
+			traverseTreeNodesInorder1(node.left);
+			System.out.println("中序1。当前节点： "+node.getEleName()+", 节点类型： 中。"+
+				"左孩子："+((node.getLeft()==null)?null:node.getLeft().getEleName())+
+				"右孩子："+((node.getRight()==null)?null:node.getRight().getEleName()));
+			traverseTreeNodesInorder1(node.right);
+		}
+	}
+	public static void traverseTreeNodesInorder2(TreeNode node) {
+		if(node.left != null){
+			traverseTreeNodesInorder2(node.left);
+		}
+			System.out.println("中序2。当前节点： "+node.getEleName()+", 节点类型： 中。"+
+				"左孩子："+((node.getLeft()==null)?null:node.getLeft().getEleName())+
+				"右孩子："+((node.getRight()==null)?null:node.getRight().getEleName()));
+		if(node.right != null){
+			traverseTreeNodesInorder2(node.right);
+		}
+	}
+	
+	public static void traverseTreeNodesPostorder(TreeNode node) {
+		if(node.left != null){
+			traverseTreeNodesPostorder(node.left);
+		}
+		if(node.right != null){
+			traverseTreeNodesPostorder(node.right);
+		}
+		System.out.println("后序。当前节点： "+node.getEleName()+", 节点类型： 中。"+
+				"左孩子："+((node.getLeft()==null)?null:node.getLeft().getEleName())+
+				"右孩子："+((node.getRight()==null)?null:node.getRight().getEleName()));
 	}
 	
 	/** 
