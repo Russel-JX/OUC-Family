@@ -73,7 +73,8 @@ public class HuffmanTree {
 		g.setLeft(null);
 		g.setRight(null);
 		//先序遍历
-//		traverseTreeNodesPreorder(a,new LinkedList<TreeNode>());
+		List<TreeNode> nodes = traverseTreeNodesPreorder(a,new LinkedList<TreeNode>());
+		System.out.println("tree node size: "+nodes.size());
 		//中序遍历1
 		traverseTreeNodesInorder1(a);
 		//中序遍历2
@@ -155,8 +156,19 @@ public class HuffmanTree {
 	}
 	
 	/** 
+	* @Title: traverseTreeNodes 
+	* @Description: 非递归遍历（按层遍历）  TODO 
+	* @param @param node    根节点
+	* @return void    返回类型 
+	* @throws 
+	*/ 
+	public static void traverseTreeNodes(TreeNode node){
+		
+	}
+	
+	/** 
 	* @Title: getTreeNodes 
-	* @Description: 遍历树——先序递归算法
+	* @Description: 遍历树——先序递归算法.  把所有几点放在集合里（也可以看树的大小）
 	* @param @param node
 	* 				树的根节点
 	* @param @return     
@@ -177,9 +189,8 @@ public class HuffmanTree {
 	* 结束条件：节点没有左右孩子
 	*/ 
 	public static List<TreeNode> traverseTreeNodesPreorder(TreeNode node,List<TreeNode> nodes){
-		if(node.left==null&&node.right==null){
-			nodes.add(node);
-			System.out.println("当前节点： "+node.getEleName()+", 节点类型： 叶子");
+		if(node == null){
+//			nodes.add(node);
 			return null;
 		}
 		TreeNode leftNode = node.left;
@@ -187,13 +198,12 @@ public class HuffmanTree {
 		System.out.println("先序当前节点： "+node.getEleName()+", 节点类型： 中。"+
 				"左孩子："+((node.getLeft()==null)?null:node.getLeft().getEleName())+
 				"右孩子："+((node.getRight()==null)?null:node.getRight().getEleName()));
+		nodes.add(node);
 		if(node.left!=null){
-			nodes.add(node);
 			leftNode.setHuffmanCode(node.getHuffmanCode()+"0");
 			traverseTreeNodesPreorder(leftNode,nodes);
 		}
 		if(node.right!=null){
-			nodes.add(node);
 			rightNode.setHuffmanCode(node.getHuffmanCode()+"1");
 			traverseTreeNodesPreorder(rightNode,nodes);
 		}
