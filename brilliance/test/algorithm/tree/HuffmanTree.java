@@ -1,13 +1,14 @@
 package algorithm.tree;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -81,6 +82,8 @@ public class HuffmanTree {
 		traverseTreeNodesInorder2(a);
 		//后序遍历
 		traverseTreeNodesPostorder(a);
+		//非递归遍历
+		traverseTreeNodes(a);
 		
 		
 		
@@ -157,17 +160,53 @@ public class HuffmanTree {
 	
 	/** 
 	* @Title: traverseTreeNodes 
-	* @Description: 非递归遍历（按层遍历）  TODO 
+	* @Description: 非递归遍历（按层遍历） 
 	* @param @param node    根节点
 	* @return void    返回类型 
 	* @throws 
+	* 按层遍历二叉树。
+	* 结束条件；当当前层都是叶子节点时（这一层没有孩子）。
+	* 每次价差当前层（作为父亲层的那一层）和下一层节点。下一层如果都是叶子则到达树的边缘；否则吧当前下一层作为下一层循环的父层，再次产生新的父层的下一层。
 	*/ 
 	public static void traverseTreeNodes(TreeNode node){
+		boolean leafFlag = false;
+		Set<TreeNode> pNodes = new HashSet<TreeNode>();
+		Set<TreeNode> cNodes = new HashSet<TreeNode>();
+		pNodes.add(node);
+		System.out.println("非递归。根节点是： "+node.eleName);
+		while(!leafFlag){
+			for(TreeNode pNode : pNodes){
+				if(pNode.getLeft() != null){
+					cNodes.add(pNode.getLeft());
+				}
+				if(pNode.getRight() != null){
+					cNodes.add(pNode.getRight());
+				}
+			}
+			pNodes = cNodes;
+			Set<TreeNode> temp = new HashSet<TreeNode>();
+			boolean allLeaf = true;
+			for(TreeNode cNode : cNodes){//检查下一层是否都是叶子。是:遍历结束；否：把当前下一层节点作为下次外循环的父节点
+				System.out.println("非递归。当前节点是： "+cNode.eleName);
+				if(cNode.getLeft() != null){
+					temp.add(cNode.getLeft());
+				}
+				if(cNode.getRight() != null){
+					temp.add(cNode.getRight());
+				}
+				if(cNode.getLeft() != null || cNode.getRight() != null ){//***这里判断子节点是否是叶子。好处是不用全局检测每个子节点是否都是叶子，避免增加一个if判断。
+					allLeaf = false;
+				}
+			}
+			leafFlag = allLeaf;
+			
+			cNodes = temp;
+		}
 		
 	}
 	
 	/** 
-	* @Title: getTreeNodes 
+	* @Title: getTreeNodes
 	* @Description: 遍历树——先序递归算法.  把所有几点放在集合里（也可以看树的大小）
 	* @param @param node
 	* 				树的根节点
@@ -216,6 +255,7 @@ public class HuffmanTree {
 	* @param @param node    根节点 
 	* @return void    返回类型 
 	* @throws 
+	* 只要当前节点不为空，则继续遍历
 	*/ 
 	public static void traverseTreeNodesInorder1(TreeNode node) {
 		if(node != null){
@@ -226,6 +266,7 @@ public class HuffmanTree {
 			traverseTreeNodesInorder1(node.right);
 		}
 	}
+	
 	public static void traverseTreeNodesInorder2(TreeNode node) {
 		if(node.left != null){
 			traverseTreeNodesInorder2(node.left);
