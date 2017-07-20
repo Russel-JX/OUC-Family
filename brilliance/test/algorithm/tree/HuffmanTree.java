@@ -1,3 +1,8 @@
+/**
+ * 遍历就是查找每一个节点。
+	插入，删除就是先找到要操作的节点，再把前驱后继重新设置下。
+	遍历可以找出树的节点数，树高，层数的任意关于树的信息，所以遍历是树的各种操作的关键。
+ */
 package algorithm.tree;
 
 import java.io.FileNotFoundException;
@@ -52,6 +57,15 @@ public class HuffmanTree {
 		
 		
 		//递归遍历树。即/brilliance/test/algorithm/tree/tree.png
+		/**
+		 *       a
+		 *      / \
+		 *     b   c
+		 *    / \
+		 *   d   f
+		 *    \  / 
+		 *     e g
+		 */
 		TreeNode a = new TreeNode("a",1);
 		TreeNode b = new TreeNode("b",1);
 		TreeNode c = new TreeNode("c",1);
@@ -84,6 +98,8 @@ public class HuffmanTree {
 		traverseTreeNodesPostorder(a);
 		//非递归遍历
 		traverseTreeNodes(a);
+		//查找节点
+		searchNodeByName("fd",a);
 		
 		
 		
@@ -202,7 +218,31 @@ public class HuffmanTree {
 			
 			cNodes = temp;
 		}
-		
+	}
+	
+	/** 
+	* @Title: searchNodeByName 
+	* @Description: 树的查找 （先序）
+	* @param @param name	要找的节点名
+	* @param @param node	树的根节点
+	* @param @return    设定文件 
+	* @return TreeNode   要找的节点 
+	* @throws 
+	* @date 2017年07月20日 上午8:53:00
+	* 根据节点名称和根节点查找节点
+	*/ 
+	public static TreeNode searchNodeByName(String name, TreeNode node){
+		if(node !=null){
+			if(name.equals(node.getEleName())){
+				System.out.println("二叉树查找。"+node.toString());
+				return node;
+			}else{
+				searchNodeByName(name,node.getLeft());
+				searchNodeByName(name,node.getRight());
+			}
+		}
+		System.out.println("二叉树查找。树中无此节点。");
+		return null;
 	}
 	
 	/** 
@@ -376,6 +416,26 @@ public class HuffmanTree {
 		}
 	} 
 	
+	/**
+	 * 1.查找节点
+1.2查找节点的前驱（如果节点只记录了后继，没有前驱信息）
+	 */
+	
+	/**
+	 * 2.插入节点，指定插入到某个节点的左或右分支上。
+（如果要插入到的位置已有其他节点，则把这个其他分支挂到新节点下）
+入参:新节点，目标节点，左或右（表示如果替换其他节点，其他节点应该挂在新节点的哪个分支）
+	 */
+	
+	/**
+	 * 3.删除节点
+   先找到要删除节点的父亲
+   再把要删除节点的孩子指向其父亲。    要删除节点的孩子，可通过要删除节点的父亲节点向下找到。所以关键在要删除节点的父亲的查找。（即找到一个节点其左孩子或右孩子是要删除的节点。）
+入参：要删除的节点名称，删除性质（是连同此节点下的所有分支都删除还是只删除一个节点）
+特殊情况，当要删除的节点有既有左孩子，又有右孩子时，删除后怎么重新整理树？？考研笔记中有此记录
+如果节点中记录了每个节点的前驱信息，则只要找到要删除节点，就能找到其父亲和孩子，从而进行删除操作，这种简单情况可以试下。
+	 */
+	
 	/** 
 	* @Title: createTreeLevel 
 	* @Description: 层次创建树
@@ -423,6 +483,13 @@ public class HuffmanTree {
 			}else{
 				return 1;
 			}
+		}
+		@Override
+		public String toString(){
+			return "节点名:"+this.getEleName()+
+					",左孩子："+(this.getLeft()==null?this.getLeft():this.getLeft().getEleName())+
+					",右孩子："+(this.getRight()==null?this.getRight():this.getRight().getEleName());
+			
 		}
 		
 		public TreeNode(){
