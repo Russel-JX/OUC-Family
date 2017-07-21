@@ -18,6 +18,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import corejava.Final.Student;
+
 /**
 * @ClassName: HuffmanTree
 * @Package algorithm.tree
@@ -44,8 +46,17 @@ import org.apache.commons.lang3.ArrayUtils;
 利用哈夫曼树可以为文件TFile构造出符合前缀编码要求的不等长编码。
 */
 public class HuffmanTree {
+	
+	private static TreeNode curNode;
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public TreeNode getCurNode() {
+		return curNode;
+	}
+	public void setCurNode(TreeNode curNode) {
+		this.curNode = curNode;
+	}
+
+	public static void main(String[] args){
 		
 //		//先序递归创建树 - 直接输入字符串方式
 //		String[] sourceNames = {"a","b","d","#","e","#","#","f","g","#","#","#","c","#","#"};
@@ -70,7 +81,7 @@ public class HuffmanTree {
 		TreeNode a = new TreeNode("a",1);
 		TreeNode b = new TreeNode("b",1);
 		TreeNode c = new TreeNode("c",1);
-		TreeNode d = new TreeNode("f",1);
+		TreeNode d = new TreeNode("d",1);
 		TreeNode e = new TreeNode("e",1);
 		TreeNode f = new TreeNode("f",1);
 		TreeNode g = new TreeNode("g",1);
@@ -100,9 +111,14 @@ public class HuffmanTree {
 		//非递归遍历
 		traverseTreeNodes(a);
 		//查找节点.注测试返回多个匹配的节点时，修改初始的树中节点名称多个相同的进行测试
-		searchNodeByName("f",a,true,null);
-//		//查找节点的前驱
-//		searchPrecedence("f",a);
+		searchNodeByName("b",a,false,null);
+		//查找节点的前驱
+		try{
+			searchPrecedence("f",a);
+		}catch(Exception e1){
+			System.out.println("找前驱满足的第一个节点。"+curNode.toString());
+		}
+		
 		
 		
 		
@@ -233,17 +249,26 @@ public class HuffmanTree {
 	* @return TreeNode   要找的节点 
 	* @throws 
 	* @date 2017年07月20日 上午8:53:00
+	* @modified 2017年07月21日 上午9:02:00
 	* 根据节点名称和根节点查找节点.
 	* 
-	* 注：通过在方法入参增加一个参数，用来存放在方法内部的集合中，增加每次符合条件的节点。
+	* 注：1.通过在方法入参增加一个参数，用来存放在方法内部的集合中，增加每次符合条件的节点。
+	* 2.当all为false时，之记录符合条件的第一个节点。不能立即跳出递归，只能做到在找到的那一溜递归中不再向下递归，而和满足条件（找到节点，即return那层）同一层的递归会继续向下执行。
+	* 如：查找节点b,首先递归遍历a,b。找到b之后return，b下面的d,e,f,g则不会在遍历到，和b同一级的c那一溜将继续向下遍历，直到这一溜遇到return语句停止。
+	* 问：那如何快速结束递归？
+	* 答：在代码中抛出异常。可以快速结束递归，
+	* 追问：但怎么在抛出异常的情况下，返回之前递归找到的数据？
+	* 追答：在抛出异常之前把结果赋值给其他变量存起来。（如存放在类的属性中等）
+	* 递归快速结束例子见searchPrecedence
 	*/ 
 	public static List<TreeNode> searchNodeByName(String name, TreeNode node, boolean all,List<TreeNode> nodes){
 		if(nodes == null){
 			nodes = new ArrayList<TreeNode>();
 		}
 		if(node !=null){
+			System.out.println("debug二叉树查找。当前节点是："+node.toString());
 			if(name.equals(node.getEleName())){
-				System.out.println("二叉树查找。"+node.toString());
+				System.out.println("二叉树查找。已经找到:"+node.toString());
 				nodes.add(node);
 				if(!all){
 					return nodes;
@@ -264,30 +289,32 @@ public class HuffmanTree {
 	* @param @param node	树的根节点
 	* @param @return    
 	* @return TreeNode      节点名的前驱 
+	 * @throws Exception 
 	* @throws 
 	* @date 2017年07月20日 上午8:58:00
 	* 查找这样的节点：
 	* 	此节点的左孩子或右孩子是入参的节点名。
 	*/ 
-	public static TreeNode searchPrecedence(String name, TreeNode node){
+	public static TreeNode searchPrecedence(String name, TreeNode node) throws Exception{
 		if(node !=null){
 			if(node.getLeft() != null){
 				if(name.equals(node.getLeft().getEleName())){
-					System.out.println("二叉树查找前驱。是此节点的左孩子。"+node.toString());
-					return node;
+					System.out.println("二叉树查找前驱。找到。是此节点的左孩子。"+node.toString());
+					curNode = node;
+					throw new Exception("二叉树查找前驱。找到。是此节点的左孩子。"+node.toString());
 				}
 			}
 			if(node.getRight() != null){
 				if(name.equals(node.getRight().getEleName())){
-					System.out.println("二叉树查找前驱。是此节点的左孩子。"+node.toString());
-					return node;
+					System.out.println("二叉树查找前驱。找到。是此节点的右孩子。"+node.toString());
+					curNode = node;
+					throw new Exception("二叉树查找前驱。找到。是此节点的右孩子。"+node.toString());
 				}
 			}
 			
 			searchPrecedence(name,node.getLeft());
 			searchPrecedence(name,node.getRight());
 		}
-		//TODO 找到节点的前驱之后，还会继续向下查找！怎么在找到第一个之后，终止遍历？
 		System.out.println("二叉树查找。树中无此节点。");
 		return null;
 	}
