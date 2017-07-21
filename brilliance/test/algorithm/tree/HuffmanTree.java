@@ -284,7 +284,7 @@ public class HuffmanTree {
 	
 	/** 
 	* @Title: searchPrecedence 
-	* @Description: 查找节点的前驱 （先序） TODO
+	* @Description: 查找节点的前驱 （先序）快速跳出递归
 	* @param @param name	节点名
 	* @param @param node	树的根节点
 	* @param @return    
