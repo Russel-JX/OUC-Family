@@ -6,6 +6,7 @@
 package algorithm.tree;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,7 +70,7 @@ public class HuffmanTree {
 		TreeNode a = new TreeNode("a",1);
 		TreeNode b = new TreeNode("b",1);
 		TreeNode c = new TreeNode("c",1);
-		TreeNode d = new TreeNode("d",1);
+		TreeNode d = new TreeNode("f",1);
 		TreeNode e = new TreeNode("e",1);
 		TreeNode f = new TreeNode("f",1);
 		TreeNode g = new TreeNode("g",1);
@@ -98,8 +99,10 @@ public class HuffmanTree {
 		traverseTreeNodesPostorder(a);
 		//非递归遍历
 		traverseTreeNodes(a);
-		//查找节点
-		searchNodeByName("fd",a);
+		//查找节点.注测试返回多个匹配的节点时，修改初始的树中节点名称多个相同的进行测试
+		searchNodeByName("f",a,true,null);
+//		//查找节点的前驱
+//		searchPrecedence("f",a);
 		
 		
 		
@@ -225,22 +228,66 @@ public class HuffmanTree {
 	* @Description: 树的查找 （先序）
 	* @param @param name	要找的节点名
 	* @param @param node	树的根节点
+	* @param @param all		如果有多个匹配的是否返回所有匹配的节点
 	* @param @return    设定文件 
 	* @return TreeNode   要找的节点 
 	* @throws 
 	* @date 2017年07月20日 上午8:53:00
-	* 根据节点名称和根节点查找节点
+	* 根据节点名称和根节点查找节点.
+	* 
+	* 注：通过在方法入参增加一个参数，用来存放在方法内部的集合中，增加每次符合条件的节点。
 	*/ 
-	public static TreeNode searchNodeByName(String name, TreeNode node){
+	public static List<TreeNode> searchNodeByName(String name, TreeNode node, boolean all,List<TreeNode> nodes){
+		if(nodes == null){
+			nodes = new ArrayList<TreeNode>();
+		}
 		if(node !=null){
 			if(name.equals(node.getEleName())){
 				System.out.println("二叉树查找。"+node.toString());
-				return node;
-			}else{
-				searchNodeByName(name,node.getLeft());
-				searchNodeByName(name,node.getRight());
+				nodes.add(node);
+				if(!all){
+					return nodes;
+				}
 			}
+//			else{//此处不能用else。因为当根节点和下面节点名字相同时，匹配所有，只能找到根节点，下面匹配的就不往下遍历了。
+				searchNodeByName(name,node.getLeft(),all,nodes);
+				searchNodeByName(name,node.getRight(),all,nodes);
+//			}
 		}
+		return nodes;
+	}
+	
+	/** 
+	* @Title: searchPrecedence 
+	* @Description: 查找节点的前驱 （先序） TODO
+	* @param @param name	节点名
+	* @param @param node	树的根节点
+	* @param @return    
+	* @return TreeNode      节点名的前驱 
+	* @throws 
+	* @date 2017年07月20日 上午8:58:00
+	* 查找这样的节点：
+	* 	此节点的左孩子或右孩子是入参的节点名。
+	*/ 
+	public static TreeNode searchPrecedence(String name, TreeNode node){
+		if(node !=null){
+			if(node.getLeft() != null){
+				if(name.equals(node.getLeft().getEleName())){
+					System.out.println("二叉树查找前驱。是此节点的左孩子。"+node.toString());
+					return node;
+				}
+			}
+			if(node.getRight() != null){
+				if(name.equals(node.getRight().getEleName())){
+					System.out.println("二叉树查找前驱。是此节点的左孩子。"+node.toString());
+					return node;
+				}
+			}
+			
+			searchPrecedence(name,node.getLeft());
+			searchPrecedence(name,node.getRight());
+		}
+		//TODO 找到节点的前驱之后，还会继续向下查找！怎么在找到第一个之后，终止遍历？
 		System.out.println("二叉树查找。树中无此节点。");
 		return null;
 	}
