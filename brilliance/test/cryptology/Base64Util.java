@@ -13,7 +13,7 @@ import java.util.Date;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-public class Base64 {
+public class Base64Util {
 	
 	public final static String GREETING = "How are you doing";
 	
@@ -84,7 +84,7 @@ public class Base64 {
 		//正文
 		pw.println("");
 		pw.println("Hi Russell,");
-		pw.println("\n Long time on see! Hope you hang out there well.");
+		pw.println("\n Long time no see! Hope you hang out there well.");
 		pw.println("Thanks & Regards,");
 		pw.println("Sincere Love 'Myself'");
 		pw.println(".");//用“.”加换行结束正文
@@ -99,16 +99,4 @@ public class Base64 {
 		
 		socket.close();
 	}
-	
-
-	public static void main(String[] args) throws IOException {
-		String encoded = encrypt(GREETING);
-		System.out.println(GREETING+"-->"+encoded);//How are you doing-->SG93IGFyZSB5b3UgZG9pbmc=
-		String text = decrypt(encoded);
-		System.out.println(encoded+"-->"+text);//SG93IGFyZSB5b3UgZG9pbmc=-->How are you doing
-		
-		//Send email
-		sendMail();
-	}
-
 }
