@@ -11,13 +11,18 @@ import javax.crypto.spec.SecretKeySpec;
 //MD是单向的。只能加密，不能解密！
 public class MessageDigestUtil {
 
-	//Encrypt with MD5 algorithm
-	public static byte[] encrypt(String param,String algoName) throws NoSuchAlgorithmException{
+	//Encrypt with MD5 algorithm. 明文用字节数组传入，这样不管是字符串，还时文件的明文格式都统一了。
+	public static byte[] encrypt(byte[] param,String algoName) throws NoSuchAlgorithmException{
 		MessageDigest md5 = MessageDigest.getInstance(algoName);//MD5,SHA-256,SHA-384,SHA-512. Name - case insensitive
-		md5.update(param.getBytes());
+		md5.update(param);
 		byte[] bytes = md5.digest();
 		return bytes;
 	} 
+	
+	//TODO encrypt file.  抽取main中根据文件路径，生成dis的功能到此方法中。然后调用上方encrypt加密。
+	
+	//TODO decrypt file 
+	
 	
 	//加密密钥。
 	public static byte[] hmacEncrypt(byte[] key,byte[] data,String algoName) throws NoSuchAlgorithmException, InvalidKeyException{
