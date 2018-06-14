@@ -221,7 +221,9 @@ public class Sort {
 
 		System.out.println("lastFixedIndex="+j+",lastFixedElement"+srcNmb[j]+",array="+ArrayUtils.toString(srcNmb));
 
+		//继续从上次找到的开始位置到刚才找到的正确位置给数列排序
 		if(lastFixedIndex>1) fastSort(srcNmb,startMatch,lastFixedIndex-1);
+		//继续从刚找到的正确位置到上次找到的结束位置给数列排序
 		if(lastFixedIndex<srcNmb.length-2) fastSort(srcNmb,lastFixedIndex+1,endMatch);
 	}
 
