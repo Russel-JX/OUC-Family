@@ -186,11 +186,12 @@ public class Sort {
 		if(i>j){
 			return ;
 		}
+		//本轮排序的将要找到的正确位置
 		int lastFixedIndex = j;
 		double e1 = srcNmb[i];
 		int baseIndex = i;
-		int startMatch = i;//记录上一次的开始位置
-		int endMatch = j;//记录上一次的结束位置
+		int startMatch = i;//本轮排序的开始位置,就是下一轮左边排序的开始位置
+		int endMatch = j;//本轮排序的结束位置,就是下一轮右边排序的结束位置
 		for(;i<j && j!=0;i++,j--){
 			for(;j>-1;j--){
 				if(srcNmb[j]<e1){
@@ -221,9 +222,11 @@ public class Sort {
 
 		System.out.println("lastFixedIndex="+j+",lastFixedElement"+srcNmb[j]+",array="+ArrayUtils.toString(srcNmb));
 
-		//继续从上次找到的开始位置到刚才找到的正确位置给数列排序
+		//下一轮的待排序数列 - 左边(继续从上次找到的开始位置到刚才找到的正确位置给数列排序;
+		// 开始位置==上一轮的开始位置,结束位置==刚才找到的正确位置-1)
 		if(lastFixedIndex>1) fastSort(srcNmb,startMatch,lastFixedIndex-1);
-		//继续从刚找到的正确位置到上次找到的结束位置给数列排序
+		//下一轮的待排序数列 - 右边(继续从刚找到的正确位置到上次找到的结束位置给数列排序)
+		// 开始位置==刚才找到的正确位置+1,结束位置==上一轮的结束位置)
 		if(lastFixedIndex<srcNmb.length-2) fastSort(srcNmb,lastFixedIndex+1,endMatch);
 	}
 
