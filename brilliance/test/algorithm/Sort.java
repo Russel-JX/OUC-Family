@@ -32,7 +32,18 @@ public class Sort {
 //		directInsertSort(new double[]{76,45,74,26,38,63});
 		
 		//冒泡排序
-		bubleSort(new double[]{76.45,74,26,38,63});
+//		bubleSort(new double[]{76.45,74,26,38,63});
+
+		//快速排序
+		fastSort(new double[]{76.45,74,26,38,63},0,4);
+
+
+
+	}
+
+	public static void test(double[] a){
+		a[0] = 1;
+		a[1] = 2;
 	}
 	
 	/** 
@@ -153,6 +164,69 @@ public class Sort {
 		System.out.println("冒泡排序："+Arrays.toString(sourceNumber));
 		return sourceNumber;
 	}
+
+
+	/*快速排序
+	如果分区中数列长度<=1,则已经有序,直接返回;
+	否则对此分区进行一轮排序,排序后,把产生的新的分区数列再进行新一轮排序.
+	一轮排序的规则是:
+		取分区的第一个元素作为基准.从首尾两端找出比基准小的和比基准大的,2个数交换位置.
+		一直从首尾向内寻找,每找到一对都交换位置,直到首尾两个数的位置重叠,则将重叠位置的元素和基准交换位置.完成一轮排序.
+	* @Title: fastSort
+	* @Description:
+	* @param srcNmb	分区数列
+	* @param i 	本次待排序的开始位置
+	* @param j 	本次待排序的结束位置
+	* @param @return
+	* @return double[]    此分区排序后的有序序列
+	* @throws
+	* {76.45,74,26,38,63}
+	 */
+	public static void fastSort(double[] srcNmb,int i,int j){
+		if(i>j){
+			return ;
+		}
+		int lastFixedIndex = j;
+		double e1 = srcNmb[i];
+		int baseIndex = i;
+		int startMatch = i;//记录上一次的开始位置
+		int endMatch = j;//记录上一次的结束位置
+		for(;i<j && j!=0;i++,j--){
+			for(;j>-1;j--){
+				if(srcNmb[j]<e1){
+					break;
+				}
+			}
+			j = Math.max(j,0);//防止数据越界i;
+
+			for(;i<srcNmb.length && i<j;i++){
+				if(srcNmb[i]>e1){
+					break;
+				}
+			}
+			i = Math.min(i,srcNmb.length-1);//如果都没有,则取最后一个,防止数组越界
+
+			double tmp = srcNmb[i];//不管什么情况都选2个交换
+			srcNmb[i] = srcNmb[j];
+			srcNmb[j] = tmp;
+
+			if(i==j) break;
+		}
+		i = Math.min(i,srcNmb.length-1);
+
+		double tmp2 = srcNmb[j];//不管什么情况,都把基准和重叠交换(重叠出就是i或 j)
+		srcNmb[j] = srcNmb[baseIndex];
+		srcNmb[baseIndex] = tmp2;
+		lastFixedIndex = j;
+
+		System.out.println("lastFixedIndex="+j+",lastFixedElement"+srcNmb[j]+",array="+ArrayUtils.toString(srcNmb));
+
+		if(lastFixedIndex>1) fastSort(srcNmb,startMatch,lastFixedIndex-1);
+		if(lastFixedIndex<srcNmb.length-2) fastSort(srcNmb,lastFixedIndex+1,endMatch);
+	}
+
+
+
 	
 
 }
