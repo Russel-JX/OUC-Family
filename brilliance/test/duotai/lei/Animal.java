@@ -30,7 +30,12 @@ public class Animal implements Serializable{
 	private boolean gender;
 	
 	public void eat(){
+		System.out.println("Animal eating...");
 		logger.info("Animal的共有进食方法...");
+	}
+
+	public void laugh(){
+		System.out.println("Animal laughing...");
 	}
 	
 	public void rest(Animal ani){
