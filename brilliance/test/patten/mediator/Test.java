@@ -19,5 +19,12 @@ public class Test {
         mediator.developOA(hr);//HR让码农给自己开发OA
         mediator.developOA(finance);//财务让码农给自己开发OA
 
+        /**output:
+         * 给Lili统计考勤
+         给Russell统计考勤
+         给Cathy开发OA系统
+         给Lili开发OA系统
+         */
+
     }
 }
