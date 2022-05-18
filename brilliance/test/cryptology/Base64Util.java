@@ -29,6 +29,10 @@ public class Base64Util {
 		BASE64Decoder decoder = new BASE64Decoder();
 		return new String(decoder.decodeBuffer(encoded));
 	}
+
+	public static void main(String[] args){
+		System.out.println(encrypt("abc"));
+	}
 	
 
 	public static final String USERNAME = "anolym@126.com";
