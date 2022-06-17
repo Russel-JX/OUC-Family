@@ -1,12 +1,8 @@
 package thread.semaphore;
-
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.concurrent.Semaphore;
-
 @Slf4j
 public class Parkinglot extends Thread{
-
     //车位资源
     private Semaphore semaphore;
     //车子序号
@@ -20,14 +16,13 @@ public class Parkinglot extends Thread{
     public void run(){
         try {
             semaphore.acquire();
-            log.info("第{}量车进入停车场", this.carIndex);
+            log.info("第{}量车进入停车场。", this.carIndex);
             Thread.sleep(1000);
+            log.info("第{}量车离开停车。", this.carIndex);
             semaphore.release();
-            log.info("第{}量车离开停车场", this.carIndex);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
 }
