@@ -15,7 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 * 1.直接插入排序		T
 * 2.希尔排序
 * 3.直接选择排序
-* 4.堆排序
+* 4.堆排序			T
 * 5.冒泡排序			T
 * 6.快速排序
 * 7.归并排序
@@ -36,6 +36,13 @@ public class Sort {
 
 		//快速排序
 		fastSort(new double[]{76.45,74,26,38,63},0,4);
+		
+		//堆排序
+		heapSort(new int[]{4,5,8,2,3,9,7,1});
+		
+		//归并排序
+		mergesort(new int[]{4,5,8,2,3,9,7,1});
+		
 
 
 
@@ -230,7 +237,179 @@ public class Sort {
 		if(lastFixedIndex<srcNmb.length-2) fastSort(srcNmb,lastFixedIndex+1,endMatch);
 	}
 
+	
+	//堆排序开始
+	public static void heapSort(int[] arr) {
+		if (arr == null || arr.length == 0) {
+			return;
+		}
+		int len = arr.length;
+		// 构建大顶堆，这里其实就是把待排序序列，变成一个大顶堆结构的数组
+		buildMaxHeap(arr, len);
+ 
+		// 交换堆顶和当前末尾的节点，重置大顶堆
+		for (int i = len - 1; i > 0; i--) {
+			swap(arr, 0, i);
+			len--;
+			heapify(arr, 0, len);
+		}
+		
+		for(int k=0;k<arr.length;k++) {
+			System.out.println("堆排序："+arr[k]);
+		}
+		
+	}
+ 
+	private static void buildMaxHeap(int[] arr, int len) {
+		// 从最后一个非叶节点开始向前遍历，调整节点性质，使之成为大顶堆
+		for (int i = (int)Math.floor(len / 2) - 1; i >= 0; i--) {
+			heapify(arr, i, len);
+		}
+	}
+ 
+	private static void heapify(int[] arr, int i, int len) {
+		// 先根据堆性质，找出它左右节点的索引
+		int left = 2 * i + 1;
+		int right = 2 * i + 2;
+		// 默认当前节点（父节点）是最大值。
+		int largestIndex = i;
+		if (left < len && arr[left] > arr[largestIndex]) {
+			// 如果有左节点，并且左节点的值更大，更新最大值的索引
+			largestIndex = left;
+		}
+		if (right < len && arr[right] > arr[largestIndex]) {
+			// 如果有右节点，并且右节点的值更大，更新最大值的索引
+			largestIndex = right;
+		}
+ 
+		if (largestIndex != i) {
+			// 如果最大值不是当前非叶子节点的值，那么就把当前节点和最大值的子节点值互换
+			swap(arr, i, largestIndex);
+			// 因为互换之后，子节点的值变了，如果该子节点也有自己的子节点，仍需要再次调整。
+			heapify(arr, largestIndex, len);
+		}
+	}
+ 
+	private static void swap (int[] arr, int i, int j) {
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
 
+	}
+	//堆排序结束
+
+	
+	//归并排序开始
+	/**
+	 * 递归方式
+	 * @param arr
+	 */
+	public static void mergesort(int []arr){
+        int []temp = new int[arr.length];//在排序前，先建好一个长度等于原数组长度的临时数组，避免递归中频繁开辟空间
+        sort(arr,0,arr.length-1,temp);
+        
+        for(int k=0;k<arr.length;k++) {
+			System.out.println("归并排序："+arr[k]);
+		}
+    }
+    private static void sort(int[] arr,int left,int right,int []temp){
+        if(left<right){
+            int mid = (left+right)/2;
+            sort(arr,left,mid,temp);//左边归并排序，使得左子序列有序
+            sort(arr,mid+1,right,temp);//右边归并排序，使得右子序列有序
+            merge(arr,left,mid,right,temp);//将两个有序子数组合并操作
+        }
+    }
+    private static void merge(int[] arr,int left,int mid,int right,int[] temp){
+        int i = left;//左序列指针
+        int j = mid+1;//右序列指针
+        int t = 0;//临时数组指针
+        while (i<=mid && j<=right){
+            if(arr[i]<=arr[j]){
+                temp[t++] = arr[i++];
+            }else {
+                temp[t++] = arr[j++];
+            }
+        }
+        while(i<=mid){//将左边剩余元素填充进temp中
+            temp[t++] = arr[i++];
+        }
+        while(j<=right){//将右序列剩余元素填充进temp中
+            temp[t++] = arr[j++];
+        }
+        t = 0;
+        //将temp中的元素全部拷贝到原数组中
+        while(left <= right){
+            arr[left++] = temp[t++];
+        }
+    }
+	
+	public static <E extends Comparable<E>> void mergeSort(E[] arr){
+        if(arr == null){
+            return;
+        }
+
+        //使用公共的临时数组辅助进行数组顺序的归并 merge()方法专用
+        E[] temp = Arrays.copyOf(arr, arr.length);
+
+        //从1开始，按2的倍数进行分解
+        for (int sz = 1; sz < arr.length; sz *= 2) {
+
+            //内层循环 从0出发，每一轮按两个sz区间的增长遍历合并，即起始位置为i
+            //合并 [i, i + sz - 1] 和 [i + sz, Math.min(i + sz + sz - 1, arr.length - 1)] 区间的元素
+            for (int i = 0; i + sz < arr.length; i += sz + sz){
+                //i += sz + sz 即i按sz的2倍递增
+                //i + sz < arr.length 说明后面的区间还有元素,后面的区间有元素，则就要和前面的区间进行合并
+                if(arr[i + sz - 1].compareTo(arr[i + sz]) > 0){
+                    //注意 i + sz + sz - 1有可能会越界，所以使用Math.min(i + sz + sz - 1, arr.length - 1)
+                    merge(arr, i, i + sz - 1, Math.min(i + sz + sz - 1, arr.length - 1) ,temp);
+                }
+            }
+        }
+    }
+
+    /**
+     * 归并
+     * 合并两个区间 arr[left, mid] 和arr[mid+1, right]
+     * @param arr 包含两个有序区间的数组
+     * @param left 第1个有序区间的起始地址
+     * @param mid 第1个有序区间的结束地址。也是第2个有序区间的起始地址
+     * @param right 第2个有序区间的结束地址
+     * @param temp 公共的临时空间，辅助进行数组顺序的归并
+     * @param <E> 泛型
+     */
+    private static <E extends Comparable<E>> void merge(E[] arr, int left, int mid, int right, E[] temp){
+        //将arr数组从left位置开始拷贝到temp数组的left位置开始
+        //拷贝right - left + 1个元素，(前闭后开，所以要 + 1)
+        //因为没有额外的内存开辟，性能优化很高
+        System.arraycopy(arr, left, temp, left,right - left + 1);
+
+        int i = left;
+        int j = mid + 1;
+
+        //每轮循环对arr[k]进行赋值
+        for(int k = left; k <= right; k++){
+            //主要就是比较temp[i]和temp[j]的值大小，进行调整
+            if(i > mid){
+                //如果i大于mid，直接归并temp[j,right]区间的元素到arr
+                arr[k] = temp[j];
+                j++;
+            }else if(j > right){
+                //如果j大于right，直接归并temp[i,mid]区间的元素到arr
+                arr[k] = temp[i];
+                i ++;
+            }else if(temp[i].compareTo(temp[j]) <= 0) {
+                //如果temp[i]小于等于temp[j]，直接归并temp[i]的值到arr
+                arr[k] = temp[i];
+                i ++;
+            }else {
+                //如果temp[i]大于temp[j]，直接归并temp[j]的值到arr
+                arr[k] = temp[j];
+                j++;
+            }
+        }
+    }
+	//归并排序结束
 
 	
 
