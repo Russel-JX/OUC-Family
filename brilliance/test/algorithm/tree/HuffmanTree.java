@@ -6,15 +6,7 @@
 package algorithm.tree;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -99,7 +91,7 @@ public class HuffmanTree {
 		f.setRight(null);
 		g.setLeft(null);
 		g.setRight(null);
-		//先序遍历
+//		//先序遍历
 		List<TreeNode> nodes = traverseTreeNodesPreorder(a,new LinkedList<TreeNode>());
 		System.out.println("tree node size: "+nodes.size());
 		//中序遍历1
@@ -108,8 +100,48 @@ public class HuffmanTree {
 		traverseTreeNodesInorder2(a);
 		//后序遍历
 		traverseTreeNodesPostorder(a);
+		/**output:
+		 先序当前节点： a, 节点类型： 中。左孩子：b右孩子：c
+		 先序当前节点： b, 节点类型： 中。左孩子：d右孩子：f
+		 先序当前节点： d, 节点类型： 中。左孩子：null右孩子：e
+		 先序当前节点： e, 节点类型： 中。左孩子：null右孩子：null
+		 先序当前节点： f, 节点类型： 中。左孩子：g右孩子：null
+		 先序当前节点： g, 节点类型： 中。左孩子：null右孩子：null
+		 先序当前节点： c, 节点类型： 中。左孩子：null右孩子：null
+		 tree node size: 7
+		 中序1。当前节点： d, 节点类型： 中。左孩子：null右孩子：e
+		 中序1。当前节点： e, 节点类型： 中。左孩子：null右孩子：null
+		 中序1。当前节点： b, 节点类型： 中。左孩子：d右孩子：f
+		 中序1。当前节点： g, 节点类型： 中。左孩子：null右孩子：null
+		 中序1。当前节点： f, 节点类型： 中。左孩子：g右孩子：null
+		 中序1。当前节点： a, 节点类型： 中。左孩子：b右孩子：c
+		 中序1。当前节点： c, 节点类型： 中。左孩子：null右孩子：null
+		 中序2。当前节点： d, 节点类型： 中。左孩子：null右孩子：e
+		 中序2。当前节点： e, 节点类型： 中。左孩子：null右孩子：null
+		 中序2。当前节点： b, 节点类型： 中。左孩子：d右孩子：f
+		 中序2。当前节点： g, 节点类型： 中。左孩子：null右孩子：null
+		 中序2。当前节点： f, 节点类型： 中。左孩子：g右孩子：null
+		 中序2。当前节点： a, 节点类型： 中。左孩子：b右孩子：c
+		 中序2。当前节点： c, 节点类型： 中。左孩子：null右孩子：null
+		 后序。当前节点： e, 节点类型： 中。左孩子：null右孩子：null
+		 后序。当前节点： d, 节点类型： 中。左孩子：null右孩子：e
+		 后序。当前节点： g, 节点类型： 中。左孩子：null右孩子：null
+		 后序。当前节点： f, 节点类型： 中。左孩子：g右孩子：null
+		 后序。当前节点： b, 节点类型： 中。左孩子：d右孩子：f
+		 后序。当前节点： c, 节点类型： 中。左孩子：null右孩子：null
+		 后序。当前节点： a, 节点类型： 中。左孩子：b右孩子：c
+		 */
 		//非递归遍历
 		traverseTreeNodes(a);
+		/**
+		 非递归。根节点是： a
+		 非递归。当前节点是： b
+		 非递归。当前节点是： c
+		 非递归。当前节点是： d
+		 非递归。当前节点是： f
+		 非递归。当前节点是： g
+		 非递归。当前节点是： e
+		 */
 		//查找节点.注测试返回多个匹配的节点时，修改初始的树中节点名称多个相同的进行测试
 		searchNodeByName("b",a,false,null);
 		//查找节点的前驱
@@ -118,6 +150,17 @@ public class HuffmanTree {
 		}catch(Exception e1){
 			System.out.println("找前驱满足的第一个节点。"+curNode.toString());
 		}
+		/**
+		 * output
+		 * debug二叉树查找。当前节点是：节点名:a,左孩子：b,右孩子：c
+		 debug二叉树查找。当前节点是：节点名:b,左孩子：d,右孩子：f
+		 二叉树查找。已经找到:节点名:b,左孩子：d,右孩子：f
+		 debug二叉树查找。当前节点是：节点名:c,左孩子：null,右孩子：null
+		 二叉树查找前驱。找到。是此节点的右孩子。节点名:b,左孩子：d,右孩子：f
+		 找前驱满足的第一个节点。节点名:b,左孩子：d,右孩子：f
+
+
+		 */
 		
 		
 		
@@ -125,7 +168,7 @@ public class HuffmanTree {
 //		TreeNode node2 = createTreeFirstRecursive2(new Scanner(System.in));
 //		System.out.println("创建树2....");
 		
-//		//哈夫曼树
+		//哈夫曼树
 //		String[] names = {"A","B","C","D","E","F","G"};
 //		double[] weights = {5,24,7,17,34,5,13};
 //		Map<String,String> huffmanNodes = HuffmanEncode(names,weights);
