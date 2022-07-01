@@ -47,6 +47,8 @@ public class HuffmanTree {
 	public void setCurNode(TreeNode curNode) {
 		this.curNode = curNode;
 	}
+	static int diguiCount=0;
+	static int feidiguiCount=0;
 
 	public static void main(String[] args){
 		
@@ -91,15 +93,49 @@ public class HuffmanTree {
 		f.setRight(null);
 		g.setLeft(null);
 		g.setRight(null);
+
+		TreeNode a1 = new TreeNode("a1",1);
+		TreeNode b1 = new TreeNode("b1",1);
+		TreeNode c1 = new TreeNode("c1",1);
+		TreeNode d1 = new TreeNode("d1",1);
+		TreeNode e1 = new TreeNode("e1",1);
+		TreeNode f1 = new TreeNode("f1",1);
+		TreeNode g1 = new TreeNode("g1",1);
+		TreeNode h1 = new TreeNode("h1",1);
+		TreeNode i1 = new TreeNode("i1",1);
+		TreeNode j1 = new TreeNode("j1",1);
+		TreeNode k1 = new TreeNode("k1",1);
+		TreeNode l1 = new TreeNode("l1",1);
+		TreeNode m1 = new TreeNode("m1",1);
+		TreeNode n1 = new TreeNode("n1",1);
+		TreeNode o1 = new TreeNode("o1",1);
+		a1.setLeft(b1);
+		a1.setRight(c1);
+		b1.setLeft(d1);
+		b1.setRight(e1);
+		c1.setLeft(f1);
+		c1.setRight(g1);
+		d1.setLeft(h1);
+		d1.setRight(i1);
+		e1.setLeft(j1);
+		e1.setRight(k1);
+		f1.setLeft(l1);
+		f1.setRight(m1);
+		g1.setLeft(n1);
+		g1.setRight(o1);
+
+
 //		//先序遍历
-		List<TreeNode> nodes = traverseTreeNodesPreorder(a,new LinkedList<TreeNode>());
-		System.out.println("tree node size: "+nodes.size());
-		//中序遍历1
-		traverseTreeNodesInorder1(a);
-		//中序遍历2
-		traverseTreeNodesInorder2(a);
-		//后序遍历
-		traverseTreeNodesPostorder(a);
+//		List<TreeNode> nodes = traverseTreeNodesPreorder(a,new LinkedList<TreeNode>());
+//		System.out.println("tree node size: "+nodes.size()+",先序递归遍历节点总数："+diguiCount);
+		List<TreeNode> nodes1 = traverseTreeNodesPreorder(a1,new LinkedList<TreeNode>());
+		System.out.println("tree node size: "+nodes1.size()+",先序递归遍历节点总数："+diguiCount);
+//		//中序遍历1
+//		traverseTreeNodesInorder1(a);
+//		//中序遍历2
+//		traverseTreeNodesInorder2(a);
+//		//后序遍历
+//		traverseTreeNodesPostorder(a);
 		/**output:
 		 先序当前节点： a, 节点类型： 中。左孩子：b右孩子：c
 		 先序当前节点： b, 节点类型： 中。左孩子：d右孩子：f
@@ -131,8 +167,8 @@ public class HuffmanTree {
 		 后序。当前节点： c, 节点类型： 中。左孩子：null右孩子：null
 		 后序。当前节点： a, 节点类型： 中。左孩子：b右孩子：c
 		 */
-		//非递归遍历
-		traverseTreeNodes(a);
+		//非递归遍历。List实现。
+//		traverseTreeNodes(a);
 		/**
 		 非递归。根节点是： a
 		 非递归。当前节点是： b
@@ -142,14 +178,35 @@ public class HuffmanTree {
 		 非递归。当前节点是： g
 		 非递归。当前节点是： e
 		 */
+
+		//非递归遍历。Stack实现
+//		stackPreOrder(a);
+//		System.out.println("先序非递归遍历节点总数："+diguiCount);
+		/**
+		 * output:
+		 * 非递归先序。stack.a b d e f g c
+		 * 顺序
+		 * 出	进	Stack剩余
+		 * a	cb	c,b
+		 * b	fd	cfd
+		 * d	e	cfe
+		 * e	无	cf
+		 * f	g	cg
+		 * g	无	c
+		 * c	无	无
+		 */
+		stackPreOrder(a1);
+		System.out.println("先序非递归遍历节点总数："+diguiCount);
+
+
 		//查找节点.注测试返回多个匹配的节点时，修改初始的树中节点名称多个相同的进行测试
-		searchNodeByName("b",a,false,null);
+//		searchNodeByName("b",a,false,null);
 		//查找节点的前驱
-		try{
-			searchPrecedence("f",a);
-		}catch(Exception e1){
-			System.out.println("找前驱满足的第一个节点。"+curNode.toString());
-		}
+//		try{
+//			searchPrecedence("f",a);
+//		}catch(Exception e1){
+//			System.out.println("找前驱满足的第一个节点。"+curNode.toString());
+//		}
 		/**
 		 * output
 		 * debug二叉树查找。当前节点是：节点名:a,左孩子：b,右孩子：c
@@ -253,6 +310,7 @@ public class HuffmanTree {
 		pNodes.add(node);
 		System.out.println("非递归。根节点是： "+node.eleName);
 		while(!leafFlag){
+			System.out.println("cNodes.size()="+cNodes.size());
 			for(TreeNode pNode : pNodes){
 				if(pNode.getLeft() != null){
 					cNodes.add(pNode.getLeft());
@@ -280,6 +338,111 @@ public class HuffmanTree {
 			
 			cNodes = temp;
 		}
+	}
+
+	/**
+	 * 非递归先序-stack实现
+	 * 符合动态规划。
+	 * @param Root
+	 */
+	public static void stackPreOrder(TreeNode Root) {
+		feidiguiCount++;
+		System.out.print(" 非递归先序。stack.");
+		if(Root==null) {
+			System.out.println("空树");
+			return;
+		}
+		TreeNode tmp=Root;
+		//DP动态规划。每一层节点的下层节点都放在stack中，防止重复计算。空间换时间。
+		Stack<TreeNode> s=new Stack<TreeNode>();
+		s.push(tmp); //根节点入栈
+		while(!s.empty()) {
+			//1.访问根节点
+			TreeNode p=s.pop();
+			System.out.print(p.eleName+" ");
+			//2.如果根节点存在右孩子，则将右孩子入栈
+			if(p.right!=null) {
+				s.push(p.right);
+			}
+			//3.如果根节点存在左孩子，则将左孩子入栈
+			if(p.left!=null) {
+				s.push(p.left);
+			}
+		}
+		System.out.println();
+	}
+
+	/**
+	 * 非递归先序-stack实现
+	 * @param Root
+	 */
+	public void stackInOrder(TreeNode Root) {
+		if(Root==null) {
+			System.out.println("空树");
+			return;
+		}
+		TreeNode tmp=Root;
+		Stack<TreeNode> s=new Stack<TreeNode>();
+		while(tmp!=null || !s.empty()) {
+			//1.将根节点入栈
+			//2.将所有左孩子入栈
+			while(tmp!=null) {
+				s.push(tmp);
+				tmp=tmp.left;
+			}
+			//3.访问栈顶元素
+			tmp=s.pop();
+			System.out.print(tmp.eleName+" ");
+			//4.如果栈顶元素存在右孩子，则将右孩子赋值给tmp，也就是将右孩子入栈
+			if(tmp.right!=null) {
+				tmp=tmp.right;
+			}
+			//否则，将tmp置为null，表示下次要访问的是栈顶元素
+			else {
+				tmp=null;
+			}
+		}
+		System.out.println();
+	}
+
+	/**
+	 * 非递归后序-stack实现
+	 * @param Root
+	 */
+	public void stackPostOrder(TreeNode Root) {
+		if(Root==null) {
+			System.out.println("空树");
+			return;
+		}
+		TreeNode tmp=Root; //当前节点
+		TreeNode prev=null; //上一次访问的节点
+		Stack<TreeNode> s=new Stack<TreeNode>();
+		while(tmp!=null || !s.empty()) {
+			//1.将根节点及其左孩子入栈
+			while(tmp!=null) {
+				s.push(tmp);
+				tmp=tmp.left;
+			}
+
+			if(!s.empty()) {
+				//2.获取栈顶元素值
+				tmp=s.peek();
+				//3.没有右孩子，或者右孩子已经被访问过
+				if(tmp.right==null || tmp.right==prev) {
+					//则可以访问栈顶元素
+					tmp=s.pop();
+					System.out.print(tmp.eleName+" ");
+					//标记上一次访问的节点
+					prev=tmp;
+					tmp=null;
+				}
+				//4.存在没有被访问的右孩子
+				else {
+					tmp=tmp.right;
+				}
+			}
+		}
+		System.out.println();
 	}
 	
 	/** 
@@ -388,6 +551,7 @@ return只是返回给上一个调用者---本函数,如果上一个调用者还�
 	* 结束条件：节点没有左右孩子
 	*/ 
 	public static List<TreeNode> traverseTreeNodesPreorder(TreeNode node,List<TreeNode> nodes){
+		diguiCount++;
 		if(node == null){
 //			nodes.add(node);
 			return null;
