@@ -112,6 +112,7 @@ public class FullPermutation {
 	* @return String[]    返回类型 
 	* @throws 
 	* 问题：根据按的手机数字，输出数字代表的字母的所组合。
+	 * 注：此问题也可用DP动态规划更高效的解决。code略。可参考“找数列中最长的递增子数列的长度”
 	* 数字1没有字母，2:表示abc,3:def,4:ghi,...,9:wxyz。
 	* 如：1232表示abc,def,abc的所有组合，
 	* 	即ada,adb,adc;aea,aeb,aec;afa,afb,afc;  
