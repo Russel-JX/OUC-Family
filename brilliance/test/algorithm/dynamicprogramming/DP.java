@@ -88,13 +88,26 @@ public class DP {
      * 把之前计算过的，匹配的组合和不匹配的组合都暂存，每次计算时，先校验一下。减少计算。空间换时间
      * 这里每个元素的计算量少，所以节省的时间不多，如果生产场景对每个元素计算复杂，则此策略会节省大量时间。
      *
+     * 例子：5，7，2，6，10
+     * 外层
+     * 从5开始
+     *  内层
+     *  第一轮：57比，然后72比，然后76比，然后710比。(因为72是错误组合，所以76比。 57组合放入goodCombinationSet，72组合放入badCombinationSet)
+     *  第二轮：52比，然后56比，然后610比(因为52是错误组合，所以76比)
+     *  第二轮：56比，然后610比
+     * 然后从7开始
+     *  第一轮：72比，然后76比，然后710比。(因为72是错误组合，所以76比)
+     *  第二轮：76比，然后710比。(因为76是错误组合，所以710比)
+     *  第二轮：710比
+     * ...
+     *
      * @param arr
      * @return
      */
     public static int getMaxIncreaseSubList(int[] arr){
 //        int[] arr = new int[]{5,7,2,6,10};
         //暂存子循环中的递增序列.如57，26，56
-        String goodCombination = "";
+        String goodCombination;
         //前者<=后者的两两组合的集合。
         Set<String> goodCombinationSet = new HashSet<String>();
         //前者>后者的两两组合的集合. 注：goodCombinationSet和badCombinationSet不是互补关系，因为他们是动态增加的。所以不能只用其中一个
