@@ -32,6 +32,7 @@ public class LeetCode {
 
 
         //(3)无重复字符串的最长子串
+        lengthOfLongestSubstring("");
         lengthOfLongestSubstring("abcabcbb");
         lengthOfLongestSubstring("pwwkew");
         lengthOfLongestSubstring("xyabcabcbb");
@@ -156,7 +157,11 @@ public class LeetCode {
      * @return
      */
     public static int lengthOfLongestSubstring(String s) {
+        if(s.length () == 0){
+            return 0;
+        }
         String subStr = new String(s.substring (0,1));
+        //最大子串长度
         int maxSubLength = 1;
         //maxSubStr打印用。
         String maxSubStr = "";
@@ -164,15 +169,13 @@ public class LeetCode {
             String item = s.substring(i,i+1);
             if(!subStr.contains(item)){
                 subStr += item;
-                maxSubLength++;
                 maxSubStr = subStr;
             }else{
                 //有重复。则截取既有子串中，新的子串作为OK子串。
                 //这里取已OK串中有重复字符的后面的全部。
                 subStr = subStr.substring(subStr.indexOf(item)+1)+item;
-                maxSubLength = Math.max(maxSubLength, subStr.length ());
-
             }
+            maxSubLength = Math.max(maxSubLength, subStr.length ());
         }
 
         System.out.println("maxSubLength:"+maxSubLength+",maxSubStr:"+maxSubStr);
