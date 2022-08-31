@@ -43,6 +43,18 @@ public class LeetCode {
          maxSubLength:5,maxSubStr:xyabc
          */
 
+
+        //(4)寻找两个正序数组的中位数
+        findMedianSortedArrays(new int[]{1,2}, new int[]{3,4});
+        findMedianSortedArrays(new int[]{1,2}, new int[]{3});
+        /**
+         * output:
+         * 合并后数列：1.0,2.0,3.0,4.0,,中位数：2.5
+         合并后数列：1.0,2.0,3.0,,中位数：2.0
+         */
+
+        //(5)最长回文子串
+
     }
 
 
@@ -182,6 +194,127 @@ public class LeetCode {
         return maxSubLength;
     }
 
+    /**
+     * 寻找两个正序数组的中位数.
+     * 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+     算法的时间复杂度应该为 O(log (m+n)) 。
+     注：中位数定义：此数的前面一半比此数小，后一半比此数大。
+     则当N为奇数时，=X(n+1)/2,即中间那个数就是；当N为偶数时，=[X(n/2)+X(n/2+1)]/2，即取中间那2个数的平均值。
+     示例 1：
+
+     输入：nums1 = [1,3], nums2 = [2]
+     输出：2.00000
+     解释：合并数组 = [1,2,3] ，中位数 2
+     示例 2：
+
+     输入：nums1 = [1,2], nums2 = [3,4]
+     输出：2.50000
+     解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
+
+     分析：
+     解法一。关键点：如何排列，合并后的有序序列。
+     得到合并后的有序数列，就可以用公式直接计算中位数。
+     普通归并排序:同时从2个数列相同位置比较元素，小的作为新数列的元素。
+     时间复杂度：O(m+n)
+
+     解法二：TODO
+     解法三：
+
+     */
+
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        double[] newNums = new double[len1+len2];
+        int i=0,j=0,k=0;
+        //合并2个数列
+        while(k<len1+len2){
+            //防止有1个序列遍历完
+            if(i>=len1){
+                newNums[k++] = nums2[j++];
+                continue;
+            }
+            if(j>=len2){
+                newNums[k++] = nums1[i++];
+                continue;
+            }
+
+            if(nums1[i]<nums2[j]){
+                newNums[k++] = nums1[i++];
+            }else{
+                newNums[k++] = nums2[j++];
+            }
+        }
+
+        //计算中位数
+        double zhongwei = 0;
+        int len = newNums.length;
+        if(len%2==0){
+            zhongwei = (newNums[len/2-1]+newNums[len/2])/2;
+
+        }else{
+            zhongwei = newNums[(len-1)/2];
+
+        }
+
+        //打印
+        String value = "";
+        int p = 0;
+        while(p != newNums.length){
+            value += newNums[p++]+",";
+
+        }
+        System.out.println("合并后数列："+value+",中位数："+zhongwei);
+        return zhongwei;
+    }
+
+    /**
+     * (5)最长回文子串
+     给你一个字符串 s，找到 s 中最长的回文子串。
+     回文定义：即左右对称的。
+     示例 1：
+
+     输入：s = "babad"
+     输出："bab"
+     解释："aba" 同样是符合题意的答案。
+     示例 2：
+
+     输入：s = "cbbd"
+     输出："bb"
+
+     分析：
+     对xyzbabad,从左到右，循环取每一位的元素。
+     比较x和y是否相等，不等(手里有xy)，则比较x和z是否相等，不等(手里有xyz),则比较y和b是否相等，
+     不等(手里有xyzb),则比较z和a是否相等，不等(手里有xyzba),则比较b和b是否相等，相等，则有个回文串bab，暂存起来作为目前最长的回文子串，
+     继续比较z和a是否相等，不等则目前最长的回文子串是bab，且手里有xyzbab了。
+     继续用之前的比较(因为可能存在xyzbabadababzxy,所以继续用xyzbab进行)，比较a和a是否相等，
+     相等则又有1个新回文子串aba，比较旧回文bab和新回文aba的长度，取最长的最为最终回文子串。
+     循环到最后一个元素结束。
+
+
+
+
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s) throws Exception {
+        if(s.length ()<2){
+            throw new Exception("必须提供不低于2位长度的字符串来计算回文子串！");
+        }
+//        //字符串转数组。方便后续不用截取子串，而是直接从数组下标取元素。
+//        char[] strArr = s.toCharArray();
+        //回文子串
+        String huiwen = "";
+        //遍历了的元素
+        String loopedEles = s.substring(0,2);
+        for(int i=0;i<s.length-1;i++){
+            if(){
+
+            }
+        }
+
+        return "";
+    }
 
 
 
