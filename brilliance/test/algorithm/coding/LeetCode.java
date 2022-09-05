@@ -5,7 +5,7 @@ package algorithm.coding;
  * https://leetcode.cn/problemset/all/
  */
 public class LeetCode {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
         //(0)找出数列中最大的差值
         int[] arr = {1,3,8,16,7,50,0,20,100};
@@ -54,6 +54,27 @@ public class LeetCode {
          */
 
         //(5)最长回文子串
+
+//        longestPalindrome("");
+        longestPalindrome("babad");
+        longestPalindrome("cbbd");
+        longestPalindrome("xyzbabad");
+        longestPalindrome("xyzbbbac");
+        /**
+         * oputput:
+         * babad回文了：bab
+         babad回文了：aba
+         babad最长回文子串:bab
+         cbbd相邻一样：bb
+         cbbd最长回文子串:bb
+         xyzbabad回文了：bab
+         xyzbabad回文了：aba
+         xyzbabad最长回文子串:bab
+         xyzbbbac相邻一样：bb
+         xyzbbbac相邻一样：bb
+         xyzbbbac回文了：bbb
+         xyzbbbac最长回文子串:bbb
+         */
 
     }
 
@@ -283,6 +304,7 @@ public class LeetCode {
      输出："bb"
 
      分析：
+     方案一：coding 略。
      对xyzbabad,从左到右，循环取每一位的元素。
      比较x和y是否相等，不等(手里有xy)，则比较x和z是否相等，不等(手里有xyz),则比较y和b是否相等，
      不等(手里有xyzb),则比较z和a是否相等，不等(手里有xyzba),则比较b和b是否相等，相等，则有个回文串bab，暂存起来作为目前最长的回文子串，
@@ -291,28 +313,100 @@ public class LeetCode {
      相等则又有1个新回文子串aba，比较旧回文bab和新回文aba的长度，取最长的最为最终回文子串。
      循环到最后一个元素结束。
 
+     方案二：
+     对xyzbbbac
+     从头到尾对每个字符，每次都是先比较当前字符和下一个字符,
 
-
+     当前是x，先比较x和y，不等。不管x和y是否相等，继续比较x前面的（空）和y，不等，则无回文。继续下一个元素。
+     当前是y,先比较y和z，不等。不管y和z是否相等，继续比较y前面的x和z，不等，则无回文。继续下一个元素。
+     z同理。
+     当前是b同理。
+     当前是第二个b，比较b和b，相等则是一个回文bb。不管b和b是否相等，继续比较b前面的z和b，不等，则无回文。继续下一个元素。此时回文=bb
+     当前是第三个b，比较b和b，相等则是一个回文bb。不管b和b是否相等，继续比较b前面的b和b，相等，则回文是bbb,继续比较z和a是否相等，不等。继续下一个元素。此时回文=bbb
+     当前是a,先比较a和c，不等。不管a和c是否相等，继续比较a前面的b和c，不等，则无回文。继续下一个元素。
+     ...
+     一直到当前字符是最后一个字符操作后停止。
+     方案二的优势是，把连续2个相同字符的情况融入逻辑，而不是像方案一要单独写代码逻辑,简单。
+     且没有重复操作。
 
      * @param s
      * @return
      */
-    public String longestPalindrome(String s) throws Exception {
+    public static String longestPalindrome(String s) throws Exception {
+        //方案二coding
         if(s.length ()<2){
             throw new Exception("必须提供不低于2位长度的字符串来计算回文子串！");
         }
-//        //字符串转数组。方便后续不用截取子串，而是直接从数组下标取元素。
-//        char[] strArr = s.toCharArray();
-        //回文子串
-        String huiwen = "";
-        //遍历了的元素
-        String loopedEles = s.substring(0,2);
-        for(int i=0;i<s.length-1;i++){
-            if(){
-
+        //当前元素的前一个元素
+        String preItem = "";
+        //遍历到的当前元素
+        String currentItem = s.substring(0,1);
+        //回文子串。初始时，1个字符就回文。
+        String huiwen = currentItem;
+        //最长回文子串
+        String maxHuiwen = "";
+        //默认当前元素是第一个元素，即下标是0，则开始用第二个元素与之匹配。
+        for(int i=1;i<s.length();i++) {
+            //每次循环都认为当前元素1个字符和自己就回文
+            huiwen = currentItem;
+            preItem = (i<=1)?"":s.substring(i-2,i-1);
+            String nextItem = s.substring(i,i+1);
+            if(currentItem.equals(nextItem)) {
+                huiwen = currentItem+nextItem;
+                System.out.println(s+"相邻一样："+huiwen);
             }
+            //要匹配是否回文的下一个元素。即当前元素的右边的一个字符
+            String piPeiNextItem = nextItem;
+            //要匹配是否回文的上一个元素。即当前元素的左边的一个字符
+            String piPeiPreItem = preItem;
+            while(piPeiPreItem.equals(piPeiNextItem)) {
+                //如果上面有相邻一样的，且这里两边又有回文。则以此处的为准，因为此处至少有3位。
+                huiwen = huiwen.length()==2?huiwen.substring(0,1):huiwen;
+                huiwen = piPeiPreItem+huiwen+piPeiPreItem;
+                //左右2边匹配。接着往外围匹配左右2边。
+                piPeiPreItem = (i-1<=1)?"":s.substring(i-3,i-2);
+                piPeiNextItem = s.substring(i+1,i+2);
+                System.out.println(s+"回文了："+huiwen);
+            }
+            if(huiwen.length()>maxHuiwen.length()) {
+                maxHuiwen = huiwen;
+            }
+            //下面代码表示当前元素前后的所有回文屁匹配结束。重置变量
+            currentItem = nextItem;
         }
 
+        System.out.println(s+"最长回文子串:"+maxHuiwen);
+        return maxHuiwen;
+    }
+
+    /**(6)Z 字形变换
+     * 注：属于找规律类型问题。
+     * 将一个给定字符串 s 根据给定的行数 numRows ，以先从上往下、再从左到右进行 Z 字形排列。
+           比如输入字符串为 "PAYPALISHIRING" 行数为 3 时，排列如下：
+           P   A   H   N
+           A P L S I I G
+           Y   I   R
+           比如："PAHNAPLSIIGYIR"。
+           分析：
+           容易想到二维数组存放。
+           第一列是原始一维数组排列，
+           可见每一行的前后2个数字之差是固定值。
+           如第一行7-1=13-7=6=差值=(row-1)*2；
+           第二行6-2=4=(row-2)*2, 8-6=2=(row-3)*2, 12-8=4=(row-2)*2, 14-12=(row-3)*2
+           第三行5-3=2=(row-3)*2, 9-5=4=(row-2)*2,11-9=(row-3)*2,15-11=(row-2)*2
+           第四行10-4=6=(row-1)*2。
+           即对首行和尾行，左右差值=(row-1)*2；
+           第二行第一对左右差值(6-2)=4, 第二队左右差值(8-6)=2, 这两个差值之和4+2=6=(row-1)*2
+           第三行和第二行同理。
+           1     7       13
+           2   6 8    12 14
+           3 5   9 11    15
+           4     10      16
+
+
+     */
+    public static String convert(String s, int numRows) {
+        String[][] finalStr = new String[numRows][2];
         return "";
     }
 
