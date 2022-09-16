@@ -80,7 +80,7 @@ public class LeetCode {
          */
 
         //(6)Z字形变换
-//        convert("PAYPALISHIRING",3);
+        convert("PAYPALISHIRING",3);
 //        convert("PAY",5);
 //        convert("PAYPALISH",5);
         convert("PAYPALISHIRING",5);
@@ -452,8 +452,8 @@ public class LeetCode {
                     nextNexIndex += numRows-1;
                 }else{//中间行
                     if(count%2==0){
-                        nextIndex = j+(numRows-1-j)*2;
-                        nextNexIndex = numRows-1-j;
+                        nextIndex += j+(numRows-1-j)*2;
+                        nextNexIndex += numRows-1-j;
                     }else{
                         nextIndex = nextIndex+2*j;//(其实就=2numRows-2+j)
                         nextNexIndex = nextNexIndex+j;
@@ -464,16 +464,23 @@ public class LeetCode {
                 if(nextIndex<s.length() && nextNexIndex<colNum){
                     finalStr[j][nextNexIndex] = s.substring (nextIndex,nextIndex+1);
                     count++;
+                }else{
+                    break;
                 }
 
             }
-
-
         }
-        String str = finalStr.toString ();
-        System.out.println("原字符串："+s+",Z字型转换后："+str);
-
-        return "";
+        //数组转字符串
+        StringBuilder sb = new StringBuilder ();
+        for(int p=0;p<finalStr.length;p++){
+            for(int q=0;q<finalStr[p].length;q++){
+                if(finalStr[p][q] !=null){
+                    sb.append (finalStr[p][q]);
+                }
+            }
+        }
+        System.out.println("原字符串："+s+"，行数："+numRows+",Z字型转换后："+sb);
+        return sb.toString ();
     }
 
     //根据字符串总数和行数，计算总列数。列数作为二维数组的初始化大小。
