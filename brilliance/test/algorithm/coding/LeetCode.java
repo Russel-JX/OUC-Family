@@ -7,6 +7,9 @@ package algorithm.coding;
 public class LeetCode {
     public static void main(String[] args) throws Exception{
 
+//        float m = (float)11.0/(float)2.0;
+//        System.out.println("m="+m);
+
         //(0)找出数列中最大的差值
         int[] arr = {1,3,8,16,7,50,0,20,100};
         int[] arr2 = {1,5,1,2 };
@@ -75,6 +78,12 @@ public class LeetCode {
          xyzbbbac回文了：bbb
          xyzbbbac最长回文子串:bbb
          */
+
+        //(6)Z字形变换
+//        convert("PAYPALISHIRING",3);
+//        convert("PAY",5);
+//        convert("PAYPALISH",5);
+        convert("PAYPALISHIRING",5);
 
     }
 
@@ -379,6 +388,8 @@ public class LeetCode {
         return maxHuiwen;
     }
 
+
+
     /**(6)Z 字形变换
      * 注：属于找规律类型问题。
      * 将一个给定字符串 s 根据给定的行数 numRows ，以先从上往下、再从左到右进行 Z 字形排列。
@@ -390,11 +401,11 @@ public class LeetCode {
            分析：
            容易想到二维数组存放。
            第一列是原始一维数组排列，
-           可见每一行的前后2个数字之差是固定值。
-           如第一行7-1=13-7=6=差值=(row-1)*2；
-           第二行6-2=4=(row-2)*2, 8-6=2=(row-3)*2, 12-8=4=(row-2)*2, 14-12=(row-3)*2
-           第三行5-3=2=(row-3)*2, 9-5=4=(row-2)*2,11-9=(row-3)*2,15-11=(row-2)*2
-           第四行10-4=6=(row-1)*2。
+           可见每一行的前后2个数字之差是固定值，最后顺序输出数组元素即可。
+           如第一行7-1=13-7=6=差值=(row-1)*2；即总行数-1的2倍，假设是P(6)。
+           第二行6-2=4=(row-2)*2, 8-6=2=(row-3)*2, 12-8=4=(row-2)*2, 14-12=(row-3)*2.即先是总行数-2的2倍，假设是Q(4)，然后差值是P-Q(6-4),然后又是Q，最后是P-Q
+           第三行5-3=2=(row-3)*2, 9-5=4=(row-2)*2,11-9=(row-3)*2,15-11=(row-2)*2.即先是总行数-3的2倍，假设是R(2)，然后差值是P-R(6-2),然后又是R，最后是P-R
+           第四行10-4=6=(row-1)*2。即总行数-1的2倍，假设是P(6)。
            即对首行和尾行，左右差值=(row-1)*2；
            第二行第一对左右差值(6-2)=4, 第二队左右差值(8-6)=2, 这两个差值之和4+2=6=(row-1)*2
            第三行和第二行同理。
@@ -406,9 +417,87 @@ public class LeetCode {
 
      */
     public static String convert(String s, int numRows) {
-        String[][] finalStr = new String[numRows][2];
+        /**总列数
+            * x是字符串长度。
+            * k = (x-row)/(row-1)
+            * 总是先竖向向下row个，再斜向上row-2个的排列规律。
+            * 第一个竖向向下:k=[-1,0] 如12345。共用第1列
+            * 第一个斜向上:k=(0,1)  如，678。占234列
+            * 第二个竖向向下:k=[1,2] 如910111213。共用第5列
+            * 第二个斜向上:k=(2,3) 如141516。占678列
+            * 注：
+            */
+
+        //总列数
+        int colNum = getColNum(s.length(),numRows);
+
+        String[][] finalStr = new String[numRows][colNum];
+        //先排第一列
+        int firstColCount = 0;
+        for(int i=0;i<numRows && i<s.length();i++){
+            finalStr[i][0] = s.substring(i,i+1);
+            firstColCount++;
+        }
+        //根据第一列。计算第一列中每一行后面的值。
+        for(int j=0;j<firstColCount;j++){
+            int nextIndex = 0;//下个元素在字符串的原始位置。如9在位置8
+            int nextNexIndex = 0;//下个元素在新二维数组的位置。
+
+            int count = 0;//在一行中，第几个元素了。因为一行中两两元素的跨度不同
+            //判断每行下一个值是否在字符串范围内。
+            while(nextIndex+1<=s.length()){
+                //收尾两行特殊。直接+(row-1)
+                if(j==0 || j==firstColCount-1){
+                    nextIndex += (numRows-1)*2;
+                    nextNexIndex += numRows-1;
+                }else{//中间行
+                    if(count%2==0){
+                        nextIndex = j+(numRows-1-j)*2;
+                        nextNexIndex = numRows-1-j;
+                    }else{
+                        nextIndex = nextIndex+2*j;//(其实就=2numRows-2+j)
+                        nextNexIndex = nextNexIndex+j;
+                    }
+
+                }
+                //TODO
+                if(nextIndex<s.length() && nextNexIndex<colNum){
+                    finalStr[j][nextNexIndex] = s.substring (nextIndex,nextIndex+1);
+                    count++;
+                }
+
+            }
+
+
+        }
+        String str = finalStr.toString ();
+        System.out.println("原字符串："+s+",Z字型转换后："+str);
+
         return "";
     }
+
+    //根据字符串总数和行数，计算总列数。列数作为二维数组的初始化大小。
+    private static int getColNum(int len, int numRows){
+        //先转成float类型，再做除法，才能得到浮点型结果。
+        float k =(float)(len-numRows)/(float)(numRows-1);
+        int kMod = (len-numRows)%(numRows-1);
+        double floor = Math.floor(k);
+        double ceil = Math.ceil(k);
+        int section = (int) (ceil/2);
+        int sectionMod = (int) (ceil%2);
+        int colNum = 1;
+
+        //当余数为0或k本身就是整数时，表示在竖向向下的列。
+        if(sectionMod==0 || k==ceil) {
+            colNum = section*(numRows-1)+((k<=0)?1:numRows);
+        }else {//斜向上时，列数=前面完整的列数+kMod。而，前面完整的列数=3倍行数减去收尾共用的2个
+            //斜向上时，列数=前一轮的列数+此处的余数。而前一轮的列数=(用当前字符串长度-行数)和numRows计算而来。
+            colNum = getColNum(len-numRows, numRows)+kMod;
+        }
+        System.out.println("原串总数:"+len+",总行数："+numRows+"总列数："+colNum);
+        return colNum;
+    }
+
 
 
 
