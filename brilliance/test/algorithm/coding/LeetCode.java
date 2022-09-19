@@ -7,9 +7,6 @@ package algorithm.coding;
 public class LeetCode {
     public static void main(String[] args) throws Exception{
 
-//        float m = (float)11.0/(float)2.0;
-//        System.out.println("m="+m);
-
         //(0)找出数列中最大的差值
         int[] arr = {1,3,8,16,7,50,0,20,100};
         int[] arr2 = {1,5,1,2 };
@@ -81,9 +78,21 @@ public class LeetCode {
 
         //(6)Z字形变换
         convert("PAYPALISHIRING",3);
-//        convert("PAY",5);
-//        convert("PAYPALISH",5);
+        convert("PAY",5);
+        convert("PAYPALISH",5);
         convert("PAYPALISHIRING",5);
+        /**
+         * output:
+         * 原串总数:14,总行数：3总列数：7
+         原字符串：PAYPALISHIRING，行数：3,Z字型转换后：PAHNAPLSIIGYIR
+         原串总数:3,总行数：5总列数：1
+         原字符串：PAY，行数：5,Z字型转换后：PAY
+         原串总数:9,总行数：5总列数：5
+         原字符串：PAYPALISH，行数：5,Z字型转换后：PHASYIPLA
+         原串总数:9,总行数：5总列数：5
+         原串总数:14,总行数：5总列数：6
+         原字符串：PAYPALISHIRING，行数：5,Z字型转换后：PHASIYIRPLIGAN
+         */
 
     }
 
@@ -423,7 +432,7 @@ public class LeetCode {
             * 总是先竖向向下row个，再斜向上row-2个的排列规律。
             * 第一个竖向向下:k=[-1,0] 如12345。共用第1列
             * 第一个斜向上:k=(0,1)  如，678。占234列
-            * 第二个竖向向下:k=[1,2] 如910111213。共用第5列
+            * 第二个竖向向下:k=[1,2] 如910111213。共用第5列.**表示有1个完整的Z字型。
             * 第二个斜向上:k=(2,3) 如141516。占678列
             * 注：
             */
@@ -440,29 +449,29 @@ public class LeetCode {
         }
         //根据第一列。计算第一列中每一行后面的值。
         for(int j=0;j<firstColCount;j++){
-            int nextIndex = 0;//下个元素在字符串的原始位置。如9在位置8
-            int nextNexIndex = 0;//下个元素在新二维数组的位置。
-
+            //下个元素在字符串的原始位置。如9在位置8.
+            //如果是竖向的最后一个，则在原字符串的初始位置=第一列的元素个数-1
+            int nextIndex = (j==firstColCount-1)?(firstColCount-1):0;
+            int nextNewIndex = 0;//下个元素在新二维数组的位置。
             int count = 0;//在一行中，第几个元素了。因为一行中两两元素的跨度不同
             //判断每行下一个值是否在字符串范围内。
             while(nextIndex+1<=s.length()){
-                //收尾两行特殊。直接+(row-1)
+                //首尾两行特殊。直接+(row-1)
                 if(j==0 || j==firstColCount-1){
                     nextIndex += (numRows-1)*2;
-                    nextNexIndex += numRows-1;
+                    nextNewIndex += numRows-1;
                 }else{//中间行
                     if(count%2==0){
-                        nextIndex += j+(numRows-1-j)*2;
-                        nextNexIndex += numRows-1-j;
+                        nextIndex += ((count==0)?j:0)+(numRows-1-j)*2;//只对每行的第二个元素加行号，其他元素不加
+                        nextNewIndex += numRows-1-j;
                     }else{
                         nextIndex = nextIndex+2*j;//(其实就=2numRows-2+j)
-                        nextNexIndex = nextNexIndex+j;
+                        nextNewIndex = nextNewIndex+j;
                     }
 
                 }
-                //TODO
-                if(nextIndex<s.length() && nextNexIndex<colNum){
-                    finalStr[j][nextNexIndex] = s.substring (nextIndex,nextIndex+1);
+                if(nextIndex<s.length() && nextNewIndex<colNum){
+                    finalStr[j][nextNewIndex] = s.substring (nextIndex,nextIndex+1);
                     count++;
                 }else{
                     break;
@@ -490,19 +499,36 @@ public class LeetCode {
         int kMod = (len-numRows)%(numRows-1);
         double floor = Math.floor(k);
         double ceil = Math.ceil(k);
+        //如果相等，表示正好是竖向的第一个元素。此时ceil+1方便下面计算colNum
+        if(k == ceil){
+            ceil++;
+        }
+
         int section = (int) (ceil/2);
         int sectionMod = (int) (ceil%2);
         int colNum = 1;
 
         //当余数为0或k本身就是整数时，表示在竖向向下的列。
-        if(sectionMod==0 || k==ceil) {
-            colNum = section*(numRows-1)+((k<=0)?1:numRows);
+        if(sectionMod==0) {
+            //根据K的值。有1+k/2个竖向和k/2个斜的(而每个斜的占row-2列)。即总列数=1+k/2+k*(row-2)/2=1+k*row/2-k/2
+            colNum = 1+(int)ceil*numRows/2-(int)ceil/2;
         }else {//斜向上时，列数=前面完整的列数+kMod。而，前面完整的列数=3倍行数减去收尾共用的2个
             //斜向上时，列数=前一轮的列数+此处的余数。而前一轮的列数=(用当前字符串长度-行数)和numRows计算而来。
             colNum = getColNum(len-numRows, numRows)+kMod;
         }
         System.out.println("原串总数:"+len+",总行数："+numRows+"总列数："+colNum);
         return colNum;
+    }
+
+
+    /**
+     * TODO  直接按规律输出最终字符串
+     * @param s
+     * @param numRows
+     * @return
+     */
+    public static String convert2(String s, int numRows) {
+        return "";
     }
 
 
