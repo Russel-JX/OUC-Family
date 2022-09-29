@@ -126,6 +126,25 @@ public class LeetCode {
            7. 整数反转。原整数：-2147483648,反转后=0
          */
 
+        //(8)
+        myAtoi("abc-0123xyz456");
+        myAtoi("abc0123xyz456");
+        myAtoi("abc0xyz123xyz456");
+        myAtoi("abc+1xyz123xyz456");
+        myAtoi("abc1xyz123xyz456");
+        myAtoi("123");
+        myAtoi("abc");
+        /**
+         * output:
+         * (8)字符串转换整数. abc-0123xyz456，->-123
+         (8)字符串转换整数. abc0123xyz456，->123
+         (8)字符串转换整数. abc0xyz123xyz456，->0
+         (8)字符串转换整数. abc+1xyz123xyz456，->1
+         (8)字符串转换整数. abc1xyz123xyz456，->1
+         (8)字符串转换整数. 123，->123
+         (8)字符串转换整数. abc，->0
+         */
+
     }
 
 
@@ -680,24 +699,74 @@ public class LeetCode {
      本题中的空白字符只包括空格字符 ' ' 。
                  除前导空格或数字后的其余字符串外，请勿忽略 任何其他字符。
 
-     如"abc-0123xyz456"->"-123"
-                 "abc0123xyz456"->"123"
-                 "abc0xyz123xyz456"->"0"
+     如"abc-0123xyz456"-> -123
+     "abc0123xyz456"-> 123
+     "abc0xyz123xyz456"-> 0
 
      分析：
-                       找到第1个非0数字，看前面哪个字符是否是正好或负号。继续往后找，截取后面有其他字符出现时的一整段数字。如-0123.
-                       判断范围返回。
+       找到第1个非0数字，看前面哪个字符是否是正好或负号。继续往后找，截取后面有其他字符出现时的一整段数字。如-0123.
+       判断范围返回。
      */
-//    public static int myAtoi(String s) {
-//        char[] chars = s.toCharArray().;
-//        CharSequence nums = "0123456789";
-//        for(char item: chars) {
-//            if(nums.) {
-//
-//        }
-//        }
-//        return 0;
-//    }
+    public static int myAtoi(String s) {
+        //String.split(reg)返回满足正则的字符串数组。""时，都匹配。不用String.toCharArray,因为char比较时，没有contains类似的方法比较。
+        String[] strArr = s.split ("");
+        StringBuilder sb = new StringBuilder();
+        //符号位
+        String symbol = "";
+        //是否找到第一个数字
+        boolean firstNumFlag = false;
+        for(String item: strArr) {
+            //找第一个数字
+            if(isNumber(item) && !firstNumFlag) {
+                firstNumFlag = true;
+                //判断符号位。非首位是数字时，才判断前面的符号位
+                symbol = s.indexOf(item)!=0 &&s.substring(s.indexOf(item)-1,s.indexOf(item)).equals ("-")?"-":"";
+
+                //把先找到的连续0扔掉，且标记找到数字了。否则最后还要额外去掉连续0.
+                if(item.equals ("0")){
+//                    firstNum = item;
+                    continue;
+                }
+
+                sb.append (item);
+                continue;
+            }
+            //根据第一个数字，找后面的数字
+            if(firstNumFlag){
+                if(isNumber(item)){
+                    sb.append (item);
+                }else{
+                    break;
+                }
+            }
+        }
+        double doubleNum;
+        int finalNum;
+
+        if(symbol.equals ("-")){
+            doubleNum = -Double.valueOf(sb.toString ());
+        }else if(sb.toString ().equals ("")){
+            doubleNum = 0;
+        }else{
+            doubleNum = Double.valueOf(sb.toString ());
+        }
+        if(doubleNum>Integer.MAX_VALUE){
+            finalNum = Integer.MAX_VALUE;
+        }
+        if(doubleNum<Integer.MIN_VALUE){
+            finalNum = Integer.MIN_VALUE;
+        }
+        finalNum = (int)doubleNum;
+
+
+        System.out.println("(8)字符串转换整数. "+s+"，->"+finalNum);
+        return (int)finalNum;
+    }
+
+    public static boolean isNumber(String s){
+        String nums = "0123456789";
+        return nums.contains(s);
+    }
 
 
 
