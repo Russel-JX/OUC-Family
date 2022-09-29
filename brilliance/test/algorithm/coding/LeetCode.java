@@ -1,6 +1,9 @@
 package algorithm.coding;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * https://leetcode.cn/problemset/all/
  */
@@ -92,6 +95,35 @@ public class LeetCode {
          原串总数:9,总行数：5总列数：5
          原串总数:14,总行数：5总列数：6
          原字符串：PAYPALISHIRING，行数：5,Z字型转换后：PHASIYIRPLIGAN
+         */
+
+        //(6.2)Z字形变换
+        convert2("PAYPALISHIRING",3);
+        convert2("PAY",5);
+        convert2("PAYPALISH",5);
+        convert2("PAYPALISHIRING",5);
+        /**
+         * output:
+         *
+         Z字形转换2。 原串：PAYPALISHIRING,总行数：3。变换后：PAHNAPLSIIGYIR
+                     Z字形转换2。 原串：PAY,总行数：5。变换后：PAY
+                     Z字形转换2。 原串：PAYPALISH,总行数：5。变换后：PHASYIPLA
+                     Z字形转换2。 原串：PAYPALISHIRING,总行数：5。变换后：PHASIYIRPLIGAN
+         */
+
+
+        //(7)整数反转
+        reverse(123);
+        reverse(-123);
+        reverse(0);
+        reverse(Integer.MAX_VALUE);
+        reverse(Integer.MIN_VALUE);
+        /**
+         * 7. 整数反转。原整数：123,反转后=321
+           7. 整数反转。原整数：-123,反转后=-321
+           7. 整数反转。原整数：0,反转后=0
+           7. 整数反转。原整数：2147483647,反转后=0
+           7. 整数反转。原整数：-2147483648,反转后=0
          */
 
     }
@@ -520,16 +552,152 @@ public class LeetCode {
         return colNum;
     }
 
-
     /**
-     * TODO  直接按规律输出最终字符串
+     * (6.2)Z字形变换
+     * 推荐
+        * 因为最终是按行输出，所以可遍历原字符串把字符分到N行，计算每行的子字符串，最后把所有行子字符串拼接即可。
+        * 其中每行字符串的计算：
+        *    从上到下，先累加，加到第一行或最后一行时，再反向加到行中。
+        * 如：
+        * 先(逻辑是行号逐渐增大)
+        * 行1：1
+        * 行2：2
+        * 行3：3
+        * 行4：4
+        * 再(反向.先算第3行，再算第2行。即反转逻辑是行号逐渐减小)
+        * 行3：35
+        * 行2：26
+        * 行1：17
+        * 此时行4：4
+        * 再(再反向.先算第2行，再算第3行。即反转逻辑是行号逐渐增大)
+        * 行2：268
+        * 行3：359
+        * 行4：410
+        * 此时行1：17
+        * 时间复杂度：O(n).遍历一遍。
+        * 空间复杂度：O(numRows).有几行，就需要几个储存。
      * @param s
      * @param numRows
      * @return
      */
     public static String convert2(String s, int numRows) {
-        return "";
+        List<StringBuilder> rowList = new ArrayList<StringBuilder> (5);
+        for(int i=0;i<numRows;i++) {
+            rowList.add(new StringBuilder());
+        }
+        //行号
+        int i=0;
+        int forwardFlag = -1;
+        for(char item: s.toCharArray()) {
+            rowList.get(i).append(item);
+            if(i==0 || i%(numRows-1)==0) {
+                //反转。即行号从逐渐增大，改成逐渐减小。或者反之。
+                forwardFlag = -forwardFlag;
+            }
+            i = i+forwardFlag;
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int k=0;k<rowList.size();k++) {
+            sb.append(rowList.get(k));
+        }
+        System.out.println("Z字形转换2。 原串："+s+",总行数："+numRows+"。变换后："+sb.toString());
+
+//        stream 遍历（效果同for）
+//        StringBuilder sb2 = new StringBuilder();
+//        rowList.stream().forEach(e->sb2.append(e));
+//        System.out.println("Z字形转换2。 原串："+s+",总行数："+numRows+"。变换后："+sb2.toString());
+        return sb.toString();
     }
+
+    /**
+     * (7)整数反转
+     * 如果反转后整数超过 32 位的有符号整数的范围 [−2的31次方,  2的31次方 − 1. 即-2147483648到2147483647] ，就返回 0
+     * 除了符号位，其他位置的数字正好倒序。
+
+     示例 1：
+           输入：x = 123
+           输出：321
+
+     示例 2：
+           输入：x = -123
+           输出：-321
+
+     示例 3：
+           输入：x = 120
+           输出：21
+
+     示例 4：
+           输入：x = 0
+           输出：0
+           分析：
+                 先int->String->char[]字符数组.
+                 循环数组，把两边的字符互换。最后转成int.
+     */
+    public static int reverse(int x) {
+        String str = String.valueOf(x);
+        char[] chars = str.toCharArray();
+        int midIndex = chars.length/2;//因为无论是奇数还是偶数个，正好都是交换中间哪个数左右的元素。
+        char tmp;
+        for(int i=0;i<midIndex;i++) {
+            tmp = chars[i];
+            chars[i] = chars[chars.length-i-1];
+                chars[chars.length-i-1] = tmp;
+        }
+        String finalStr = String.valueOf(chars);
+        //转换后的数字可能超int范围，用double再判断大小。
+        double y;
+        //对-123 之后的"321-"处理:去掉最后一位符号位。
+        if(x<0) {
+            finalStr = finalStr.substring(0, finalStr.length()-1);
+            y = -Double.valueOf(finalStr);
+        }else {
+            y = Double.valueOf(finalStr);
+        }
+        if(y<Integer.MIN_VALUE || y>Integer.MAX_VALUE) {
+            y = 0;
+        }
+        System.out.println("7. 整数反转。原整数："+x+",反转后="+(int)y);
+        return (int)y;
+    }
+
+
+    /**
+     * (8)字符串转换整数 (atoi)
+     * 注：被花旗面过
+     * 请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
+
+                 函数 myAtoi(string s) 的算法如下：
+
+     读入字符串并丢弃无用的前导空格
+                 检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。
+                 读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。
+                 将前面步骤读入的这些数字转换为整数（即，"123" -> 123， "0032" -> 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。
+                 如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。
+                 具体来说，小于 −2的31次方 的整数应该被固定为 −2的31次方 ，大于 2的31次方 − 1 的整数应该被固定为 2的31次方 − 1 。
+                 返回整数作为最终结果。
+                 注意：
+
+     本题中的空白字符只包括空格字符 ' ' 。
+                 除前导空格或数字后的其余字符串外，请勿忽略 任何其他字符。
+
+     如"abc-0123xyz456"->"-123"
+                 "abc0123xyz456"->"123"
+                 "abc0xyz123xyz456"->"0"
+
+     分析：
+                       找到第1个非0数字，看前面哪个字符是否是正好或负号。继续往后找，截取后面有其他字符出现时的一整段数字。如-0123.
+                       判断范围返回。
+     */
+//    public static int myAtoi(String s) {
+//        char[] chars = s.toCharArray().;
+//        CharSequence nums = "0123456789";
+//        for(char item: chars) {
+//            if(nums.) {
+//
+//        }
+//        }
+//        return 0;
+//    }
 
 
 
