@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * https://leetcode.cn/problemset/all/
+ * 策略：
+ *  高效代码：
+ *  先写大流程coding，边界和特殊情况问题写在纸上，大流程coding后，再补充边界和特殊情况。
  */
 public class LeetCode {
     public static void main(String[] args) throws Exception{
@@ -144,6 +147,18 @@ public class LeetCode {
          (8)字符串转换整数. 123，->123
          (8)字符串转换整数. abc，->0
          */
+
+        //(9)回文数
+        System.out.println("(9)回文数。0->"+isPalindrome(0));
+        System.out.println("(9)回文数。12->"+isPalindrome(12));
+        System.out.println("(9)回文数。-121->"+isPalindrome(-121));
+        System.out.println("(9)回文数。121->"+isPalindrome(121));
+        System.out.println("(9)回文数。1234321->"+isPalindrome(1234321));
+        System.out.println("(9)回文数。1221->"+isPalindrome(1221));
+
+        //(10)正则表达式匹配
+//        isMatch("aaaabxyzkkkdefvwwpqr","a*abxyz.*def...pqr");
+        isMatch("pqraaaabxyzkkkdefvwwpqr","pqra*abxyz.*def...pqr");
 
     }
 
@@ -706,6 +721,9 @@ public class LeetCode {
      分析：
        找到第1个非0数字，看前面哪个字符是否是正好或负号。继续往后找，截取后面有其他字符出现时的一整段数字。如-0123.
        判断范围返回。
+
+     时间复杂度：O(n).因为遍历一遍
+     空间复杂度：O(1).元素共用一个空间
      */
     public static int myAtoi(String s) {
         //String.split(reg)返回满足正则的字符串数组。""时，都匹配。不用String.toCharArray,因为char比较时，没有contains类似的方法比较。
@@ -766,6 +784,135 @@ public class LeetCode {
     public static boolean isNumber(String s){
         String nums = "0123456789";
         return nums.contains(s);
+    }
+
+    /**
+     * (9)回文数
+     * 判断int数是否回文。
+     * 回文：正读和反读是一样的。
+     * 如121  回文
+     * 1234321  回文
+     * 1221 回文
+     * -121 不回文
+     * -1234321  不回文
+     *
+     * 分析：
+     *  负数有符号，一定不回文。
+     *  正数，一次比较两边是否相等。
+     *
+     * @param x
+     * @return
+     */
+    public static boolean isPalindrome(int x) {
+        if(x<0){
+            return false;
+        }
+        String[] strArr = String.valueOf(x).split("");
+        int len = strArr.length;
+        //比较前一半和后一半。偶数个和奇数个，都是比较中间位置。
+        //只是奇数个时，最后是中间和中间自己比。偶数时没有中间数(中间数不在原有数列中)，是虚拟中间数两边的比。
+        for(int i=0; i<len/2; i++){
+            if(!strArr[i].equals(strArr[len-i-1])){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    /**
+     * (10)正则表达式匹配。
+     * 要求：
+     * 给定一个字符串s和字符串规律p。
+     * p中可能带"."或"*"。
+     * 已知：
+     *  '.' 匹配任意单个字符
+     *  '*' 匹配零个或多个前面的那一个元素
+     * 判断s是否完全匹配p。
+     * 注：s只包括小写字母a-z，p只包括小写字母和".","*"。即没有括号、特殊字符等特殊情况。
+     * 如
+     * s:"aa", p:"a" 不匹配，因为不是完全匹配
+     * s:"aa", p:"a*" 匹配。因为"a*"表示要匹配a开头且后面有任意多个a都可以的。"aa","aaa","aaaa"等都会匹配。"ab"不会匹配。
+     * s:"ab", p:".*" 匹配。因为"."能匹配任意单个字符，所以".*"表示要匹配任意字符出现任意次。
+     * s:"abc", p:"ab.xyz*" 。 因为"ab.xyz*"表示要匹配ab开头第三个字符是任意，且后面接xy字符，最后有任意多个z字符的。
+     *  "abvxyzzzzzz"，"abkxyz"会匹配到,"abcxyp"不匹配。
+     *
+     *  分析：
+     *      P="a*abxyz.*def..pqr",因为*和前面一个字符特殊，根据"x*"把字符串划分成多个部分。
+     *
+     *      如划分成"(a*)(abxyz)(.*)(def..pqr)"4个部分，可匹配到"(aaaaa任意多个a)(abxyz)(abcdefghi任意多个任意字符)(def..pqr)"
+     *      先匹配最严的即：
+     *      第2部分：(abxyz)
+     *      第4部分(def..pqr)。其中(def..pqr)中的".."只表示位置，不用去匹配，因为"."匹配任意1个字符。所以拆成"def"和"pqr"分别匹配。
+     *          判断第2、4部分是否按顺序匹配。
+     *      再匹配
+     *      第1部分："(aaaaa任意多个a)"
+     *      第3部分："(abcdefghi任意多个任意字符)"
+     *
+     *具体方案：
+     * 对s="pqraaaabxyzkkkdefvwwpqr",p="pqra*abxyz.*def...pqr"
+     * 根据"x*",把规则p分开成几个部分。toNormalMatchParts=["pqr", "abxyz", "def...pqr"]
+     *
+     * 根据toNormalMatchParts，计算P中普通字符位置：
+     * pNormalIndexs=[(0到2), (5到9), (12到20)]，
+     * 进而得到P中通配符位置，为中间间隔：
+     * pWildIndexs=[(3到4), (10到11)]；
+     *
+     * 根据toNormalMatchParts，计算S中普通字符位置：
+     * sNormalIndexs=[(0到2), (7到11), (20到27)]，
+     * 进而得到S中通配符位置，为中间间隔：
+     * sWildIndexs=[(3到6), (12到19)].
+     *
+     * 先比较pNormalIndexs和sNormalIndexs位置的字符是否匹配，
+     * 再比较pWildIndexs和sWildIndexs位置的字符是否匹配。
+     *
+     *
+     *
+     * @param s
+     * @param p
+     * @return
+     */
+    public static boolean isMatch(String s, String p) {
+        //非"x*部分。即非通配符匹配部分。"按照符号"x*"分割。String.split(reg)  "*"号是正则字符，要转义成"\\*"。所以"x*",用".\\*"表示
+        //"a*abxyz.*def...pqr"->["", "abxyz", "def...pqr"]
+        //"pqra*abxyz.*def...pqr"->["pqr", "abxyz", "def...pqr"]
+        String[] toNormalMatchParts = p.split (".\\*");
+        //"x*"部分。即通配符匹配部分。
+        String[] toWildMatchParts = new String[toNormalMatchParts.length-1];
+        //遍历字面值部分去匹配时，动态找到缺失的通配符部分。后者夹在前者之间。
+        for(int i=0; i<toNormalMatchParts.length; i++){
+            if(toNormalMatchParts[i].equals ("")){//在两端有"x*"或者在中间有连续"x*"，视作这部分匹配。接着下一个就是夹在中间的"x*"
+                continue;
+            }
+
+            //TODO 22.09.30 按照分析中的 "具体方案："coding即可。
+            //普通部分匹配
+            if(toNormalMatchParts[i].equals ()){
+
+            }
+
+            //找到通配符部分
+            if(i%2==0){//找下一个通配符的开始
+
+                int normalIndex = p.indexOf(toNormalMatchParts[i]);
+                String wildCard = p.substring(normalIndex-2,normalIndex);//"x*"
+                toWildMatchParts[i] = wildCard;
+            }else{//找下一个通配符的结束
+
+            }
+
+            //TODO 先匹配普通部分(如先"abxyz"，"def...pqr" )；都OK了，再匹配通配符部分。否则先通配符匹配会匹配很长，可能导致本来全局匹配的不匹配了。
+            String[] normalParts = toNormalMatchParts[i].split("\\.");//"def...pqr"->["def", "", "", "pqr"]
+            System.out.println("(10)正则表达式匹配。"+s+"->normalParts:"+normalParts);
+
+
+
+
+
+        }
+
+        System.out.println("(10)正则表达式匹配。"+s+"->"+toNormalMatchParts);
+        return false;
     }
 
 
