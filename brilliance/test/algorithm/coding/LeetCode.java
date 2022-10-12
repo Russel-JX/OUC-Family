@@ -851,17 +851,17 @@ public class LeetCode {
      *
      *具体方案：
      * 对s="pqraaaabxyzkkkdefvwwpqr",p="pqra*abxyz.*def...pqr"
-     * 根据"x*",把规则p分开成几个部分。toNormalMatchParts=["pqr", "abxyz", "def...pqr"]
+     * 根据"x*",把规则p分开成几个部分。pNormalMatchParts=["pqr", "abxyz", "def...pqr"]
      *
-     * 根据toNormalMatchParts，计算P中普通字符位置：
+     * 根据 pNormalMatchParts ，计算P中普通字符位置：
      * pNormalIndexs=[(0到2), (5到9), (12到20)]，
      * 进而得到P中通配符位置，为中间间隔：
      * pWildIndexs=[(3到4), (10到11)]；
      *
-     * 根据toNormalMatchParts，计算S中普通字符位置：
-     * sNormalIndexs=[(0到2), (7到11), (20到27)]，
+     * 根据 pNormalMatchParts ，从头到尾，计算S中普通字符位置：
+     * sNormalIndexs=[(0到2), (6到10), (14到22)]，（如果sNormalIndexs中的元素位置后面比前面小，则直接返回不匹配）
      * 进而得到S中通配符位置，为中间间隔：
-     * sWildIndexs=[(3到6), (12到19)].
+     * sWildIndexs=[(3到5), (11到13)].
      *
      * 先比较pNormalIndexs和sNormalIndexs位置的字符是否匹配，
      * 再比较pWildIndexs和sWildIndexs位置的字符是否匹配。
@@ -876,43 +876,92 @@ public class LeetCode {
         //非"x*部分。即非通配符匹配部分。"按照符号"x*"分割。String.split(reg)  "*"号是正则字符，要转义成"\\*"。所以"x*",用".\\*"表示
         //"a*abxyz.*def...pqr"->["", "abxyz", "def...pqr"]
         //"pqra*abxyz.*def...pqr"->["pqr", "abxyz", "def...pqr"]
-        String[] toNormalMatchParts = p.split (".\\*");
+        String[] pNormalMatchParts = p.split (".\\*");
+        String[] sNormalMatchParts = new String[pNormalMatchParts.length];
         //"x*"部分。即通配符匹配部分。
-        String[] toWildMatchParts = new String[toNormalMatchParts.length-1];
+        String[] pWildMatchParts = new String[pNormalMatchParts.length-1];
+        String[] sWildMatchParts = new String[sNormalMatchParts.length-1];
+        //上一次普通部分的位置。用于计算后面通配符部分位置。
+        int prePStartIndex = 0;
+        int prePEndIndex = 0;
+        int preSStartIndex = 0;
+        int preSEndIndex = 0;
+        //
+//        pWildIndexs
+//        sWildIndexs
         //遍历字面值部分去匹配时，动态找到缺失的通配符部分。后者夹在前者之间。
-        for(int i=0; i<toNormalMatchParts.length; i++){
-            if(toNormalMatchParts[i].equals ("")){//在两端有"x*"或者在中间有连续"x*"，视作这部分匹配。接着下一个就是夹在中间的"x*"
+        for(int i=0; i<pNormalMatchParts.length; i++){
+            if(pNormalMatchParts[i].equals ("")){//在两端有"x*"或者在中间有连续"x*"，视作这部分匹配。接着下一个就是夹在中间的"x*"
                 continue;
             }
 
-            //TODO 22.09.30 按照分析中的 "具体方案："coding即可。
-            //普通部分匹配
-            if(toNormalMatchParts[i].equals ()){
+            //根据P中普通部分，找到P中通配符部分和S中普通部分。TODO 对"def...pqr"情况处理。
+            int pNormalStartIndex = p.indexOf(pNormalMatchParts[i]);
+            int pNormalEndIndex = pNormalStartIndex+pNormalMatchParts[i].length()-1;
 
+
+            //P中有"."时，从之前S已经匹配过的普通部分，向后去找S中对应的普通部分。这里是从"kkkdefvwwpqr"，即S的第11位置去匹配Pd的"def...pqr"
+            int sNormalStartIndex = s.indexOf(pNormalMatchParts[i]);
+            int sNormalEndIndex = sNormalStartIndex+pNormalMatchParts[i].length()-1;
+            sNormalMatchParts[i] = s.substring(sNormalStartIndex, sNormalEndIndex+1);
+            System.out.println("sNormalMatchParts[i]="+sNormalMatchParts[i]+",pNormalMatchParts[i]="+pNormalMatchParts[i]+",i="+i);
+
+            //普通位置不对(如找不到或下一个普通位置在上衣普通位置之前)，则不匹配
+            if(sNormalStartIndex < 0 || sNormalStartIndex <= preSStartIndex){//TODO test case要覆盖。
+                return false;
             }
 
-            //找到通配符部分
-            if(i%2==0){//找下一个通配符的开始
-
-                int normalIndex = p.indexOf(toNormalMatchParts[i]);
-                String wildCard = p.substring(normalIndex-2,normalIndex);//"x*"
-                toWildMatchParts[i] = wildCard;
-            }else{//找下一个通配符的结束
-
+            //比较普通部分。含“.”的逐个字符比较。否则字符串整体比较。
+            if(pNormalMatchParts[i].contains(".")) {
+                int matchIndex = 0;
+                while(matchIndex<pNormalMatchParts[i].length()) {
+                    if(pNormalMatchParts[i].substring(matchIndex, matchIndex+1).equals(".")) {
+                        matchIndex++;
+                        continue;
+                    }
+                    if(!pNormalMatchParts[i].substring(matchIndex, matchIndex+1).equals(sNormalMatchParts[i].substring(matchIndex, matchIndex+1))) {
+                        return false;
+                    }
+                    matchIndex++;
+                }
+            }else {
+                if(!sNormalMatchParts[i].equals(pNormalMatchParts[i])) {
+                    return false;
+                }
             }
 
-            //TODO 先匹配普通部分(如先"abxyz"，"def...pqr" )；都OK了，再匹配通配符部分。否则先通配符匹配会匹配很长，可能导致本来全局匹配的不匹配了。
-            String[] normalParts = toNormalMatchParts[i].split("\\.");//"def...pqr"->["def", "", "", "pqr"]
-            System.out.println("(10)正则表达式匹配。"+s+"->normalParts:"+normalParts);
 
+            //得到通配符部分并比较
+            if (i > 0) {
+                pWildMatchParts[i-1] = p.substring (prePEndIndex + 1, pNormalStartIndex);
+                sWildMatchParts[i-1] = s.substring (preSEndIndex + 1, sNormalStartIndex);
+                System.out.println("pWildMatchParts[i-1]="+pWildMatchParts[i-1]+",i="+i);
+                System.out.println("sWildMatchParts[i-1]="+sWildMatchParts[i-1]+",i="+i);
+                String wildChar = pWildMatchParts[i-1].substring (0, 1);//第一个字符就是要通配的。
+                if (wildChar.equals(".")) {//".*"和任何都匹配
+                    //nothing
+                } else {//"a*",只匹配"aaaaaaa"情况.即全是“a”才匹配。
+                    if (sWildMatchParts[i-1].split(wildChar).length != 0) {
+                        return false;
+                    }
+                }
+            }
 
+//            //TODO 先匹配普通部分(如先"abxyz"，"def...pqr" )；都OK了，再匹配通配符部分。否则先通配符匹配会匹配很长，可能导致本来全局匹配的不匹配了。
+//            String[] normalParts = pNormalMatchParts[i].split("\\.");//"def...pqr"->["def", "", "", "pqr"]
+//            System.out.println("(10)正则表达式匹配。"+s+"->normalParts:"+normalParts);
+
+            prePStartIndex = pNormalStartIndex;
+            prePEndIndex = pNormalEndIndex;
+            preSStartIndex = sNormalStartIndex;
+            preSEndIndex = sNormalEndIndex;
 
 
 
         }
 
-        System.out.println("(10)正则表达式匹配。"+s+"->"+toNormalMatchParts);
-        return false;
+        System.out.println("(10)正则表达式匹配。"+s+"->"+pNormalMatchParts);
+        return true;
     }
 
 
