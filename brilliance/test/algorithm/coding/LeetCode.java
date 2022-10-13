@@ -158,7 +158,8 @@ public class LeetCode {
 
         //(10)正则表达式匹配
 //        isMatch("aaaabxyzkkkdefvwwpqr","a*abxyz.*def...pqr");
-        isMatch("pqraaaabxyzkkkdefvwwpqr","pqra*abxyz.*def...pqr");
+//        isMatch("pqraaaabxyzkkkdefvwwpqr","pqra*abxyz.*def...pqr");
+        isMatch("xxdefxxxpqrxabcxx","..def...pqr.abc..");
 
     }
 
@@ -891,20 +892,79 @@ public class LeetCode {
 //        sWildIndexs
         //遍历字面值部分去匹配时，动态找到缺失的通配符部分。后者夹在前者之间。
         for(int i=0; i<pNormalMatchParts.length; i++){
-            if(pNormalMatchParts[i].equals ("")){//在两端有"x*"或者在中间有连续"x*"，视作这部分匹配。接着下一个就是夹在中间的"x*"
-                continue;
-            }
+//            if(pNormalMatchParts[i].equals ("")){//在两端有"x*"或者在中间有连续"x*"，视作这部分匹配。接着下一个就是夹在中间的"x*"
+//                continue;
+//            }
 
             //根据P中普通部分，找到P中通配符部分和S中普通部分。TODO 对"def...pqr"情况处理。
             int pNormalStartIndex = p.indexOf(pNormalMatchParts[i]);
             int pNormalEndIndex = pNormalStartIndex+pNormalMatchParts[i].length()-1;
 
 
-            //P中有"."时，从之前S已经匹配过的普通部分，向后去找S中对应的普通部分。这里是从"kkkdefvwwpqr"，即S的第11位置去匹配Pd的"def...pqr"
-            int sNormalStartIndex = s.indexOf(pNormalMatchParts[i]);
-            int sNormalEndIndex = sNormalStartIndex+pNormalMatchParts[i].length()-1;
-            sNormalMatchParts[i] = s.substring(sNormalStartIndex, sNormalEndIndex+1);
-            System.out.println("sNormalMatchParts[i]="+sNormalMatchParts[i]+",pNormalMatchParts[i]="+pNormalMatchParts[i]+",i="+i);
+            //P中有"."时，从之前S已经匹配过的普通部分，向后去找S中对应的普通部分。这里是从"kkkdefvwwpqr"，即S的第11位置去匹配P的"def...pqr"
+            //方法是，只要非"."号的多个字符一致，且非"."号的多个字符之间的位置差相同，则去拿到S中的对应普通部分。如
+            //
+            //特别的，对P中普通部分是最后一个时，如pNormalMatchParts=["pqr", "abxyz", "def...pqr"]中的"def...pqr"，要截取S中严格的尾部
+            //s="pqraaaabxyzkkkdefvwwpqr" 中的"defvwwpqr"，且"pqr"后面不能再有字符了(即要完全匹配)。
+            //对P中普通部分不是最后一个时，如pNormalMatchParts=["pqr", "abxyz", "def...pqr", "abc"]中的"def...pqr"，要截取S中严格的尾部
+            //s="pqraaaabxyzkkkdefvwwpqrjjjjj" 中的"defvwwpqr"，且"pqr"后面不能再有字符了(即要完全匹配)。
+            int sNormalStartIndex = 0;//s.indexOf(pNormalMatchParts[i]);
+            int sNormalEndIndex = 0;//sNormalStartIndex+pNormalMatchParts[i].length()-1;
+//            sNormalMatchParts[i] = s.substring(sNormalStartIndex, sNormalEndIndex+1);
+//            System.out.println("sNormalMatchParts[i]="+sNormalMatchParts[i]+",pNormalMatchParts[i]="+pNormalMatchParts[i]+",i="+i);
+
+            /*
+            p="..def...pqr.abc.." ->["","","def","","","pqr","abc"]
+            p="..def...pqr.abc.." ->["","def","pqr","abc"]
+            s="xxdefxxxpqrxabcxx"
+
+
+             */
+
+            if(pNormalMatchParts[i].contains(".")) {
+                //取出不带"."的各个部分。split("\\.+")表示按照至少1个或多个"."号去分隔。p="..def...pqr.abc.." ->["","def","pqr","abc"]。
+                //好让其到原P中找到位置(indexOf)，继而判断非"."字符之间的位置差。
+                String[] dotArr = pNormalMatchParts[i].split("\\.+").;
+                int pSubNormalIndex = 0;
+                int sSubSNormalIndex = 0;
+                int prePSubNormalIndex = 0;
+                int preSSubNormalIndex = 0;
+                int deltaIndex = 0;
+                boolean firstFlag = true;
+
+                for(int k=0; k<dotArr.length; k++){
+//                    //TODO 先不管第一个是""的情况
+//                    if(dotArr[k].equals ("")){
+//                        continue;
+//                    }else{
+//                        firstFlag = false;
+//                    }
+
+                    pSubNormalIndex = pNormalMatchParts[i].indexOf (dotArr[k]);
+                    sSubSNormalIndex = s.indexOf(dotArr[k], preSEndIndex);//从S上一个普通部分之后找
+                    if(k>0){
+                        deltaIndex = pSubNormalIndex-prePSubNormalIndex;
+                        if(s.indexOf(sSubSNormalIndex, preSEndIndex) != sSubSNormalIndex+deltaIndex ){
+                            return false;
+                        }else{
+                            //nothing
+                        }
+                    }
+
+
+
+
+                    prePSubNormalIndex = pSubNormalIndex;
+                    preSSubNormalIndex = sSubSNormalIndex;
+                }
+                int pp = 0;
+
+                //TODO 最后设置带"."号子串在原串的位置。
+                sNormalStartIndex = 0;//="def"在S中的位置往前找两个".."
+                sNormalEndIndex = 0;//="abc"在S中的位置往后找两个".."
+            }
+
+
 
             //普通位置不对(如找不到或下一个普通位置在上衣普通位置之前)，则不匹配
             if(sNormalStartIndex < 0 || sNormalStartIndex <= preSStartIndex){//TODO test case要覆盖。
@@ -961,6 +1021,17 @@ public class LeetCode {
         }
 
         System.out.println("(10)正则表达式匹配。"+s+"->"+pNormalMatchParts);
+        return true;
+    }
+
+    /**
+     * (10.2)正则表达式匹配。
+     * TODO 直接用正则的方式判定
+     * @param s
+     * @param p
+     * @return
+     */
+    public static boolean isMatch2(String s, String p) {
         return true;
     }
 
